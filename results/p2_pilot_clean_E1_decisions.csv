@@ -1,0 +1,45 @@
+decision,key,t,value
+buy,"('new_gpu', 'LC', 'clean', 0)",0,3.0
+buy,"('new_gpu', 'LC', 'clean', 2)",2,1.9999999999999951
+buy,"('new_gpu', 'LC', 'clean', 5)",5,1.0
+buy,"('new_gpu', 'LC', 'clean', 6)",6,1.0
+buy,"('new_gpu', 'LC', 'clean', 9)",9,1.0
+buy,"('new_gpu', 'LC', 'clean', 10)",10,1.0000000000000449
+buy,"('green_gpu', 'LC', 'clean', 0)",0,5.0
+buy,"('green_gpu', 'LC', 'clean', 1)",1,1.0
+buy,"('green_gpu', 'LC', 'clean', 3)",3,1.0
+buy,"('green_gpu', 'LC', 'clean', 4)",4,1.0
+buy,"('green_gpu', 'LC', 'clean', 5)",5,1.0
+buy,"('green_gpu', 'LC', 'clean', 7)",7,1.0
+buy,"('green_gpu', 'LC', 'clean', 8)",8,1.0
+buy,"('green_gpu', 'LC', 'clean', 9)",9,1.0
+buy,"('green_gpu', 'LC', 'clean', 11)",11,1.0
+buy,"('green_gpu', 'BATCH', 'clean', 0)",0,5.0
+buy,"('green_gpu', 'BATCH', 'clean', 1)",1,1.0
+buy,"('green_gpu', 'BATCH', 'clean', 2)",2,2.0
+buy,"('green_gpu', 'BATCH', 'clean', 3)",3,1.0
+buy,"('green_gpu', 'BATCH', 'clean', 4)",4,1.0
+buy,"('green_gpu', 'BATCH', 'clean', 5)",5,1.0
+buy,"('green_gpu', 'BATCH', 'clean', 6)",6,2.0
+buy,"('green_gpu', 'BATCH', 'clean', 7)",7,1.0
+buy,"('green_gpu', 'BATCH', 'clean', 8)",8,1.0
+buy,"('green_gpu', 'BATCH', 'clean', 9)",9,1.0
+buy,"('green_gpu', 'BATCH', 'clean', 10)",10,2.0
+buy,"('green_gpu', 'BATCH', 'clean', 11)",11,1.0
+ret,"('old_gpu', 'LC', 'clean', 0, 0)",0,24.0
+lease,"('LC', 'clean', 0)",0,0.1999999999999993
+lease,"('LC', 'clean', 1)",1,0.43999999999999556
+lease,"('LC', 'clean', 3)",3,0.07999999999999281
+lease,"('LC', 'clean', 4)",4,0.32000000000000206
+lease,"('LC', 'clean', 7)",7,0.20000000000007725
+lease,"('LC', 'clean', 8)",8,0.4400000000001709
+lease,"('LC', 'clean', 10)",10,0.08000000000027609
+lease,"('LC', 'clean', 11)",11,0.3200000000002651
+lease,"('BATCH', '*', 0)",0,0.08000000000000007
+lease,"('BATCH', '*', 1)",1,0.29600000000000026
+lease,"('BATCH', '*', 4)",4,0.16000000000000014
+lease,"('BATCH', '*', 5)",5,0.37599999999999945
+lease,"('BATCH', '*', 7)",7,0.023999999999999133
+lease,"('BATCH', '*', 8)",8,0.23999999999999977
+lease,"('BATCH', '*', 9)",9,0.45599999999999974
+lease,"('BATCH', '*', 11)",11,0.10399999999999898

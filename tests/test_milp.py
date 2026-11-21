@@ -139,3 +139,10 @@ def test_toy_scenario_and_pareto(cat, regions):
     f = front.sort_values("cost_usd")
     # along the front, allowing more cost never increases minimum carbon
     assert all(f.carbon_kg.diff().dropna() <= 1e-3 * f.carbon_kg.max())
+
+
+def test_lp_relaxation_is_scale_invariant_and_fast(cat, regions):
+    a = LifecycleModel(cat, regions, Scenario.from_yaml(TOY, integer=False)).solve()
+    b = LifecycleModel(cat, regions, Scenario.from_yaml(TOY, integer=False, scale=50)).solve()
+    assert b.carbon_kg == pytest.approx(50 * a.carbon_kg, rel=1e-6)
+    assert not a.time_limited and b.solve_seconds < 30

@@ -1,44 +1,43 @@
 decision,key,t,value
-buy,"('new_gpu', 'LC', 'mixed', 0)",0,4.0
-buy,"('new_gpu', 'LC', 'mixed', 1)",1,1.0
-buy,"('new_gpu', 'LC', 'mixed', 2)",2,3.0
+buy,"('new_gpu', 'LC', 'mixed', 0)",0,8.000000000000062
+buy,"('new_gpu', 'LC', 'mixed', 2)",2,2.0000000000000036
 buy,"('new_gpu', 'LC', 'mixed', 3)",3,2.0
-buy,"('new_gpu', 'LC', 'mixed', 4)",4,2.0
-buy,"('new_gpu', 'LC', 'mixed', 5)",5,1.0
+buy,"('new_gpu', 'LC', 'mixed', 5)",5,2.0
 buy,"('new_gpu', 'LC', 'mixed', 6)",6,2.0
-buy,"('new_gpu', 'LC', 'mixed', 7)",7,2.0
-buy,"('new_gpu', 'LC', 'mixed', 8)",8,1.0
+buy,"('new_gpu', 'LC', 'mixed', 7)",7,1.0
+buy,"('new_gpu', 'LC', 'mixed', 8)",8,2.0
 buy,"('new_gpu', 'LC', 'mixed', 9)",9,1.0
-buy,"('new_gpu', 'LC', 'mixed', 10)",10,2.0
-buy,"('new_gpu', 'LC', 'mixed', 11)",11,0.9999999999999981
-buy,"('green_gpu', 'LC', 'mixed', 0)",0,5.0
-buy,"('green_gpu', 'LC', 'mixed', 1)",1,1.0
-buy,"('green_gpu', 'LC', 'mixed', 4)",4,1.0
-buy,"('green_gpu', 'LC', 'mixed', 8)",8,1.0
-buy,"('green_gpu', 'LC', 'mixed', 11)",11,1.0
+buy,"('new_gpu', 'LC', 'mixed', 10)",10,1.0
+buy,"('new_gpu', 'LC', 'mixed', 11)",11,1.0
+buy,"('green_gpu', 'LC', 'mixed', 1)",1,2.0
+buy,"('green_gpu', 'LC', 'mixed', 4)",4,2.0
+buy,"('green_gpu', 'LC', 'mixed', 10)",10,1.0
 buy,"('green_gpu', 'BATCH', 'mixed', 0)",0,5.0
-buy,"('green_gpu', 'BATCH', 'mixed', 5)",5,2.0
+buy,"('green_gpu', 'BATCH', 'mixed', 1)",1,1.0
+buy,"('green_gpu', 'BATCH', 'mixed', 2)",2,1.0
+buy,"('green_gpu', 'BATCH', 'mixed', 4)",4,1.000000000000007
+buy,"('green_gpu', 'BATCH', 'mixed', 5)",5,0.9999999999999929
+buy,"('green_gpu', 'BATCH', 'mixed', 7)",7,1.0
 buy,"('green_gpu', 'BATCH', 'mixed', 8)",8,1.0
 buy,"('green_gpu', 'BATCH', 'mixed', 9)",9,2.0
+buy,"('green_gpu', 'BATCH', 'mixed', 11)",11,1.0
 ret,"('old_gpu', 'BATCH', 'mixed', 0, 0)",0,24.0
-casc,"('green_gpu', 'mixed', 'mixed', 0, 11)",11,1.0
-casc,"('green_gpu', 'mixed', 'mixed', 1, 1)",1,1.0
-casc,"('green_gpu', 'mixed', 'mixed', 2, 2)",2,2.0
-casc,"('green_gpu', 'mixed', 'mixed', 2, 10)",10,1.0
-casc,"('green_gpu', 'mixed', 'mixed', 3, 3)",3,1.0
-casc,"('green_gpu', 'mixed', 'mixed', 3, 4)",4,1.0
-casc,"('green_gpu', 'mixed', 'mixed', 3, 7)",7,1.0
-casc,"('green_gpu', 'mixed', 'mixed', 6, 6)",6,1.0
+casc,"('green_gpu', 'mixed', 'mixed', 0, 10)",10,1.0
+casc,"('green_gpu', 'mixed', 'mixed', 1, 2)",2,1.0
+casc,"('green_gpu', 'mixed', 'mixed', 1, 5)",5,1.0
+casc,"('green_gpu', 'mixed', 'mixed', 2, 3)",3,1.0
+casc,"('green_gpu', 'mixed', 'mixed', 2, 6)",6,1.0
 casc,"('old_gpu', 'mixed', 'mixed', 0, 0)",0,24.0
-lease,"('LC', 'mixed', 2)",2,0.08648640675766472
-lease,"('LC', 'mixed', 3)",3,0.2625403554304224
-lease,"('LC', 'mixed', 6)",6,0.08978994356996284
-lease,"('LC', 'mixed', 7)",7,0.26628480174376923
-lease,"('LC', 'mixed', 10)",10,0.1367772409469008
-lease,"('LC', 'mixed', 11)",11,0.3556198761233911
+lease,"('LC', 'mixed', 0)",0,0.31124671796861336
+lease,"('LC', 'mixed', 2)",2,0.004424349855181292
+lease,"('LC', 'mixed', 3)",3,0.18063902956190914
+lease,"('LC', 'mixed', 6)",6,0.0498939670237596
+lease,"('LC', 'mixed', 7)",7,0.26845348601813446
+lease,"('LC', 'mixed', 10)",10,0.1389710966606921
+lease,"('LC', 'mixed', 11)",11,0.35757844810170225
 lease,"('BATCH', '*', 0)",0,0.10845608817536734
-lease,"('BATCH', '*', 1)",1,0.33026387373333854
-lease,"('BATCH', '*', 4)",4,0.2176441751453
-lease,"('BATCH', '*', 7)",7,0.10517514780173542
-lease,"('BATCH', '*', 8)",8,0.3270946174369117
-lease,"('BATCH', '*', 11)",11,0.21468902952679092
+lease,"('BATCH', '*', 1)",1,0.33024444574618883
+lease,"('BATCH', '*', 4)",4,0.21749669993854404
+lease,"('BATCH', '*', 7)",7,0.10493412621433706
+lease,"('BATCH', '*', 8)",8,0.3268613184089696
+lease,"('BATCH', '*', 11)",11,0.21444135196833264

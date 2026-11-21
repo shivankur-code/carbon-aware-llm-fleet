@@ -1,0 +1,39 @@
+decision,key,t,value
+buy,"('new_gpu', 'LC', 'dirty', 0)",0,8.0
+buy,"('new_gpu', 'LC', 'dirty', 1)",1,0.9999999999996988
+buy,"('new_gpu', 'LC', 'dirty', 2)",2,1.0
+buy,"('new_gpu', 'LC', 'dirty', 3)",3,1.9999999999993823
+buy,"('new_gpu', 'LC', 'dirty', 4)",4,1.0000000000027984
+buy,"('new_gpu', 'LC', 'dirty', 5)",5,1.0
+buy,"('new_gpu', 'LC', 'dirty', 6)",6,1.0
+buy,"('new_gpu', 'LC', 'dirty', 7)",7,2.0
+buy,"('new_gpu', 'LC', 'dirty', 8)",8,1.0
+buy,"('new_gpu', 'LC', 'dirty', 9)",9,1.0
+buy,"('new_gpu', 'LC', 'dirty', 10)",10,1.0
+buy,"('new_gpu', 'LC', 'dirty', 11)",11,1.0
+buy,"('green_gpu', 'LC', 'dirty', 10)",10,1.0
+buy,"('green_gpu', 'BATCH', 'dirty', 0)",0,5.0
+buy,"('green_gpu', 'BATCH', 'dirty', 1)",1,1.0
+buy,"('green_gpu', 'BATCH', 'dirty', 2)",2,2.0
+buy,"('green_gpu', 'BATCH', 'dirty', 3)",3,1.0
+buy,"('green_gpu', 'BATCH', 'dirty', 4)",4,1.0
+buy,"('green_gpu', 'BATCH', 'dirty', 5)",5,1.0
+buy,"('green_gpu', 'BATCH', 'dirty', 6)",6,2.0
+buy,"('green_gpu', 'BATCH', 'dirty', 7)",7,1.0
+buy,"('green_gpu', 'BATCH', 'dirty', 8)",8,1.0
+buy,"('green_gpu', 'BATCH', 'dirty', 9)",9,2.0
+buy,"('green_gpu', 'BATCH', 'dirty', 10)",10,1.0
+buy,"('green_gpu', 'BATCH', 'dirty', 11)",11,1.0000000000000013
+ret,"('old_gpu', 'LC', 'dirty', 0, 0)",0,24.0
+lease,"('LC', 'dirty', 1)",1,0.20000000000012624
+lease,"('LC', 'dirty', 2)",2,0.400000000000071
+lease,"('LC', 'dirty', 5)",5,0.19999999999913742
+lease,"('LC', 'dirty', 6)",6,0.399999999997096
+lease,"('LC', 'dirty', 9)",9,0.1999999999984326
+lease,"('BATCH', '*', 0)",0,0.08000000000000007
+lease,"('BATCH', '*', 1)",1,0.29600000000000026
+lease,"('BATCH', '*', 4)",4,0.16000000000020595
+lease,"('BATCH', '*', 5)",5,0.3760000000000001
+lease,"('BATCH', '*', 7)",7,0.02400000000000002
+lease,"('BATCH', '*', 8)",8,0.24000000000000132
+lease,"('BATCH', '*', 11)",11,0.1040000000000002

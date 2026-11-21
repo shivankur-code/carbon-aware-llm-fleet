@@ -1,0 +1,13 @@
+{
+  "scenario": "pilot",
+  "region": "clean",
+  "scale": 1.0,
+  "formulation": "LP relaxation",
+  "X": 8.650938255463425,
+  "Y_naive": 7.07424422489219,
+  "Y": 7.486487411690268,
+  "saving_with_cascade": 7.487736759955621,
+  "Z_restored_pp": 0.0012493482653530563,
+  "solve_seconds": 0.8417961597442627,
+  "time_limited_runs": []
+}
