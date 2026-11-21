@@ -55,11 +55,14 @@ We replayed each plan against sampled concurrent repair drains. This uses M/G/�
 
 | Plan | Correlation | Worst-quarter P(LC capacity < demand) | Quarters above 1% (of 72) |
 |---|---|---|---|
-| E0 no reuse | independent | 3.6% | 12 |
+| E0 no reuse | independent | 2.7% | 5 |
 | E2b reliability-aware reuse | independent | 14.5% | 4 |
-| E2b | correlated (k=2) | 15.5% | 9 |
-| E2b | strongly correlated (k=0.5) | 15.5% | 39 |
-| E0 | strongly correlated (k=0.5) | 9.1% | 47 |
+| E2b | correlated (k=2) | 15.5% | 14 |
+| E2b | strongly correlated (k=0.5) | 15.5% | 44 |
+| E0 | strongly correlated (k=0.5) | 8.8% | 48 |
+
+*(Replay on the planned fractional fleet; an earlier version rounded cohorts and slightly overstated tails.)*
+**Resolved in Phase 4** (`P4_FINDINGS.md`): chance-constrained headroom meets P(short) ≤ 0.1% at +0.3–0.8% carbon, and reuse keeps (and slightly grows) its saving.
 
 - On average every plan meets the SLO (mean violation probability ≤ 3%). But the LP's **linear headroom rule** (LC capacity derated by 3× the expected drain) leaves **some region-quarters exposed**. Reuse plans have the worst single quarter, because aged parts drain more.
 - **Correlated failures** multiply the number of exposed quarters, with or without reuse.

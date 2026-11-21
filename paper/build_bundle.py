@@ -114,7 +114,7 @@ def main() -> None:
     if mc is not None:
         for _, r in mc.iterrows():
             tag = "indep" if "independent" in r.correlation else r.correlation.replace("NB k=", "k")
-            put(f"mc_{r.run}_{tag}_maxp", float(r.max_p_violation), "results/p3_mc.csv")
+            put(f"mc_{r.run}_{tag}_maxp", 100 * float(r.max_p_violation), "results/p3_mc.csv (percent)")
             put(f"mc_{r.run}_{tag}_q_over_1pct", int(r.quarters_over_1pct), "results/p3_mc.csv")
 
     # --- accounting policy
@@ -147,7 +147,7 @@ def main() -> None:
             put(f"{key}_Y", float(r.Y_eps), "results/p4_chance.csv")
             put(f"{key}_price_reuse_pct", float(r.slo_price_reuse_pct), "results/p4_chance.csv")
             put(f"{key}_price_noreuse_pct", float(r.slo_price_no_reuse_pct), "results/p4_chance.csv")
-            put(f"{key}_validated_maxp", float(max(r.validated_max_p_reuse, r.validated_max_p_no_reuse)), "results/p4_chance.csv")
+            put(f"{key}_validated_maxp", 100 * float(max(r.validated_max_p_reuse, r.validated_max_p_no_reuse)), "results/p4_chance.csv (percent)")
         strict = p4[(p4.eps == p4.eps.min())]
         put("slo_strict_Y_min", float(strict.Y_eps.min()), "results/p4_chance.csv")
         put("slo_strict_Y_max", float(strict.Y_eps.max()), "results/p4_chance.csv")
@@ -181,7 +181,7 @@ Current status: GPU parameters **{status_gpu}**; CXL slowdown **{status_cxl}**.
 | C4 | Reuse survives age-dependent failures **if planned for**: a reliability-aware plan keeps {f('fleet_retained_frac_aware', 2)}x of the deterministic saving (Y = {pct('fleet_Y')} vs X = {pct('fleet_X')}); a failure-blind plan keeps {f('fleet_retained_frac_naive', 2)}x ({pct('fleet_Y_naive')}). | results/p3_ladder_headline.json | fig1_fleet.png (left) | {status_gpu} |
 | C5 | Break-even reliability: a failure-blind plan becomes carbon-negative once reused parts fail ~{f('reliab_breakeven_naive_mult', 1)}x more than age predicts; a reliability-aware plan degrades gracefully and stops reusing at ~{f('reliab_breakeven_aware_mult', 1)}x, never doing worse than no reuse. | results/p3_reliab.csv | p3_reliab.png | {status_gpu} |
 | C6 | Cascading old GPUs to batch inference saves carbon only if their batch work-per-joule reaches ~{f('cascade_breakeven_eff', 2)}x the new GPU's; geographic cascading to clean grids adds ~{'n/a' if N.get('cascade_geo_uplift_frac') is None else round(100 * N['cascade_geo_uplift_frac'])}% once it pays. | results/p3_cascade.csv | p3_cascade.png | {status_gpu} — C2 decides |
-| C7 | Linear (expected-value) failure headroom leaves SLO tail risk: worst region-quarter P(LC short) = {pct('mc_E2b_indep_maxp')} (reuse, independent failures), {pct('mc_E2b_k0.5_maxp')} under strong correlation. | results/p3_mc.csv | – | {status_gpu} |
+| C7 | Linear (expected-value) failure headroom leaves SLO tail risk: worst region-quarter P(LC short) = {pct('mc_E2b_indep_maxp', 1)} for reuse ({pct('mc_E0_indep_maxp', 1)} without), independent failures; {pct('mc_E2b_k0.5_maxp', 1)} under strong correlation. | results/p3_mc.csv | – | {status_gpu} |
 | C8 | Under a guaranteed SLO (chance-constrained headroom, P(short) ≤ 0.1% per region-quarter), reuse still saves {pct('slo_strict_Y_min')} – {pct('slo_strict_Y_max')} across failure correlation and reused-part quality; the SLO itself costs up to {pct('slo_price_max_pct')} extra carbon. | results/p4_chance.csv | p4_chance.png | {status_gpu} |
 | C9 | Accounting convention changes Y by ~2x: cutoff/amortized {pct('policy_cutoff_amortized_Y')}, residual/amortized {pct('policy_residual_amortized_Y')}, cutoff/upfront {pct('policy_cutoff_upfront_Y')}; 0 if reused parts are charged as new. | results/p3_policy.csv | – | methodological |
 | C10 | Under triangular fuzzy uncertainty (failure ×[0.5,1,3], embodied ×[0.5,1,2], CXL [0.85,0.95,1]), Y ∈ [{pct('fuzzy_a0_low')}, {pct('fuzzy_a0_high')}] at α=0 and [{pct('fuzzy_a0.5_low')}, {pct('fuzzy_a0.5_high')}] at α=0.5 — never negative. | results/p3_fuzzy.csv | – | {status_gpu}; TO-VERIFY |
