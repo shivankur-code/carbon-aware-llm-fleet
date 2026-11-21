@@ -1,1 +1,1 @@
-"""carbonsched: carbon-aware placement over heterogeneous (GreenSKU + baseline) server fleets."""
+"""carbonsched: reliability-aware lifecycle optimization (buy / reuse / cascade / refurbish / lease / retire) for low-carbon AI inference fleets."""

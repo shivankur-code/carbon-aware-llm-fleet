@@ -1,0 +1,1 @@
+"""Multi-period lifecycle MILP (quarterly, 3-6 years). Cohort-by-age state; decisions buy/keep/cascade/refurbish/lease/retire; objectives carbon, cost, expected capacity shortfall; epsilon-constraint Pareto fronts."""
