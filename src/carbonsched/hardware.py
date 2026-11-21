@@ -7,7 +7,7 @@ reused DRAM and SSDs come from a first life of several years).
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 from .params import Param, load_yaml
@@ -51,9 +51,23 @@ class Catalog:
     registry: dict[str, Param]
 
 
-def load_catalog(config_dir: str | Path = "configs", overrides: dict[str, float] | None = None) -> Catalog:
+def load_measured(config_dir: Path) -> dict[str, dict]:
+    """``configs/measured.yaml`` (written by ``gpu/ingest.py``): {param_path: {value, source}}."""
+    import yaml
+    f = Path(config_dir) / "measured.yaml"
+    if not f.exists():
+        return {}
+    return (yaml.safe_load(f.read_text()) or {}).get("measured", {})
+
+
+def load_catalog(config_dir: str | Path = "configs", overrides: dict[str, float] | None = None,
+                 use_measured: bool = True) -> Catalog:
+    """Load components + SKUs. Measured values (``configs/measured.yaml``) replace assumptions
+    unless ``use_measured=False``; explicit ``overrides`` (sweeps) win over both."""
     config_dir = Path(config_dir)
     registry: dict[str, Param] = {}
+    measured = load_measured(config_dir) if use_measured else {}
+    overrides = {**{k: v["value"] for k, v in measured.items()}, **(overrides or {})}
     comps_raw = load_yaml(config_dir / "components.yaml", registry, overrides)
     skus_raw = load_yaml(config_dir / "skus.yaml", registry, overrides)
 
@@ -71,6 +85,7 @@ def load_catalog(config_dir: str | Path = "configs", overrides: dict[str, float]
         )
         embodied[name] = c["embodied_kg"]
 
+    reused_mult = float(comps_raw.get("reused_part_afr_multiplier", 1.0))
     skus: dict[str, SKU] = {}
     raw_skus = skus_raw["skus"]
     for name, s in raw_skus.items():
@@ -81,7 +96,8 @@ def load_catalog(config_dir: str | Path = "configs", overrides: dict[str, float]
             s = dict(s, power_idle_w=ref["power_idle_w"] + s.get("power_idle_delta_w", 0.0),
                      power_peak_w=ref["power_peak_w"] + s.get("power_peak_delta_w", 0.0))
         slots = tuple(
-            Slot(component=components[sl["component"]], count=int(sl["count"]), initial_age=sl.get("initial_age", 0.0))
+            Slot(component=_reused_variant(components[sl["component"]], reused_mult) if sl.get("initial_age", 0.0) > 0
+                 else components[sl["component"]], count=int(sl["count"]), initial_age=sl.get("initial_age", 0.0))
             for sl in s["slots"]
         )
         missing = set(TIERS) - set(s["throughput"])
@@ -101,4 +117,19 @@ def load_catalog(config_dir: str | Path = "configs", overrides: dict[str, float]
             cxl_slowdown=dict(s.get("cxl_slowdown", {})),
             platform_initial_age=s.get("platform_initial_age", 0.0),
         )
+    for path, m in measured.items():
+        if path in registry:
+            old = registry[path]
+            registry[path] = Param(path=path, value=float(m["value"]), low=None, high=None,
+                                   source=f"MEASURED: {m.get('source', '')} (was {old.value:g}: {old.source})",
+                                   status="measured", unit=old.unit)
     return Catalog(components=components, skus=skus, registry=registry)
+
+
+def _reused_variant(c: ComponentReliability, m: float) -> ComponentReliability:
+    """Reused parts may fail more than their age alone predicts (screening escapes, handling,
+    different first-life stress). Proportional-hazards multiplier ``m`` on the part's model.
+    Conservative: replacement spares inherit the multiplier too."""
+    if m == 1.0:
+        return c
+    return replace(c, model=c.model.scaled(m))

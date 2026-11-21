@@ -53,6 +53,10 @@ class Weibull:
     def survival(self, a):
         return np.exp(-self.cum_hazard(a))
 
+    def scaled(self, m: float) -> "Weibull":
+        """Hazard multiplied by ``m`` at every age (proportional hazards)."""
+        return Weibull(self.shape, self.scale * m ** (-1.0 / self.shape))
+
     @classmethod
     def from_afr(cls, afr: float, shape: float, at_age: float = 0.0) -> "Weibull":
         """Calibrate scale so the annual failure probability over [at_age, at_age+1] equals ``afr``.
@@ -88,6 +92,10 @@ class Bathtub:
 
     def survival(self, a):
         return np.exp(-self.cum_hazard(a))
+
+    def scaled(self, m: float) -> "Bathtub":
+        return Bathtub(self.infant.scaled(m) if self.infant else None, self.random_rate * m,
+                       self.wearout.scaled(m) if self.wearout else None)
 
 
 def expected_failures_minimal(model: HazardModel, a0: float, t1: float, t2: float) -> float:

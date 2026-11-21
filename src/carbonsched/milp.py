@@ -99,8 +99,12 @@ class Scenario:
         if self.scale != 1.0:
             k = self.scale
             mul = lambda d: [x * k for x in d] if isinstance(d, list) else d * k  # noqa: E731
+            def mul_any(v):
+                if isinstance(v, dict) and "start" in v:
+                    return dict(v, start=v["start"] * k)
+                return mul(v)
             lc = self.demand.get("LC", {})
-            self.demand = {"LC": {r: mul(v) for r, v in lc.items()}, "BATCH": mul(self.demand.get("BATCH", 0.0))}
+            self.demand = {"LC": {r: mul_any(v) for r, v in lc.items()}, "BATCH": mul_any(self.demand.get("BATCH", 0.0))}
             self.initial_fleet = [dict(f, count=f["count"] * k) for f in self.initial_fleet]
             self.pools = {c: {kk: (v * k if kk in ("initial", "external_per_q") else v) for kk, v in pool.items()}
                           for c, pool in self.pools.items()}
@@ -118,6 +122,8 @@ class Scenario:
             d = d.get(region, 0.0) if isinstance(d, dict) else 0.0
         if isinstance(d, (int, float)):
             return float(d)
+        if isinstance(d, dict):  # {start: x, growth_per_year: g}  -> x * (1+g)^(t/4)
+            return float(d["start"]) * (1.0 + float(d.get("growth_per_year", 0.0))) ** (t / 4.0)
         return float(d[t]) if t < len(d) else float(d[-1])
 
 

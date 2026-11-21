@@ -68,3 +68,10 @@ def test_node_table_scales_with_count_and_charges_consequences():
     assert q.spare_kg == pytest.approx(32 * 0.025 * 20)
     assert q.repair_cost_usd == pytest.approx(32 * 0.025 * 300)
     assert 0 < q.availability_loss < 1
+
+
+def test_scaled_weibull_multiplies_hazard():
+    w = Weibull(1.7, 6.0)
+    w3 = w.scaled(3.0)
+    for a in (0.5, 2.0, 7.0):
+        assert float(w3.cum_hazard(a)) == pytest.approx(3.0 * float(w.cum_hazard(a)))
