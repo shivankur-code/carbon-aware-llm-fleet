@@ -40,7 +40,7 @@ CORR = {"independent": None, "correlated (k=2)": 2.0, "strongly correlated (k=0.
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--quick", action="store_true")
-    ap.add_argument("--samples", type=int, default=10000)
+    ap.add_argument("--samples", type=int, default=30000)
     a = ap.parse_args()
     base = yaml.safe_load((ROOT / "configs/scenarios/fleet.yaml").read_text())
     base.update(lc_failure_buffer=1.0, allow_cascade=False, allow_geo_cascade=False)
@@ -69,7 +69,7 @@ def main() -> None:
                         return LifecycleModel(cat, regions, Scenario(**b))
                     sol, model, reserve, hist = chance_constrained(factory, eps=eps, dispersion=disp,
                                                                    n_samples=a.samples, tol=0.0005)
-                    check = summarize(replay_lc(model, sol, 20000, disp, seed=12345))
+                    check = summarize(replay_lc(model, sol, 50000, disp, seed=12345))
                     f = sol.fleet
                     res[pname] = dict(carbon=sol.carbon_kg, iterations=len(hist),
                                       reserve=sum(sum(v) for v in (reserve or {}).values()),
