@@ -67,7 +67,7 @@ SKUs (all parameters in `configs/*.yaml`, each with a citation):
 Tiers: **LC** (latency-critical inference: strict SLO, so failure drains need N+k headroom) and **BATCH** (batch / offline inference: loose SLO, so failures mostly just reschedule).
 
 ### 3.2 Decisions in each quarter
-`buy[s,τ,t]`, `keep`, `cascade[s,a,t]` (LC→BATCH), `refurbish[s,a,t]` (swap the worn component class, which resets that component's age and costs the new part's embodied carbon), `lease[τ,t]` (rented external capacity to cover shortfall, at a carbon and cost premium; this matches the leasing lever in the 2024 circular-economy model), `retire[s,τ,a,t]`.
+`buy[s,τ,t]`, `keep`, `cascade[s,a,t]` (LC→BATCH), `refurbish[s,a,t]` (swap the worn component class, which resets that component's age and costs the new part's embodied carbon), `lease[τ,t]` (rented external capacity to cover shortfall, at a carbon and cost premium; this matches the leasing lever in the 2024 circular-economy model), `retire[s,τ,a,t]`, and **geographic cascade** `ship[s,a,r→r',t]` (move old hardware to a clean-grid region's BATCH tier; P1 finding F4).
 
 ### 3.3 Reliability (the key modelling step, and it stays linear)
 - Each component class c ∈ {GPU, DRAM, SSD, CPU/board, PSU} gets a **Weibull** hazard h_c(a) = (β/η)(a/η)^(β−1), optionally a bathtub mixture with an infant-mortality term. A reused component starts at age a₀ > 0.
@@ -131,7 +131,7 @@ paper/              claims.md, figures, parameters.md, related_work.md, refs.bib
 | Phase | Deliverable |
 |---|---|
 | **P0** ✅ | Plan + skeleton |
-| **P1** | Configs with cited parameters; `reliability.py` + `carbon.py` with tests |
+| **P1** ✅ | Configs with cited/flagged parameters; `reliability.py` (Weibull, bathtub, delayed renewal) + `carbon.py` with 20 tests; node-level study + tornado → `paper/notes/P1_FINDINGS.md` |
 | **P2** | `milp.py` on a toy instance (2 SKUs, 2 tiers, 8 quarters), hand-checkable |
 | **P3** | E0–E3 → **X, Y, Z + Figure 1** (this unblocks the brief) |
 | **P4** | E4–E6, Monte Carlo validation, sensitivity sweeps |
