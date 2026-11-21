@@ -93,6 +93,7 @@ class Scenario:
     buy_regions: list[str] | None = None
     integer: bool = True
     scale: float = 1.0                           # multiplies demand, initial fleet and pools (fleet size)
+    lc_reserve: dict[str, list[float]] | None = None  # extra LC capacity per region/quarter (chance-constrained headroom)
     name: str = "scenario"
 
     def __post_init__(self) -> None:
@@ -267,6 +268,13 @@ class LifecycleModel:
             for r in R:
                 prob += (pulp.lpSum(w.get((s, "LC", r, a, t), 0) for s in S for a in self.A[s])
                          + lease[("LC", r, t)] + short[("LC", r, t)] >= sc.demand_at("LC", t, r), f"dem_LC_{r}_{t}")
+                if sc.lc_reserve and sc.lc_reserve.get(r) is not None and sc.lc_reserve[r][t] > 0:
+                    # Installed LC capacity (not just served work) must cover demand + reserve. Reserve nodes
+                    # sit idle: they pay idle power and embodied carbon, which is the carbon price of the SLO.
+                    prob += (pulp.lpSum(self.cap(s, "LC", a) * n[(s, "LC", r, a, t)]
+                                        for s in S for a in self.A[s] if (s, "LC", r, a, t) in n)
+                             + lease[("LC", r, t)] + short[("LC", r, t)]
+                             >= sc.demand_at("LC", t, r) + sc.lc_reserve[r][t], f"reserve_LC_{r}_{t}")
             prob += (pulp.lpSum(w.get((s, "BATCH", r, a, t), 0) for s in S for r in R for a in self.A[s])
                      + lease[("BATCH", "*", t)] + short[("BATCH", "*", t)] >= sc.demand_at("BATCH", t), f"dem_B_{t}")
 

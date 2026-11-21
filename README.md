@@ -19,7 +19,7 @@ See **[PLAN.md](PLAN.md)** for the model, experiments (E0–E6) and data sources
 Provisional findings (placeholder GPU parameters) – [`P3_FINDINGS.md`](paper/notes/P3_FINDINGS.md):
 - Reuse survives reliability **if the plan accounts for it**: a reliability-aware plan keeps ~90% of the saving and degrades gracefully to zero as reused parts get worse (~8x); a failure-blind plan turns carbon-negative at ~2x the age-predicted failure rate.
 - Reuse savings for GPU inference hosts are strongly grid-dependent (≈5% clean, <1% mixed/dirty) because operational carbon dominates.
-- Cascading old GPUs saves carbon only if their batch work-per-joule nears the new GPU's (~0.9–1.0x); geographic cascading to clean grids adds ~60–70% on top. C2 measures this.
+- Cascading old GPUs saves carbon only if their batch work-per-joule nears the new GPU's (~0.9–1.0x); geographic cascading to clean grids adds ~50–70% on top. C2 measures this.
 - Linear failure headroom leaves SLO tail risk under correlated failures → chance-constrained headroom is next.
 
 ```bash

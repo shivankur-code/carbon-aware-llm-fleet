@@ -146,3 +146,26 @@ def test_lp_relaxation_is_scale_invariant_and_fast(cat, regions):
     b = LifecycleModel(cat, regions, Scenario.from_yaml(TOY, integer=False, scale=50)).solve()
     assert b.carbon_kg == pytest.approx(50 * a.carbon_kg, rel=1e-6)
     assert not a.time_limited and b.solve_seconds < 30
+
+
+def test_lc_reserve_raises_installed_capacity_and_carbon(cat, regions):
+    a = LifecycleModel(cat, regions, single_sku(integer=False)).solve()
+    b_model = LifecycleModel(cat, regions, single_sku(integer=False, lc_reserve={"mixed": [2.0] * 8}))
+    b = b_model.solve()
+    for t in range(8):
+        f = b.fleet[(b.fleet.t == t) & (b.fleet.tier == "LC")]
+        installed = sum(b_model.cap(s, "LC", a_) * n for s, a_, n in zip(f.sku, f.age_q, f.n))
+        assert installed >= 12.0 - 1e-6           # demand 10 + reserve 2
+    assert b.carbon_kg > a.carbon_kg              # idle reserve nodes cost carbon
+
+
+def test_chance_constrained_loop_meets_target(cat, regions):
+    from carbonsched.montecarlo import chance_constrained, replay_lc
+    sc_kw = dict(integer=False, reliability=True, lc_failure_buffer=1.0, demand={"LC": {"mixed": 200.0}, "BATCH": 0.0})
+
+    def factory(reserve):
+        return LifecycleModel(cat, regions, single_sku(lc_reserve=reserve, **sc_kw))
+    sol, model, reserve, hist = chance_constrained(factory, eps=0.01, n_samples=4000, tol=0.0005)
+    assert hist[-1]["worst_rel_gap"] <= 0.0005 or len(hist) == 12
+    check = replay_lc(model, sol, 20000, None, seed=7)
+    assert check.p_violation.max() <= 0.03       # 1% target, MC noise + rounding allowance
