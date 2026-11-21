@@ -1,25 +1,23 @@
-# carbon-aware-scheduling
+# Does Reuse Survive Reliability?
+**Lifecycle optimization for low-carbon AI inference servers.**
 
-**Grid-aware workload placement across mixed GreenSKU / baseline server fleets.**
+GreenSKU (Wang, …, Sriraman, ISCA '24) showed that servers built from energy-efficient CPUs plus *reused* DRAM (over CXL) and *reused* SSDs cut per-core emissions by about 28%. That result evaluates a server design at a single point in time.
 
-GreenSKU (Wang, Sriraman et al., ISCA '24) showed that cloud servers built from energy-efficient CPUs plus *reused* DRAM (over CXL) and *reused* SSDs cut fleet carbon. That evaluation is done at provisioning time, with grid carbon intensity held fixed.
+Real operators make **sequential** decisions over years: buy, reuse, cascade, refurbish, lease or retire. Reused parts are already old, so they fail more often. Every failure uses up a spare, needs repair work and **drains capacity**. This repo asks how much of the reuse saving survives once those costs are counted, and how much cascading older servers to a batch-inference tier wins back.
 
-This project asks what happens **at runtime**. Which server SKU has the lowest carbon for a given job flips with the grid's hourly carbon intensity:
+**Approach:** a multi-period (quarterly, 3–6 year) lifecycle MILP over server cohorts by age:
+- Weibull/bathtub failure models per component generation;
+- regional grid-carbon trajectories;
+- objectives: carbon, cost and capacity shortfall (ε-constraint Pareto fronts);
+- fuzzy α-cuts for uncertain failure and embodied-carbon values;
+- Monte Carlo replay to validate plans.
 
-- clean grid → embodied carbon dominates → reused-hardware GreenSKUs win;
-- dirty grid → operational carbon dominates → newer, more energy-efficient servers can win.
-
-We build a trace-driven simulator (Azure public traces × hourly regional grid-carbon traces). It quantifies how much extra carbon a CI-aware scheduler saves over static GreenSKU provisioning, and how that changes the optimal fleet mix in each region.
-
-See **[PLAN.md](PLAN.md)** for research questions, method, and phases.
+See **[PLAN.md](PLAN.md)** for the model, experiments (E0–E6) and data sources.
 
 ## Status
-Phase 0: scaffold and plan. The modules in `src/carbonsched/` are stubs.
+Phase 0: plan and skeleton. Module docstrings describe what each will contain.
 
-## Layout
-```
-src/carbonsched/   models, simulator, policies
-experiments/       one script per research question
-data/raw/          download scripts (traces not committed)
-paper/             figures + claims for paper-orchestra
-```
+## Headline (to be filled by experiments E0–E3)
+> Reuse cut lifecycle carbon by **X%** in a deterministic plan, but age-related failures and drain overhead eroded this to **Y%**; cascading older servers to batch inference restored **Z%**.
+
+*Modelling study using public parameters only; no proprietary fleet data.*

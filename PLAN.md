@@ -1,95 +1,121 @@
-# Research Plan: Grid-Aware Scheduling for Low-Carbon Server Fleets
+# Research Plan: Does Reuse Survive Reliability?
+### Lifecycle optimization for low-carbon AI inference servers
 
-## 1. Starting point: what GreenSKU established
+This repo backs the research brief prepared for Prof. Akshitha Sriraman (CMU ECE). The brief has three empty slots, **X% / Y% / Z%**, and an empty **Figure 1**. This repo has to fill them with reproducible numbers.
 
-Wang, Sriraman et al., *Designing Cloud Servers for Lower Carbon* (ISCA '24, IEEE Micro Top Pick 2025):
+> *Reuse cut lifecycle carbon by **X%** in a deterministic plan, but age-related failures and drain overhead eroded this to **Y%**; cascading older servers to batch inference restored **Z%**.*
 
-- **GreenSKU** server designs lower lifecycle carbon by pairing energy-efficient CPUs with **reused DRAM (attached via CXL)** and **reused SSDs**.
-- **GSF**, a framework for evaluating server-design carbon at fleet scale. With Azure's datacenter overheads included, the paper reports about an **8% cut in net cloud emissions**.
-- Follow-on work: **EcoScale** (OSDI '25 poster).
+---
 
-**The open gap.** GreenSKU's carbon benefit is evaluated at **provisioning time**. The analysis assumes a fixed (average) grid carbon intensity and a static fleet mix. In practice:
+## 1. Starting point and gap
 
-1. Grid carbon intensity (CI) changes by hour and by region. In some grids it swings 3–10× within a day.
-2. A GreenSKU has **lower embodied carbon** but can have **higher operational energy per unit of work**. CXL memory latency means more servers-hours, or more power, for the same throughput, and reused parts may fail more often.
-3. So which SKU is "greenest" for a given job **depends on the CI at the moment the job runs**:
-   - On a clean grid, embodied carbon dominates, so GreenSKU wins clearly.
-   - On a dirty grid, operational carbon dominates, so a newer, more energy-efficient baseline server can win.
+**GreenSKU** (Wang, …, Sriraman, ISCA '24, IEEE Micro Top Pick) builds servers from energy-efficient CPUs, reused DRAM over CXL and reused SSDs. It reports about 28% lower per-core emissions, and about 8% lower net Azure emissions once datacenter overheads are counted. The paper evaluates each server design **at a single point in time**.
 
-No one has yet studied **runtime, CI-aware placement across a mixed GreenSKU/baseline fleet**. That question is also what turns GreenSKU from a hardware SKU into a scheduler co-design problem.
+**What this project adds**, matching the brief's three gap bullets:
+1. **Sequential decisions.** Operators decide buy / reuse / retire quarter by quarter over years. They do not pick one design once.
+2. **Age-dependent reliability.** Reused DRAM and SSDs are already old when they enter the second life, so they sit further along their hazard curve. Each failure has costs:
+   - it uses up a spare part, which carries embodied carbon;
+   - it takes repair labour and logistics;
+   - it **drains capacity** while the node is out for repair.
 
-## 2. Thesis of this project
+   These costs trade off against the reuse savings, and the drained capacity has to be covered by headroom, which also has embodied carbon.
+3. **Cascading.** Older or degraded hardware moves to a **batch or low-priority inference tier**. That tier has looser SLOs, so failures cost less there, and the move is optimized *jointly* with procurement.
 
-> The carbon-optimal server for a job is not fixed. It flips with grid carbon intensity. A scheduler that routes work between GreenSKU and baseline servers based on real-time and forecast CI, and that shifts delay-tolerant work in time, can capture **meaningful extra savings beyond static GreenSKU provisioning**. It also changes **what fleet mix providers should buy** in each region.
+**The headline question:** is GreenSKU-style reuse still greener once reliability is priced in, and under which conditions (failure-rate range, grid carbon, tier mix)?
 
-The target is something Prof. Sriraman's group would want to read: it builds directly on GSF's carbon model and extends it on a dimension (time-varying CI × hardware heterogeneity) that the original paper held fixed.
+## 2. Research questions
+- **RQ1 – Erosion.** How much of the deterministic reuse saving survives once age-dependent failures, spares and drain overhead are counted? *(→ X, Y)*
+- **RQ2 – Cascading.** How much of the lost saving does jointly optimized cascading to a batch tier win back? *(→ Z)*
+- **RQ3 – Retirement age.** What is the carbon-optimal retirement or cascade age for each component generation, and how does it move with regional grid carbon (clean, mixed, dirty) and with decarbonization trajectories?
+- **RQ4 – Trade-offs.** What do the Pareto fronts of carbon vs. cost vs. expected capacity shortfall look like, using ε-constraint?
+- **RQ5 – Fragility.** Under fuzzy failure rates and fuzzy embodied-carbon values, where does "reuse is greener" flip? This gives a break-even map.
 
-## 3. Research questions
+## 3. Model
 
-- **RQ1 – Crossover.** For each workload class, at what grid CI does a GreenSKU stop being lower-carbon than a baseline SKU? How sensitive is that point to the CXL slowdown, the reused-part failure rate and the embodied-carbon amortization period?
-- **RQ2 – Runtime placement.** Given a fixed mixed fleet, how much carbon does CI-aware routing save compared with CI-oblivious placement, while still meeting SLOs?
-- **RQ3 – Temporal + hardware co-scheduling.** What does combining SKU routing with temporal shifting of deferrable jobs add, compared with either one alone?
-- **RQ4 – Provisioning feedback.** If the scheduler is CI-aware, does the carbon-optimal GreenSKU *fraction* of the fleet change per region? Compare a clean grid (e.g. Sweden/Quebec), a mixed grid (CAISO) and a dirty grid (e.g. PJM/India).
-- **RQ5 – Robustness.** How much of the gain survives CI forecast error and capacity limits? How much stays when GreenSKU capacity is scarce?
+### 3.1 State: cohorts by age
+The fleet is a set of cohorts indexed by **(SKU s, tier τ, age a, refurbished flag)**. Time steps are quarters, t = 1…T, with T = 12–24 (3–6 years).
 
-## 4. Method
-
-### 4.1 Models (all parameterized and cited, nothing invented)
-| Component | Source / approach |
+SKUs (all parameters in `configs/*.yaml`, each with a citation):
+| SKU | Description |
 |---|---|
-| Embodied carbon per SKU (CPU, DRAM, SSD, chassis) | GreenSKU/GSF paper values; ACT (Gupta et al.) model as cross-check; reused parts = 0 embodied or residual-amortized (sensitivity knob) |
-| Power vs. utilization curve | SPECpower-style linear/piecewise models per CPU generation |
-| Performance penalty | CXL memory slowdown per workload class (memory-bound vs. compute-bound), from published CXL characterization papers |
-| Failure / reliability | Reused DRAM/SSD AFR as a knob, with failures costing re-execution energy and spare capacity |
-| Grid CI | Hourly public traces: Electricity Maps free datasets, WattTime/CAISO/EIA historic data, at least 3 regions × 1 year |
-| Workloads | Azure Public Dataset (VM traces 2019, Azure Functions 2019/2021); jobs labeled latency-critical vs. deferrable |
+| `new-gpu` | Current-generation GPU inference host, all new components |
+| `green-gpu` | GreenSKU-style GPU host: efficient CPU, **reused DRAM over CXL**, **reused SSD** (components arrive at age a₀ from their first life) |
+| `old-gpu` | Previous-generation host that came off the latency-critical tier (cascade candidate) |
 
-### 4.2 Policies to compare
-1. **Baseline-only fleet**, CI-oblivious (reference).
-2. **Static GreenSKU mix** (GSF-style), CI-oblivious bin-packing. This reproduces the paper's setting.
-3. **CI-aware SKU routing**, greedy: route each job to the SKU with the lowest marginal (operational + amortized embodied) carbon at the current CI, subject to capacity and SLO.
-4. **CI-aware routing + temporal shifting** for deferrable jobs, within a deadline slack.
-5. **Offline MILP oracle** (PuLP/HiGHS) with perfect CI foresight, as an upper bound.
-6. *(stretch)* **Forecast-driven MPC** with a realistic CI forecaster, to show the gap to the oracle.
+Tiers: **LC** (latency-critical inference: strict SLO, so failure drains need N+k headroom) and **BATCH** (batch / offline inference: loose SLO, so failures mostly just reschedule).
 
-### 4.3 Metrics
-Total gCO₂e (split into operational and embodied), carbon per unit of work, SLO violation rate, p99 latency inflation, energy, and server-hours.
+### 3.2 Decisions in each quarter
+`buy[s,τ,t]`, `keep`, `cascade[s,a,t]` (LC→BATCH), `refurbish[s,a,t]` (swap the worn component class, which resets that component's age and costs the new part's embodied carbon), `lease[τ,t]` (rented external capacity to cover shortfall, at a carbon and cost premium; this matches the leasing lever in the 2024 circular-economy model), `retire[s,τ,a,t]`.
 
-## 5. Deliverables (repo layout)
+### 3.3 Reliability (the key modelling step, and it stays linear)
+- Each component class c ∈ {GPU, DRAM, SSD, CPU/board, PSU} gets a **Weibull** hazard h_c(a) = (β/η)(a/η)^(β−1), optionally a bathtub mixture with an infant-mortality term. A reused component starts at age a₀ > 0.
+- Age is a **cohort index**, so the expected failures per node in each quarter, λ[s,a], are **precomputed parameters**. The MILP stays linear in node counts.
+- Each failure costs: a spare (embodied carbon of the part), repair carbon and cost, and **drain time** d_c. Effective capacity is
 
-```
-src/carbonsched/
-  skus.py        # SKU carbon/power/perf models (YAML-configurable)
-  grid.py        # CI trace loaders + forecaster
-  workload.py    # Azure trace loaders, job classes
-  carbon.py      # GSF-compatible carbon accounting
-  simulator.py   # discrete-time fleet simulator
-  policies/      # 5–6 policies above
-experiments/     # one script per RQ -> results/*.csv + figures
-data/raw/        # download scripts only (traces not committed)
-paper/           # figures, tables, claims.md -> input to paper-orchestra
-```
+  `cap_eff[s,τ,a] = n · u_s,τ · (1 − λ[s,a]·d/Δt) − headroom_τ`.
 
-Key figures planned:
-1. **Crossover map**: CI (x-axis) × CXL slowdown (y-axis), colored by which SKU is greener (RQ1).
-2. Carbon savings by policy × region (RQ2/RQ3).
-3. Optimal GreenSKU fleet fraction versus regional mean CI and CI variance (RQ4).
-4. Savings versus forecast error (RQ5).
+  The LC tier also needs extra headroom against correlated failures; BATCH does not.
 
-## 6. Phases
+### 3.4 Objectives (ε-constraint)
+1. **Lifecycle carbon** = embodied (new nodes + refurbishment parts + spares) + operational (P · PUE · CI[region,t]) + repair/logistics − (optional) end-of-life credit.
+2. **Total cost** (capex, opex, repair, lease).
+3. **Expected capacity shortfall** against tier demand D[τ,t], with demand growing over time.
 
-| Phase | Output | Est. |
+### 3.5 Uncertainty
+- **Fuzzy** (triangular) failure scale η and embodied-carbon values. Solve at α-cuts and report the band of X/Y/Z. This is the same method as the 2024 fuzzy MILP paper.
+- **Monte Carlo replay**: take the MILP's plan, sample actual failures and drains, and measure realized carbon and the SLO-violation distribution. This checks that the expected-value model is not over-optimistic.
+
+## 4. Experiments → slots in the brief
+| ID | Setup | Output |
 |---|---|---|
-| **P0 Scaffold** (done) | repo, plan, package layout | — |
-| **P1 Models + data** | SKU YAMLs with cited parameters, CI and Azure trace downloaders, unit tests for carbon accounting | 1–2 days |
-| **P2 Reproduce GSF-style baseline** | Policy 2 reproduces the *direction and rough magnitude* of GreenSKU's savings under average CI. This is the sanity anchor. | 1 day |
-| **P3 Advancement experiments** | Policies 3–5, RQ1–RQ5 figures, sensitivity sweeps | 2–3 days |
-| **P4 Paper handoff** | `paper/claims.md` (each claim → figure/CSV), `paper/figures/`, related-work notes → feed to **paper-orchestra** | 0.5 day |
+| **E0** | No-reuse baseline: only `new-gpu`, no cascading, failures counted | reference carbon C₀ |
+| **E1** | Reuse allowed, **failures ignored** (deterministic, the GreenSKU-style point view) | **X** = 1 − C₁/C₀ |
+| **E2a** | Take E1's plan and evaluate it with failures + drains (Monte Carlo replay) | the erosion of a naive plan |
+| **E2b** | Reuse allowed, reliability-aware MILP, **no cascading** | **Y** = 1 − C₂/C₀ |
+| **E3** | E2b plus the cascade decision | **Z** = savings restored = (1 − C₃/C₀) − Y. Report the absolute saving too, and state the exact definition in the brief. |
+| E4 | Sweep region CI × decarbonization path × a₀ | carbon-optimal retirement age (RQ3) |
+| E5 | ε-constraint sweeps | Pareto fronts (RQ4) |
+| E6 | Fuzzy α-cuts + break-even map over (η, embodied DRAM/SSD) | fragility (RQ5) |
 
-## 7. Honest scoping notes
-- This is a **trace-driven simulation study**, not a production deployment. The paper should say so plainly.
-- GreenSKU's exact internal Azure parameters are not public. We use the published numbers and run sensitivity sweeps instead of claiming to reproduce Azure exactly.
-- The novelty claim is "CI-aware runtime placement × reused-hardware heterogeneity". Before writing, check this against carbon-aware scheduling work (e.g. CarbonScaler, Let's Wait Awhile, Ecovisor, CASPER, carbon-aware Kubernetes) so that related work is positioned correctly.
+**Figure 1** (for the brief): a waterfall or grouped bar of lifecycle carbon with bars **No reuse → Reuse (deterministic, X) → + failures & drains (Y) → + cascading (Z)**. Each bar is split into embodied / operational / repair+spares, with Monte Carlo error bars.
 
-## 8. Handoff to paper-orchestra
-Phase 4 writes `paper/` with: an abstract seed, `claims.md` mapping each claim to evidence, final figures (PDF/PNG), `results/*.csv`, `related_work.md` and BibTeX. paper-orchestra then turns that into the readable paper.
+## 5. Data sources (public only; parameters swept wherever data is thin)
+- **Embodied carbon:** GreenSKU (ISCA '24) and ACT (Gupta et al., ISCA '22); GPU-host LCAs such as vendor product carbon footprints.
+- **DRAM failures in the field:** Schroeder et al. (SIGMETRICS '09), Sridharan et al. (SC '12/ASPLOS '15), Meza et al. (DSN '15).
+- **SSD failures in the field:** Meza et al. (SIGMETRICS '15), Schroeder et al. (FAST '16), Backblaze SSD drive stats.
+- **GPU / node failures:** Meta's Llama 3 training-cluster interruption breakdown and published ML-cluster reliability studies.
+- **Grid CI:** Electricity Maps / Ember regional yearly averages plus decarbonization scenarios.
+- **Power:** MLPerf Inference power results and vendor TDPs.
+
+Every parameter goes in YAML with a `source:` field. `paper/parameters.md` is generated from those files.
+
+## 6. Repo layout
+```
+configs/            SKU, component reliability, region, demand YAMLs (with sources)
+src/carbonsched/
+  hardware.py       SKU / component generations
+  reliability.py    Weibull/bathtub -> λ[s,a], drain & spare costs
+  grid.py           regional CI trajectories
+  carbon.py         lifecycle carbon accounting
+  milp.py           multi-period lifecycle MILP (PuLP + HiGHS), ε-constraint
+  montecarlo.py     stochastic replay of plans
+  fuzzy.py          α-cut fuzzy solves
+experiments/        e0..e6 scripts -> results/*.csv, figures
+tests/              accounting & reliability unit tests, tiny-instance MILP checks
+paper/              claims.md, figures, parameters.md, related_work.md, refs.bib
+```
+
+## 7. Phases
+| Phase | Deliverable |
+|---|---|
+| **P0** ✅ | Plan + skeleton |
+| **P1** | Configs with cited parameters; `reliability.py` + `carbon.py` with tests |
+| **P2** | `milp.py` on a toy instance (2 SKUs, 2 tiers, 8 quarters), hand-checkable |
+| **P3** | E0–E3 → **X, Y, Z + Figure 1** (this unblocks the brief) |
+| **P4** | E4–E6, Monte Carlo validation, sensitivity sweeps |
+| **P5** | `paper/` bundle → **paper-orchestra** |
+
+## 8. Honesty and scoping
+- This is a **modelling study** using public parameters. No Azure-internal data is used or implied. That matters because of the author's employer, and the brief and paper must say so explicitly.
+- X/Y/Z depend on the parameters. The brief should quote them with their scenario, e.g. "under median field failure rates, mixed grid", and point to the fragility map.
+- Related work to position against: GreenSKU/GSF; ACT; lifecycle and server-refresh studies (e.g. the "Junkyard Computing" reuse work, server lifetime-extension analyses); carbon-aware scheduling (CarbonScaler, Ecovisor), which is complementary to this work, not the same question.

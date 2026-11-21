@@ -1,9 +1,9 @@
 [project]
 name = "carbonsched"
 version = "0.0.1"
-description = "Grid-aware workload placement across mixed GreenSKU / baseline server fleets"
+description = "Reliability-aware lifecycle optimization for low-carbon AI inference server fleets"
 requires-python = ">=3.10"
-dependencies = ["numpy", "pandas", "pyyaml", "matplotlib", "pulp"]
+dependencies = ["numpy", "pandas", "pyyaml", "matplotlib", "pulp", "highspy", "scipy"]
 
 [project.optional-dependencies]
 dev = ["pytest"]

@@ -1,1 +1,1 @@
-"""Hourly grid carbon-intensity traces (per region) and forecasting."""
+"""Regional grid carbon intensity per quarter (historic + decarbonization trajectories)."""
