@@ -1,0 +1,16 @@
+# Hand-checkable toy instance: 2 SKUs, 2 tiers, 8 quarters, one region.
+name: toy
+horizon_q: 8
+regions: [mixed]
+skus: [new_gpu, green_gpu]
+buyable: [new_gpu, green_gpu]
+max_age_q: {new_gpu: 28, green_gpu: 28}
+demand:
+  LC: {mixed: [10, 10, 10, 10, 12, 12, 12, 12]}   # node-equivalents of fully-busy new_gpu
+  BATCH: [4, 4, 4, 4, 6, 6, 6, 6]
+pools:
+  dram_dimm: {initial: 320, external_per_q: 0, yield: 0.9}
+  ssd: {initial: 80, external_per_q: 0, yield: 0.9}
+util_cap: 0.8
+lc_failure_buffer: 3.0
+integer: true
