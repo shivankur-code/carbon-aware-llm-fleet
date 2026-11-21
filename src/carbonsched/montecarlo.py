@@ -62,3 +62,64 @@ def replay_lc(model: LifecycleModel, sol: Solution, n_samples: int = 20000, disp
 def summarize(df: pd.DataFrame) -> dict:
     return dict(max_p_violation=float(df.p_violation.max()), mean_p_violation=float(df.p_violation.mean()),
                 quarters_over_1pct=int((df.p_violation > 0.01).sum()), mean_exp_unserved=float(df.exp_unserved.mean()))
+
+
+def capacity_quantile_gap(model: LifecycleModel, sol: Solution, eps: float, n_samples: int = 20000,
+                          dispersion: float | None = None, seed: int = 0) -> dict[tuple[str, int], float]:
+    """For each LC (region, quarter): demand minus the eps-quantile of instantaneous capacity.
+    Positive gap = the plan violates P(capacity < demand) <= eps by that much capacity."""
+    rng = np.random.default_rng(seed)
+    sc = model.sc
+    lease = {}
+    if not sol.decisions.empty:
+        d = sol.decisions[sol.decisions.decision == "lease"]
+        for k, v in zip(d.key, d.value):
+            lease[(k[0], k[1], k[2])] = v
+    fl = sol.fleet[sol.fleet.tier == "LC"]
+    gaps = {}
+    for r in sc.regions:
+        for t in range(sc.horizon_q):
+            g = fl[(fl.region == r) & (fl.t == t)]
+            D = sc.demand_at("LC", t, r)
+            if g.empty:
+                gaps[(r, t)] = D - lease.get(("LC", r, t), 0.0)
+                continue
+            N = g.n.to_numpy()
+            cap_nom = np.array([model.sku(s).effective_throughput("LC") * sc.util_cap for s in g.sku])
+            mean_down = np.array([N_i * model.rel[s][a].drain_hours / HOURS_Q for N_i, s, a in zip(N, g.sku, g.age_q)])
+            down = np.minimum(_down(rng, mean_down, n_samples, dispersion), np.floor(N))
+            cap = ((N - down) * cap_nom).sum(axis=1) + lease.get(("LC", r, t), 0.0)
+            gaps[(r, t)] = D - float(np.quantile(cap, eps))
+    return gaps
+
+
+def chance_constrained(model_factory, eps: float = 0.001, dispersion: float | None = None, n_samples: int = 20000,
+                       max_iter: int = 12, tol: float = 0.002, seed: int = 0, verbose: bool = False):
+    """Iterate: solve -> Monte Carlo -> raise per-(region, quarter) LC reserve by the capacity gap -> re-solve,
+    until every LC region-quarter satisfies P(capacity < demand) <= eps (within ``tol`` relative capacity).
+
+    ``model_factory(lc_reserve) -> LifecycleModel``. Reserves only grow (monotone, guarantees termination).
+    Returns (solution, model, reserve, history).
+    """
+    reserve: dict[str, list[float]] | None = None
+    history = []
+    for it in range(max_iter):
+        model = model_factory(reserve)
+        sol = model.solve()
+        if sol.status != "Optimal":
+            raise RuntimeError(sol.status)
+        gaps = capacity_quantile_gap(model, sol, eps, n_samples, dispersion, seed + it)
+        worst = max(g / max(model.sc.demand_at("LC", t, r), 1e-9) for (r, t), g in gaps.items())
+        history.append(dict(iteration=it, carbon_kg=sol.carbon_kg, worst_rel_gap=worst,
+                            total_reserve=sum(sum(v) for v in (reserve or {}).values())))
+        if verbose:
+            print(history[-1], flush=True)
+        if worst <= tol:
+            break
+        sc = model.sc
+        new = {r: list((reserve or {}).get(r, [0.0] * sc.horizon_q)) for r in sc.regions}
+        for (r, t), g in gaps.items():
+            if g > 0:
+                new[r][t] += g * 1.05  # small overshoot speeds convergence
+        reserve = new
+    return sol, model, reserve, history

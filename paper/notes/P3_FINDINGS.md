@@ -47,7 +47,7 @@ We swept the A100-class node's BATCH throughput, and so its batch work per joule
 | Zg: + geographic cascading (pp) | 0 | 0.005 | 0.03 | 0.18 | 0.32 | 0.52 |
 
 - Cascading avoids only the new server's embodied carbon (about 5% of a GPU host's lifecycle carbon), so it cannot make up for an operational-efficiency gap. **The break-even is close to energy parity.**
-- **Geographic cascading** (shipping old nodes to the clean grid's batch tier) adds about 60–70% to Z once cascading pays at all.
+- **Geographic cascading** (shipping old nodes to the clean grid's batch tier) adds about 50–70% to Z once cascading pays at all.
 - **C2 decides this.** Public spec sheets suggest H100s deliver well over 1.5× A100 inference throughput at about 1.4× the power. If C2 confirms that, **cascading is a cost lever, not a carbon lever, for GPU inference**. That is a clear, falsifiable claim. If C2 instead shows A100 batch efficiency close to H100 for some model or shape, the cascade result reverses, which is also publishable.
 
 ## F10. Reliability tails need correlation-aware headroom (`results/p3_mc.csv`)
