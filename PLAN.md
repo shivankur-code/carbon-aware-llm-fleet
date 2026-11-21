@@ -23,6 +23,28 @@ This repo backs the research brief prepared for Prof. Akshitha Sriraman (CMU ECE
 
 **The headline question:** is GreenSKU-style reuse still greener once reliability is priced in, and under which conditions (failure-rate range, grid carbon, tier mix)?
 
+## 1b. Three contributions (what makes this more than a model)
+
+**C1 – Reliability-aware lifecycle optimizer** (the brief's core). A multi-period MILP plus stochastic replay. It produces X/Y/Z, the carbon-optimal retirement age and the Pareto fronts.
+
+**C2 – Measured value of cascading on real GPUs.** Cascading rests on one testable claim: *old GPUs lose less ground on batch inference than on latency-critical inference.* We measure this directly on real GPUs across generations (e.g. T4 / V100 / A10 / L4 / A100 / H100) running open LLMs with vLLM.
+- **LC tier:** small batches under a TTFT/TPOT SLO (time to first token / time per output token).
+- **BATCH tier:** large batches, throughput-bound.
+- Power comes from NVML.
+- Output: **tokens/J and gCO₂e per million tokens per generation × tier**, with embodied carbon amortized over a first or second life.
+
+These measured curves replace guessed throughput and power parameters in C1. Lifecycle studies usually assume these numbers; we measure them.
+
+**C3 – Reused DRAM as the KV-cache tier: "GreenSKU for AI".** This is the brief's "reliability-aware GreenSKU designs for AI servers". The KV cache of an LLM server is **recomputable state**, which makes it a natural home for reused, possibly flaky, host DRAM:
+- (a) Offload KV blocks to host DRAM (vLLM CPU swap / LMCache-style). Throttle bandwidth and add latency to emulate CXL-attached reused DIMMs. Measure the throughput and SLO cost at each setting.
+- (b) **Fault injection:** flip bits and corrupt or drop blocks in the offloaded KV cache at rates taken from DRAM field studies, scaled by age, and measure the effect on output quality (perplexity, task accuracy) and on recompute overhead.
+  - With detection (checksum → recompute), a failure costs only performance.
+  - Without detection, we measure how much quality is lost.
+
+  The result is a **safe-deployment policy**: which inference data structures can live on aged, reused memory, and at what error rates.
+
+C2 and C3 feed C1. The final optimizer uses measured throughput, energy and error tolerance, not assumptions.
+
 ## 2. Research questions
 - **RQ1 – Erosion.** How much of the deterministic reuse saving survives once age-dependent failures, spares and drain overhead are counted? *(→ X, Y)*
 - **RQ2 – Cascading.** How much of the lost saving does jointly optimized cascading to a batch tier win back? *(→ Z)*
@@ -113,6 +135,7 @@ paper/              claims.md, figures, parameters.md, related_work.md, refs.bib
 | **P2** | `milp.py` on a toy instance (2 SKUs, 2 tiers, 8 quarters), hand-checkable |
 | **P3** | E0–E3 → **X, Y, Z + Figure 1** (this unblocks the brief) |
 | **P4** | E4–E6, Monte Carlo validation, sensitivity sweeps |
+| **P4g** (GPU) | C2: vLLM LC vs BATCH sweeps per GPU generation with NVML power; C3: KV offload under emulated CXL + fault injection |
 | **P5** | `paper/` bundle → **paper-orchestra** |
 
 ## 8. Honesty and scoping
