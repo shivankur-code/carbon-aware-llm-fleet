@@ -3,7 +3,7 @@ name = "carbonsched"
 version = "0.0.1"
 description = "Reliability-aware lifecycle optimization for low-carbon AI inference server fleets"
 requires-python = ">=3.10"
-dependencies = ["numpy", "pandas", "pyyaml", "matplotlib", "pulp", "highspy", "scipy"]
+dependencies = ["numpy", "pandas", "pyyaml", "matplotlib", "pulp>=2.8,<3", "highspy", "scipy"]
 
 [project.optional-dependencies]
 dev = ["pytest"]
