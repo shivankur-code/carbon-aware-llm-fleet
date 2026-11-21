@@ -46,7 +46,9 @@ def replay_lc(model: LifecycleModel, sol: Solution, n_samples: int = 20000, disp
     fl = sol.fleet[sol.fleet.tier == "LC"]
     rows = []
     for (r, t), g in fl.groupby(["region", "t"]):
-        N = np.round(g.n.to_numpy())
+        # Same (fractional) fleet the LP planned, so replay and planning are consistent; a real
+        # deployment rounds each cohort up, which only adds capacity.
+        N = g.n.to_numpy()
         cap_nom = np.array([model.sku(s).effective_throughput("LC") * sc.util_cap for s in g.sku])
         mean_down = np.array([N_i * model.rel[s][a].drain_hours / HOURS_Q for N_i, s, a in zip(N, g.sku, g.age_q)])
         down = np.minimum(_down(rng, mean_down, n_samples, dispersion), N)
@@ -87,14 +89,14 @@ def capacity_quantile_gap(model: LifecycleModel, sol: Solution, eps: float, n_sa
             N = g.n.to_numpy()
             cap_nom = np.array([model.sku(s).effective_throughput("LC") * sc.util_cap for s in g.sku])
             mean_down = np.array([N_i * model.rel[s][a].drain_hours / HOURS_Q for N_i, s, a in zip(N, g.sku, g.age_q)])
-            down = np.minimum(_down(rng, mean_down, n_samples, dispersion), np.floor(N))
+            down = np.minimum(_down(rng, mean_down, n_samples, dispersion), N)
             cap = ((N - down) * cap_nom).sum(axis=1) + lease.get(("LC", r, t), 0.0)
             gaps[(r, t)] = D - float(np.quantile(cap, eps))
     return gaps
 
 
 def chance_constrained(model_factory, eps: float = 0.001, dispersion: float | None = None, n_samples: int = 20000,
-                       max_iter: int = 12, tol: float = 0.002, seed: int = 0, verbose: bool = False):
+                       max_iter: int = 20, tol: float = 0.002, seed: int = 0, verbose: bool = False):
     """Iterate: solve -> Monte Carlo -> raise per-(region, quarter) LC reserve by the capacity gap -> re-solve,
     until every LC region-quarter satisfies P(capacity < demand) <= eps (within ``tol`` relative capacity).
 
