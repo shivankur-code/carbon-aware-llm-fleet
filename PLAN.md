@@ -133,7 +133,7 @@ paper/              claims.md, figures, parameters.md, related_work.md, refs.bib
 | **P0** ✅ | Plan + skeleton |
 | **P1** ✅ | Configs with cited/flagged parameters; `reliability.py` (Weibull, bathtub, delayed renewal) + `carbon.py` with 20 tests; node-level study + tornado → `paper/notes/P1_FINDINGS.md` |
 | **P2** ✅ | `milp.py` (cohort MILP/LP, pools, geo-cascade, ε-constraint) + 11 tests incl. hand-checked case; E0–E3 pipeline; pilot X/Y/Z → `paper/notes/P2_FINDINGS.md` |
-| **P3** | E0–E3 → **X, Y, Z + Figure 1** (this unblocks the brief) |
+| **P3** ✅ | Reference 3-grid fleet: X/Y/Z + Figure 1; reliability break-even, cascade break-even, Monte Carlo SLO tails, accounting, fuzzy α-cuts, Pareto → `paper/notes/P3_FINDINGS.md`; GPU scripts in `gpu/` |
 | **P4** | E4–E6, Monte Carlo validation, sensitivity sweeps |
 | **P4g** (GPU) | C2: vLLM LC vs BATCH sweeps per GPU generation with NVML power; C3: KV offload under emulated CXL + fault injection |
 | **P5** | `paper/` bundle → **paper-orchestra** |

@@ -80,3 +80,12 @@ def test_parameters_table_renders():
     cat = load_catalog(CONFIGS)
     md = parameters_table(cat.registry)
     assert "Llama 3" in md and md.count("\n") > 20
+
+
+def test_reused_part_multiplier_only_hits_reused_parts():
+    base = load_catalog(CONFIGS)
+    worse = load_catalog(CONFIGS, overrides={"components.reused_part_afr_multiplier": 3.0})
+    b = node_reliability_table(base.skus["green_gpu"].slots, 2)[0].failures
+    w = node_reliability_table(worse.skus["green_gpu"].slots, 2)[0].failures
+    assert w["gpu_hopper"] == pytest.approx(b["gpu_hopper"])       # new GPUs unchanged
+    assert w["dram_dimm"] == pytest.approx(3 * b["dram_dimm"], rel=0.05)  # reused DIMMs ~3x

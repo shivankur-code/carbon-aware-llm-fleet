@@ -1,0 +1,10 @@
+# GPU host requirements (CUDA machine). vLLM pins its own torch; install it first.
+vllm>=0.6
+transformers>=4.45
+datasets
+accelerate
+aiohttp
+nvidia-ml-py
+numpy
+pandas
+pyyaml

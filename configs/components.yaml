@@ -4,6 +4,10 @@
 # NOTE: several sources below could not be fetched from this environment; those values are
 # marked `assumption` until the PDFs are checked (see paper/parameters.md TODO list).
 
+# Extra hazard multiplier for *reused* parts beyond what their age predicts (screening escapes,
+# handling, unknown first-life stress). 1 = age alone explains reused-part reliability.
+reused_part_afr_multiplier: {value: 1.0, low: 1.0, high: 5.0, status: assumption, source: "No public data on screened second-life DIMM/SSD reliability; swept (Phase 3)"}
+
 components:
   gpu_hopper:            # H100-class GPU (incl. HBM), one per slot
     embodied_kg: {value: 150, low: 100, high: 400, unit: kgCO2e, status: assumption,

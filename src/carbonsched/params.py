@@ -6,6 +6,7 @@ mapping::
     {value: 0.09, low: 0.03, high: 0.15, source: "Llama 3 paper, Table 5", status: verified}
 
 ``status`` is one of ``verified`` (number read from the cited source),
+``measured`` (from this repo's GPU experiments, via ``configs/measured.yaml``),
 ``derived`` (computed from verified numbers; the derivation is in ``source``),
 or ``assumption`` (engineering judgement; always swept in sensitivity studies).
 
@@ -20,7 +21,7 @@ from typing import Any
 
 import yaml
 
-STATUSES = ("verified", "derived", "assumption")
+STATUSES = ("verified", "derived", "measured", "assumption")
 
 
 @dataclass(frozen=True)

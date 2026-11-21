@@ -15,8 +15,12 @@ Real operators make **sequential** decisions over years: buy, reuse, cascade, re
 See **[PLAN.md](PLAN.md)** for the model, experiments (E0–E6) and data sources.
 
 ## Status
-**Phase 2 done** – lifecycle MILP/LP with reuse pools, cascading, leasing and failure-aware headroom; E0–E3 pipeline producing X/Y/Z and a Figure 1 prototype.
-Provisional headline (pilot, placeholder GPU parameters): a reliability-aware plan keeps ~87% of reuse savings on every grid, while a failure-blind plan keeps 34% on a mixed grid and turns negative on a dirty one – see [`paper/notes/P2_FINDINGS.md`](paper/notes/P2_FINDINGS.md) and [`P1_FINDINGS.md`](paper/notes/P1_FINDINGS.md).
+**Phases 1–3 done; GPU experiments ready to run** (`gpu/README.md`).
+Provisional findings (placeholder GPU parameters) – [`P3_FINDINGS.md`](paper/notes/P3_FINDINGS.md):
+- Reuse survives reliability **if the plan accounts for it**: a reliability-aware plan keeps ~90% of the saving and degrades gracefully to zero as reused parts get worse (~8x); a failure-blind plan turns carbon-negative at ~2x the age-predicted failure rate.
+- Reuse savings for GPU inference hosts are strongly grid-dependent (≈5% clean, <1% mixed/dirty) because operational carbon dominates.
+- Cascading old GPUs saves carbon only if their batch work-per-joule nears the new GPU's (~0.9–1.0x); geographic cascading to clean grids adds ~60–70% on top. C2 measures this.
+- Linear failure headroom leaves SLO tail risk under correlated failures → chance-constrained headroom is next.
 
 ```bash
 python -m venv .venv && . .venv/bin/activate && pip install -e '.[dev]'
@@ -24,7 +28,10 @@ pytest -q
 python experiments/p1_node_lifecycle.py
 python experiments/p1_tornado.py --region mixed
 python experiments/p2_pipeline.py --region mixed --lp
+python experiments/p3_study.py all
 ```
+
+GPU experiments: see [`gpu/README.md`](gpu/README.md) (`LABEL=H100-SXM bash gpu/run_all.sh`).
 
 ## Headline (to be filled by experiments E0–E3)
 > Reuse cut lifecycle carbon by **X%** in a deterministic plan, but age-related failures and drain overhead eroded this to **Y%**; cascading older servers to batch inference restored **Z%**.
