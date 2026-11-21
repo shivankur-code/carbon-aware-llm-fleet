@@ -1,0 +1,70 @@
+# Component classes: embodied carbon per unit, failure model, repair consequences.
+# Status legend: verified = read from the cited source; derived = computed from verified
+# numbers (derivation in `source`); assumption = engineering judgement, always swept.
+# NOTE: several sources below could not be fetched from this environment; those values are
+# marked `assumption` until the PDFs are checked (see paper/parameters.md TODO list).
+
+components:
+  gpu_hopper:            # H100-class GPU (incl. HBM), one per slot
+    embodied_kg: {value: 150, low: 100, high: 400, unit: kgCO2e, status: assumption,
+                  source: "Order of magnitude of ACT-style (Gupta et al., ISCA'22) accelerator estimates; verify against vendor PCF"}
+    failure:
+      type: weibull
+      shape: {value: 1.0, low: 0.8, high: 2.0, status: assumption, source: "No public age curve for datacenter GPUs; swept"}
+      afr: {value: 0.0868, low: 0.02, high: 0.12, unit: 1/yr, status: derived,
+            source: "Llama 3 (arXiv 2407.21783) Table 5: Faulty GPU 148 + GPU HBM3 72 = 220 interruptions in 54 days on 'up to 16K' H100s (16,384 assumed) -> 0.0908 events/GPU-yr -> AFR 1-exp(-0.0908). Training load; inference likely lower (low end)"}
+      afr_at_age: 0.0
+    drain_hours: {value: 72, low: 24, high: 168, unit: h, status: assumption, source: "Node drain + GPU swap + burn-in + return to service"}
+    repair_logistics_kg: {value: 5, low: 1, high: 20, unit: kgCO2e, status: assumption, source: "RMA shipping / truck roll"}
+    repair_cost_usd: {value: 2500, low: 1000, high: 30000, unit: USD, status: assumption, source: "Labour + amortized RMA; part under warranty"}
+
+  gpu_ampere:            # A100-class GPU (previous generation, cascade candidate)
+    embodied_kg: {value: 120, low: 80, high: 300, unit: kgCO2e, status: assumption, source: "As gpu_hopper, smaller die/HBM"}
+    failure:
+      type: weibull
+      shape: {value: 1.3, low: 0.8, high: 2.5, status: assumption, source: "Mild wear-out assumed for aged accelerators; swept"}
+      afr: {value: 0.0868, low: 0.02, high: 0.12, unit: 1/yr, status: derived, source: "Same Llama 3 calibration as gpu_hopper, applied at age 0"}
+      afr_at_age: 0.0
+    drain_hours: {value: 72, low: 24, high: 168, unit: h, status: assumption, source: "As gpu_hopper"}
+    repair_logistics_kg: {value: 5, low: 1, high: 20, unit: kgCO2e, status: assumption, source: "As gpu_hopper"}
+    repair_cost_usd: {value: 4000, low: 1000, high: 15000, unit: USD, status: assumption, source: "Out of warranty spare from pool"}
+
+  cpu_std:
+    embodied_kg: {value: 30, low: 15, high: 60, unit: kgCO2e, status: assumption, source: "ACT-style server CPU estimate; verify"}
+    failure: {type: weibull, shape: {value: 1.0, low: 0.8, high: 1.5, status: assumption, source: "CPUs rarely fail; Llama 3 Table 5 lists 2 CPU events in 54 days"}, afr: {value: 0.002, low: 0.0005, high: 0.01, unit: 1/yr, status: assumption, source: "Consistent in magnitude with Llama 3 Table 5 (2 CPU events / ~2K hosts / 54 d)"}, afr_at_age: 0.0}
+    drain_hours: {value: 24, low: 8, high: 72, unit: h, status: assumption, source: "Board-level repair"}
+    repair_logistics_kg: 2
+    repair_cost_usd: 800
+
+  cpu_efficient:         # GreenSKU-style energy-efficient many-core CPU
+    embodied_kg: {value: 30, low: 15, high: 60, unit: kgCO2e, status: assumption, source: "As cpu_std"}
+    failure: {type: weibull, shape: 1.0, afr: {value: 0.002, low: 0.0005, high: 0.01, unit: 1/yr, status: assumption, source: "As cpu_std"}, afr_at_age: 0.0}
+    drain_hours: {value: 24, low: 8, high: 72, unit: h, status: assumption, source: "As cpu_std"}
+    repair_logistics_kg: 2
+    repair_cost_usd: 800
+
+  dram_dimm:             # 64 GB DDR DIMM
+    embodied_kg: {value: 20, low: 5, high: 60, unit: kgCO2e, status: assumption,
+                  source: "DRAM is a large share of server embodied carbon per GreenSKU (ISCA'24) / ACT; per-DIMM value to verify"}
+    failure:
+      type: weibull
+      shape: {value: 1.6, low: 1.0, high: 2.5, status: assumption,
+              source: "DRAM field studies (Schroeder et al. SIGMETRICS'09; Meza et al. DSN'15) report error incidence rising with age; shape to verify/fit"}
+      afr: {value: 0.01, low: 0.0002, high: 0.05, unit: 1/yr, status: assumption,
+            source: "DIMM replacement rate. Low bound derived from Llama 3 Table 5 (2 'System Memory' events, ~2,048 hosts x 32 DIMMs, 54 d -> ~2e-4/DIMM-yr, interruption-causing only)"}
+      afr_at_age: 0.0
+    drain_hours: {value: 8, low: 2, high: 48, unit: h, status: assumption, source: "Drain, DIMM swap, memtest, return"}
+    repair_logistics_kg: 1
+    repair_cost_usd: 300
+
+  ssd:                   # 3.84 TB NVMe
+    embodied_kg: {value: 614, low: 150, high: 900, unit: kgCO2e, status: assumption,
+                  source: "3.84 TB x ~0.16 kgCO2e/GB (per-GB SSD manufacturing estimate attributed to Tannu & Nair, HotCarbon'22); verify"}
+    failure:
+      type: weibull
+      shape: {value: 1.3, low: 0.9, high: 2.0, status: assumption, source: "Flash wear-out; Schroeder et al. FAST'16 age effects to verify"}
+      afr: {value: 0.01, low: 0.003, high: 0.03, unit: 1/yr, status: assumption, source: "Typical published fleet SSD AFR ~1%/yr; verify against Backblaze / FAST'16"}
+      afr_at_age: 0.0
+    drain_hours: {value: 2, low: 0, high: 24, unit: h, status: assumption, source: "Hot-swap + RAID/replica rebuild"}
+    repair_logistics_kg: 1
+    repair_cost_usd: 400

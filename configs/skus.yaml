@@ -1,0 +1,51 @@
+# 8-GPU LLM-inference hosts. Throughput is normalized to new_gpu = 1.0 per tier and is a
+# PLACEHOLDER until contribution C2 measures tokens/s per GPU generation x tier on real GPUs.
+skus:
+  new_gpu:
+    description: "New H100-class 8-GPU host, all-new components"
+    slots:
+      - {component: gpu_hopper, count: 8}
+      - {component: cpu_std, count: 2}
+      - {component: dram_dimm, count: 32}
+      - {component: ssd, count: 8}
+    platform_embodied_kg: {value: 1500, low: 800, high: 3000, unit: kgCO2e, status: assumption, source: "Chassis, mainboard, PSUs, NICs, fans; verify vs server LCAs"}
+    power_idle_w: {value: 2500, low: 1500, high: 3500, unit: W, status: assumption, source: "Idle 8-GPU host"}
+    power_peak_w: {value: 10200, low: 8000, high: 11000, unit: W, status: assumption, source: "Vendor max system power class for 8x H100 SXM systems; replace with C2 NVML measurements"}
+    throughput: {LC: 1.0, BATCH: 1.0}
+    capex_usd: {value: 300000, low: 200000, high: 450000, unit: USD, status: assumption, source: "Market price range"}
+    design_life_years: {value: 6, low: 4, high: 7, unit: yr, status: assumption, source: "Hyperscaler server depreciation lives of 5-6 yr"}
+
+  green_gpu:
+    description: "GreenSKU-style host: new GPUs, efficient CPU, reused DRAM over CXL, reused SSDs"
+    slots:
+      - {component: gpu_hopper, count: 8}
+      - {component: cpu_efficient, count: 2}
+      - {component: dram_dimm, count: 32, initial_age: {value: 5, low: 3, high: 7, unit: yr, status: assumption, source: "DIMMs harvested from retired servers after a first life"}}
+      - {component: ssd, count: 8, initial_age: {value: 5, low: 3, high: 7, unit: yr, status: assumption, source: "SSDs harvested after a first life"}}
+    platform_embodied_kg: {value: 1600, low: 900, high: 3200, unit: kgCO2e, status: assumption, source: "new_gpu platform + CXL controllers/expanders"}
+    power_relative_to: new_gpu   # same GPUs -> only the host-side difference is uncertain
+    power_idle_delta_w: {value: -50, low: -300, high: 200, unit: W, status: assumption, source: "Efficient CPU saves idle power; aged DIMMs / CXL expanders may add some. C3 measures"}
+    power_peak_delta_w: {value: -100, low: -400, high: 300, unit: W, status: assumption, source: "As idle delta; GPU power dominates peak"}
+    throughput: {LC: 1.0, BATCH: 1.0}
+    cxl_slowdown:
+      LC: {value: 0.95, low: 0.85, high: 1.0, status: assumption, source: "CXL-attached host memory only on KV-offload / host paths; C3 measures this"}
+      BATCH: {value: 0.98, low: 0.9, high: 1.0, status: assumption, source: "Throughput-bound tier hides latency; C3 measures this"}
+    capex_usd: {value: 280000, low: 200000, high: 450000, unit: USD, status: assumption, source: "new_gpu minus DRAM/SSD purchase, plus CXL"}
+    design_life_years: {value: 6, low: 4, high: 7, unit: yr, status: assumption, source: "As new_gpu"}
+
+  old_gpu:
+    description: "Previous-generation A100-class 8-GPU host, cascaded from its first life (whole node reused)"
+    slots:
+      - {component: gpu_ampere, count: 8, initial_age: {value: 4, low: 2, high: 6, unit: yr, status: assumption, source: "Age at cascade"}}
+      - {component: cpu_std, count: 2, initial_age: 4}
+      - {component: dram_dimm, count: 32, initial_age: 4}
+      - {component: ssd, count: 8, initial_age: 4}
+    platform_initial_age: 4
+    platform_embodied_kg: {value: 1500, low: 800, high: 3000, unit: kgCO2e, status: assumption, source: "As new_gpu"}
+    power_idle_w: {value: 1800, low: 1000, high: 2500, unit: W, status: assumption, source: "Idle 8-GPU A100 host"}
+    power_peak_w: {value: 6500, low: 5000, high: 7000, unit: W, status: assumption, source: "Vendor max system power class for 8x A100 SXM systems; replace with C2 NVML measurements"}
+    throughput:
+      LC: {value: 0.30, low: 0.15, high: 0.5, status: assumption, source: "PLACEHOLDER until C2: A100 vs H100 under latency SLO"}
+      BATCH: {value: 0.45, low: 0.25, high: 0.7, status: assumption, source: "PLACEHOLDER until C2: A100 vs H100 throughput-bound; the cascade hypothesis is BATCH ratio > LC ratio"}
+    capex_usd: {value: 15000, low: 5000, high: 40000, unit: USD, status: assumption, source: "Refurbish / move cost; no new purchase"}
+    design_life_years: {value: 6, low: 4, high: 7, unit: yr, status: assumption, source: "As new_gpu"}

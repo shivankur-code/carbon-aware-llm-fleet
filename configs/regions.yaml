@@ -1,0 +1,9 @@
+# Annual-average grid carbon intensity (gCO2e/kWh) in the base year and a decarbonization rate.
+# Values are rounded, Ember / Electricity Maps-style annual averages -> status assumption until
+# pinned to a specific dataset release; the clean / mixed / dirty spread is what the study needs.
+base_year: 2026
+default_pue: {value: 1.2, low: 1.08, high: 1.5, status: assumption, source: "Modern hyperscale PUE range"}
+regions:
+  clean:   {ci_base: {value: 40,  low: 10,  high: 80,  unit: gCO2e/kWh, status: assumption, source: "Hydro/nuclear-heavy grid (e.g. Nordics, Quebec)"}, annual_decline: {value: 0.02, low: 0.0, high: 0.05, status: assumption, source: "Already near floor"}, floor: 10}
+  mixed:   {ci_base: {value: 250, low: 150, high: 350, unit: gCO2e/kWh, status: assumption, source: "Gas + renewables grid (e.g. California)"}, annual_decline: {value: 0.05, low: 0.02, high: 0.08, status: assumption, source: "Policy-driven decarbonization"}, floor: 20}
+  dirty:   {ci_base: {value: 650, low: 450, high: 800, unit: gCO2e/kWh, status: assumption, source: "Coal-heavy grid (e.g. India, parts of Asia)"}, annual_decline: {value: 0.03, low: 0.0, high: 0.06, status: assumption, source: "Slower decarbonization"}, floor: 50}

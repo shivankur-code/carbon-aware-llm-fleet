@@ -15,7 +15,15 @@ Real operators make **sequential** decisions over years: buy, reuse, cascade, re
 See **[PLAN.md](PLAN.md)** for the model, experiments (E0–E6) and data sources.
 
 ## Status
-Phase 0: plan and skeleton. Module docstrings describe what each will contain.
+**Phase 1 done**: cited, sweepable parameters (`configs/`), reliability models (Weibull/bathtub, minimal-repair and delayed-renewal), carbon accounting, 20 tests, node-level study and sensitivity tornado.
+Early (parameter-provisional) findings in [`paper/notes/P1_FINDINGS.md`](paper/notes/P1_FINDINGS.md): for GPU inference hosts, reuse savings are strongly grid-dependent, and the CXL-memory slowdown decides their sign.
+
+```bash
+python -m venv .venv && . .venv/bin/activate && pip install -e '.[dev]'
+pytest -q
+python experiments/p1_node_lifecycle.py
+python experiments/p1_tornado.py --region mixed
+```
 
 ## Headline (to be filled by experiments E0–E3)
 > Reuse cut lifecycle carbon by **X%** in a deterministic plan, but age-related failures and drain overhead eroded this to **Y%**; cascading older servers to batch inference restored **Z%**.
