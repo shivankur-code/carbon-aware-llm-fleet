@@ -15,12 +15,12 @@ Real operators make **sequential** decisions over years: buy, reuse, cascade, re
 See **[PLAN.md](PLAN.md)** for the model, experiments (E0–E6) and data sources.
 
 ## Status
-**Phases 1–3 done; GPU experiments ready to run** (`gpu/README.md`).
+**Phases 1–4 done; GPU experiments ready to run** (`gpu/README.md`); paper bundle in [`paper/`](paper/README.md).
 Provisional findings (placeholder GPU parameters) – [`P3_FINDINGS.md`](paper/notes/P3_FINDINGS.md):
 - Reuse survives reliability **if the plan accounts for it**: a reliability-aware plan keeps ~90% of the saving and degrades gracefully to zero as reused parts get worse (~8x); a failure-blind plan turns carbon-negative at ~2x the age-predicted failure rate.
 - Reuse savings for GPU inference hosts are strongly grid-dependent (≈5% clean, <1% mixed/dirty) because operational carbon dominates.
 - Cascading old GPUs saves carbon only if their batch work-per-joule nears the new GPU's (~0.9–1.0x); geographic cascading to clean grids adds ~50–70% on top. C2 measures this.
-- Linear failure headroom leaves SLO tail risk under correlated failures → chance-constrained headroom is next.
+- With chance-constrained headroom (P(short) ≤ 0.1% per region-quarter, correlated failures), reuse still saves – slightly *more* – because reused hardware is the cheapest way to hold idle reserve; the SLO itself costs 0.2–0.8% carbon ([`P4_FINDINGS.md`](paper/notes/P4_FINDINGS.md)).
 
 ```bash
 python -m venv .venv && . .venv/bin/activate && pip install -e '.[dev]'
@@ -29,6 +29,8 @@ python experiments/p1_node_lifecycle.py
 python experiments/p1_tornado.py --region mixed
 python experiments/p2_pipeline.py --region mixed --lp
 python experiments/p3_study.py all
+python experiments/p4_chance.py
+python paper/build_bundle.py
 ```
 
 GPU experiments: see [`gpu/README.md`](gpu/README.md) (`LABEL=H100-SXM bash gpu/run_all.sh`).

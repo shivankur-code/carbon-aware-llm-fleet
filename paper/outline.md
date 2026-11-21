@@ -17,8 +17,8 @@ chance-constrained SLO headroom validated by Monte Carlo. On a 6-year, three-gri
 planned for — a reliability-aware plan retains 91% of the saving and never does worse than no reuse,
 whereas a failure-blind plan turns carbon-negative once reused parts fail ~2.1x more than their age
 predicts; (iii) cascading old GPUs pays only above ~1.0x relative batch energy efficiency;
-and (iv) guaranteeing a 99.9% SLO under correlated failures costs up to n/a extra carbon while preserving
-n/a–n/a reuse savings. GPU measurements of serving efficiency per tier, KV-cache
+and (iv) guaranteeing a 99.9% SLO under correlated failures costs up to 0.8% extra carbon while preserving
+0.48%–0.81% reuse savings. GPU measurements of serving efficiency per tier, KV-cache
 offload to CXL-like memory, and KV-cache tolerance to DRAM bit errors ground the key parameters.
 
 ## Sections
