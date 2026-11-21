@@ -15,14 +15,15 @@ Real operators make **sequential** decisions over years: buy, reuse, cascade, re
 See **[PLAN.md](PLAN.md)** for the model, experiments (E0–E6) and data sources.
 
 ## Status
-**Phase 1 done**: cited, sweepable parameters (`configs/`), reliability models (Weibull/bathtub, minimal-repair and delayed-renewal), carbon accounting, 20 tests, node-level study and sensitivity tornado.
-Early (parameter-provisional) findings in [`paper/notes/P1_FINDINGS.md`](paper/notes/P1_FINDINGS.md): for GPU inference hosts, reuse savings are strongly grid-dependent, and the CXL-memory slowdown decides their sign.
+**Phase 2 done** – lifecycle MILP/LP with reuse pools, cascading, leasing and failure-aware headroom; E0–E3 pipeline producing X/Y/Z and a Figure 1 prototype.
+Provisional headline (pilot, placeholder GPU parameters): a reliability-aware plan keeps ~87% of reuse savings on every grid, while a failure-blind plan keeps 34% on a mixed grid and turns negative on a dirty one – see [`paper/notes/P2_FINDINGS.md`](paper/notes/P2_FINDINGS.md) and [`P1_FINDINGS.md`](paper/notes/P1_FINDINGS.md).
 
 ```bash
 python -m venv .venv && . .venv/bin/activate && pip install -e '.[dev]'
 pytest -q
 python experiments/p1_node_lifecycle.py
 python experiments/p1_tornado.py --region mixed
+python experiments/p2_pipeline.py --region mixed --lp
 ```
 
 ## Headline (to be filled by experiments E0–E3)

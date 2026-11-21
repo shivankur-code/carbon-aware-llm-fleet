@@ -1,0 +1,52 @@
+decision,key,t,value
+buy,"('new_gpu', 'LC', 'clean', 0)",0,3.0
+buy,"('new_gpu', 'LC', 'clean', 1)",1,1.0
+buy,"('new_gpu', 'LC', 'clean', 2)",2,1.0
+buy,"('new_gpu', 'LC', 'clean', 4)",4,1.0
+buy,"('new_gpu', 'LC', 'clean', 6)",6,1.0
+buy,"('new_gpu', 'LC', 'clean', 7)",7,1.0
+buy,"('new_gpu', 'LC', 'clean', 9)",9,1.0
+buy,"('new_gpu', 'LC', 'clean', 10)",10,1.0000000000000018
+buy,"('green_gpu', 'LC', 'clean', 0)",0,5.0
+buy,"('green_gpu', 'LC', 'clean', 1)",1,2.0
+buy,"('green_gpu', 'LC', 'clean', 2)",2,2.0
+buy,"('green_gpu', 'LC', 'clean', 3)",3,2.0
+buy,"('green_gpu', 'LC', 'clean', 4)",4,2.0
+buy,"('green_gpu', 'LC', 'clean', 5)",5,2.0
+buy,"('green_gpu', 'LC', 'clean', 6)",6,1.999999999999999
+buy,"('green_gpu', 'LC', 'clean', 7)",7,2.0
+buy,"('green_gpu', 'LC', 'clean', 8)",8,2.0
+buy,"('green_gpu', 'LC', 'clean', 9)",9,2.0
+buy,"('green_gpu', 'LC', 'clean', 10)",10,2.0
+buy,"('green_gpu', 'LC', 'clean', 11)",11,2.0
+buy,"('green_gpu', 'BATCH', 'clean', 0)",0,5.0
+ret,"('old_gpu', 'BATCH', 'clean', 0, 0)",0,24.0
+casc,"('green_gpu', 'clean', 'clean', 1, 1)",1,1.0
+casc,"('green_gpu', 'clean', 'clean', 2, 2)",2,2.0
+casc,"('green_gpu', 'clean', 'clean', 3, 3)",3,1.0
+casc,"('green_gpu', 'clean', 'clean', 3, 4)",4,1.0
+casc,"('green_gpu', 'clean', 'clean', 4, 6)",6,1.0
+casc,"('green_gpu', 'clean', 'clean', 5, 5)",5,1.0
+casc,"('green_gpu', 'clean', 'clean', 5, 6)",6,1.0
+casc,"('green_gpu', 'clean', 'clean', 5, 7)",7,1.0
+casc,"('green_gpu', 'clean', 'clean', 5, 8)",8,1.0
+casc,"('green_gpu', 'clean', 'clean', 5, 9)",9,1.0
+casc,"('green_gpu', 'clean', 'clean', 6, 9)",9,1.0
+casc,"('green_gpu', 'clean', 'clean', 6, 10)",10,1.0
+casc,"('green_gpu', 'clean', 'clean', 6, 11)",11,1.0
+casc,"('old_gpu', 'clean', 'clean', 0, 0)",0,24.0
+lease,"('LC', 'clean', 0)",0,0.5206273352492126
+lease,"('LC', 'clean', 2)",2,0.21161050882920307
+lease,"('LC', 'clean', 3)",3,0.4707331155175396
+lease,"('LC', 'clean', 5)",5,0.20334274253444648
+lease,"('LC', 'clean', 6)",6,0.4201009545087817
+lease,"('LC', 'clean', 8)",8,0.15302256796077707
+lease,"('LC', 'clean', 9)",9,0.36985405378214636
+lease,"('LC', 'clean', 11)",11,0.10301441129242102
+lease,"('BATCH', '*', 0)",0,0.10845608817536734
+lease,"('BATCH', '*', 1)",1,0.33026387373333854
+lease,"('BATCH', '*', 4)",4,0.2176441751453
+lease,"('BATCH', '*', 5)",5,0.4396024243413299
+lease,"('BATCH', '*', 7)",7,0.10533520849980738
+lease,"('BATCH', '*', 8)",8,0.32734193978330633
+lease,"('BATCH', '*', 11)",11,0.21528023241697936

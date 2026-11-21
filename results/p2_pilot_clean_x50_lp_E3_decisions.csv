@@ -1,0 +1,44 @@
+decision,key,t,value
+buy,"('new_gpu', 'LC', 'clean', 0)",0,189.7431422451744
+buy,"('new_gpu', 'LC', 'clean', 1)",1,30.00587174002168
+buy,"('new_gpu', 'LC', 'clean', 2)",2,29.990819170766436
+buy,"('new_gpu', 'LC', 'clean', 3)",3,29.986886593052738
+buy,"('new_gpu', 'LC', 'clean', 4)",4,29.986171513648745
+buy,"('new_gpu', 'LC', 'clean', 5)",5,29.98812696322031
+buy,"('new_gpu', 'LC', 'clean', 6)",6,29.99025114399057
+buy,"('new_gpu', 'LC', 'clean', 7)",7,29.992030619285174
+buy,"('new_gpu', 'LC', 'clean', 8)",8,29.99521878907764
+buy,"('new_gpu', 'LC', 'clean', 9)",9,29.997527293722637
+buy,"('new_gpu', 'LC', 'clean', 10)",10,29.99959556358161
+buy,"('new_gpu', 'LC', 'clean', 11)",11,30.003126791853006
+buy,"('green_gpu', 'LC', 'clean', 0)",0,243.03257970147666
+buy,"('green_gpu', 'LC', 'clean', 1)",1,100.0
+buy,"('green_gpu', 'LC', 'clean', 2)",2,100.0
+buy,"('green_gpu', 'LC', 'clean', 3)",3,100.0
+buy,"('green_gpu', 'LC', 'clean', 4)",4,100.0
+buy,"('green_gpu', 'LC', 'clean', 5)",5,100.0
+buy,"('green_gpu', 'LC', 'clean', 6)",6,100.0
+buy,"('green_gpu', 'LC', 'clean', 7)",7,100.0
+buy,"('green_gpu', 'LC', 'clean', 8)",8,100.0
+buy,"('green_gpu', 'LC', 'clean', 9)",9,100.0
+buy,"('green_gpu', 'LC', 'clean', 10)",10,100.0
+buy,"('green_gpu', 'LC', 'clean', 11)",11,100.0
+buy,"('green_gpu', 'BATCH', 'clean', 0)",0,256.96742029852334
+ret,"('old_gpu', 'BATCH', 'clean', 0, 0)",0,1200.0
+casc,"('green_gpu', 'clean', 'clean', 1, 1)",1,64.24987323605006
+casc,"('green_gpu', 'clean', 'clean', 2, 2)",2,64.25289469704069
+casc,"('green_gpu', 'clean', 'clean', 3, 3)",3,64.25574378468309
+casc,"('green_gpu', 'clean', 'clean', 3, 4)",4,13.984045063825482
+casc,"('green_gpu', 'clean', 'clean', 4, 4)",4,50.27406798370282
+casc,"('green_gpu', 'clean', 'clean', 4, 5)",5,64.2595517246583
+casc,"('green_gpu', 'clean', 'clean', 4, 6)",6,42.50469153002801
+casc,"('green_gpu', 'clean', 'clean', 4, 7)",7,6.767581322957966
+casc,"('green_gpu', 'clean', 'clean', 5, 6)",6,21.75640321151623
+casc,"('green_gpu', 'clean', 'clean', 5, 7)",7,57.49530846997199
+casc,"('green_gpu', 'clean', 'clean', 5, 8)",8,64.26396906383192
+casc,"('green_gpu', 'clean', 'clean', 5, 9)",9,35.29702998549025
+casc,"('green_gpu', 'clean', 'clean', 6, 9)",9,28.96844961321011
+casc,"('green_gpu', 'clean', 'clean', 6, 10)",10,64.26706904864156
+casc,"('green_gpu', 'clean', 'clean', 6, 11)",11,63.831942741410295
+casc,"('green_gpu', 'clean', 'clean', 7, 11)",11,0.4359009658681998
+casc,"('old_gpu', 'clean', 'clean', 0, 0)",0,1200.0

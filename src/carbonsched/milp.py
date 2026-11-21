@@ -92,7 +92,19 @@ class Scenario:
     pools: dict[str, dict] = field(default_factory=dict)   # component -> {initial, external_per_q, yield}
     buy_regions: list[str] | None = None
     integer: bool = True
+    scale: float = 1.0                           # multiplies demand, initial fleet and pools (fleet size)
     name: str = "scenario"
+
+    def __post_init__(self) -> None:
+        if self.scale != 1.0:
+            k = self.scale
+            mul = lambda d: [x * k for x in d] if isinstance(d, list) else d * k  # noqa: E731
+            lc = self.demand.get("LC", {})
+            self.demand = {"LC": {r: mul(v) for r, v in lc.items()}, "BATCH": mul(self.demand.get("BATCH", 0.0))}
+            self.initial_fleet = [dict(f, count=f["count"] * k) for f in self.initial_fleet]
+            self.pools = {c: {kk: (v * k if kk in ("initial", "external_per_q") else v) for kk, v in pool.items()}
+                          for c, pool in self.pools.items()}
+            self.scale = 1.0  # applied once
 
     @classmethod
     def from_yaml(cls, path: str | Path, **overrides) -> "Scenario":
@@ -117,6 +129,8 @@ class Solution:
     fleet: pd.DataFrame          # one row per (s, tier, r, a, t) with n>0
     decisions: pd.DataFrame      # buys, retires, cascades, leases, shortfalls per t
     values: dict[str, dict]      # raw decision values, for fixing in re-evaluation
+    solve_seconds: float = 0.0
+    time_limited: bool = False   # True if an integer solve hit the time limit (may not be optimal)
 
     @property
     def carbon_kg(self) -> float:
@@ -330,7 +344,11 @@ class LifecycleModel:
               fix: dict[str, dict] | None = None, time_limit: float = 300, gap: float = 1e-4) -> Solution:
         prob = self.build(objective, bounds, fix)
         solver = pulp.HiGHS(msg=False, timeLimit=time_limit, gapRel=gap)
+        import time as _time
+        t0 = _time.time()
         prob.solve(solver)
+        elapsed = _time.time() - t0
+        time_limited = self.sc.integer and elapsed >= 0.97 * time_limit
         status = pulp.LpStatus[prob.status]
         if status not in ("Optimal",):
             return Solution(status, math.nan, {}, pd.DataFrame(), pd.DataFrame(), {})
@@ -354,7 +372,8 @@ class LifecycleModel:
                     rows.append(dict(decision=name, key=k, t=k[-1], value=x))
         values = {g: {k: round(val(x)) if self.sc.integer else val(x) for k, x in v[g].items()}
                   for g in ("buy", "ret", "casc")}
-        return Solution(status, float(pulp.value(prob.objective)), totals, fleet, pd.DataFrame(rows), values)
+        return Solution(status, float(pulp.value(prob.objective)), totals, fleet, pd.DataFrame(rows), values,
+                        solve_seconds=elapsed, time_limited=time_limited)
 
 
 def pareto(model: LifecycleModel, minimize: str = "carbon", against: str = "cost", n_points: int = 8,
