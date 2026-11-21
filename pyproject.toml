@@ -1,0 +1,13 @@
+[project]
+name = "carbonsched"
+version = "0.0.1"
+description = "Grid-aware workload placement across mixed GreenSKU / baseline server fleets"
+requires-python = ">=3.10"
+dependencies = ["numpy", "pandas", "pyyaml", "matplotlib", "pulp"]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
