@@ -1,0 +1,9 @@
+2407.21783 | The Llama 3 Herd of Models | Grattafiori, Aaron;Dubey, Abhimanyu; | 2024/07/31
+2404.14527 | M\&#39;elange: Cost Efficient Large Language Model Serving by Exploiting GPU Heterogeneity | Griggs, Tyler;Liu, Xiaoxuan; | 2024/04/22
+2111.00364 | Sustainable AI: Environmental Implications, Challenges and Opportunities | Wu, Carole-Jean;Raghavendra, Ramya; | 2021/10/30
+2104.10350 | Carbon Emissions and Large Neural Network Training | Patterson, David;Gonzalez, Joseph; | 2021/04/21
+2211.02001 | Estimating the Carbon Footprint of BLOOM, a 176B Parameter Language Model | Luccioni, Alexandra Sasha;Viguier, Sylvain; | 2022/11/03
+2309.14393 | LLMCarbon: Modeling the end-to-end Carbon Footprint of Large Language Models | Faiz, Ahmad;Kaneda, Sotaro; | 2023/09/25
+2401.09670 | DistServe: Disaggregating Prefill and Decoding for Goodput-optimized Large Language Model Serving | Zhong, Yinmin;Liu, Shengyu; | 2024/01/18
+2403.20306 | Towards Greener LLMs: Bringing Energy-Efficiency to the Forefront of LLM Inference | Stojkovic, Jovan;Choukse, Esha; | 2024/03/29
+2102.11245 | Silent Data Corruptions at Scale | Dixit, Harish Dattatraya;Pendharkar, Sneha; | 2021/02/22

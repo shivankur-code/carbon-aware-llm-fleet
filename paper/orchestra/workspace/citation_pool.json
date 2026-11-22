@@ -1,0 +1,1937 @@
+{
+ "papers": [
+  {
+   "bibtex_key": "wang2024greensku",
+   "title": "Designing Cloud Servers for Lower Carbon",
+   "year": 2024,
+   "venue": "2024 ACM/IEEE 51st Annual International Symposium on Computer Architecture (ISCA)",
+   "authors": [
+    {
+     "name": "Jaylen Wang"
+    },
+    {
+     "name": "Daniel S. Berger"
+    },
+    {
+     "name": "Fiodar Kazhamiaka"
+    },
+    {
+     "name": "Celine Irvene"
+    },
+    {
+     "name": "Chaojie Zhang"
+    },
+    {
+     "name": "Esha Choukse"
+    },
+    {
+     "name": "Kali Frost"
+    },
+    {
+     "name": "Rodrigo Fonseca"
+    },
+    {
+     "name": "Brijesh Warrier"
+    },
+    {
+     "name": "Chetan Bansal"
+    },
+    {
+     "name": "Jonathan Stern"
+    },
+    {
+     "name": "Ricardo Bianchini"
+    },
+    {
+     "name": "Akshitha Sriraman"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1109/isca59077.2024.00041"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "intro"
+   ]
+  },
+  {
+   "bibtex_key": "gupta2022act",
+   "title": "ACT",
+   "year": 2022,
+   "venue": "Proceedings of the 49th Annual International Symposium on Computer Architecture",
+   "authors": [
+    {
+     "name": "Udit Gupta"
+    },
+    {
+     "name": "Mariam Elgamal"
+    },
+    {
+     "name": "Gage Hills"
+    },
+    {
+     "name": "Gu-Yeon Wei"
+    },
+    {
+     "name": "Hsien-Hsin S. Lee"
+    },
+    {
+     "name": "David Brooks"
+    },
+    {
+     "name": "Carole-Jean Wu"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/3470496.3527408"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "intro"
+   ]
+  },
+  {
+   "bibtex_key": "gupta2022chasing",
+   "title": "Chasing Carbon: The Elusive Environmental Footprint of Computing",
+   "year": 2022,
+   "venue": "IEEE Micro",
+   "authors": [
+    {
+     "name": "Udit Gupta"
+    },
+    {
+     "name": "Young Geun Kim"
+    },
+    {
+     "name": "Sylvia Lee"
+    },
+    {
+     "name": "Jordan Tse"
+    },
+    {
+     "name": "Hsien-Hsin S. Lee"
+    },
+    {
+     "name": "Gu-Yeon Wei"
+    },
+    {
+     "name": "David Brooks"
+    },
+    {
+     "name": "Carole-Jean Wu"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1109/mm.2022.3163226"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "intro"
+   ]
+  },
+  {
+   "bibtex_key": "strubell2019energy",
+   "title": "Energy and Policy Considerations for Deep Learning in NLP",
+   "year": 2019,
+   "venue": "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics",
+   "authors": [
+    {
+     "name": "Emma Strubell"
+    },
+    {
+     "name": "Ananya Ganesh"
+    },
+    {
+     "name": "Andrew McCallum"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.18653/v1/p19-1355"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "intro"
+   ]
+  },
+  {
+   "bibtex_key": "chien2023genai",
+   "title": "Reducing the Carbon Impact of Generative AI Inference (today and in 2035)",
+   "year": 2023,
+   "venue": "Proceedings of the 2nd Workshop on Sustainable Computer Systems",
+   "authors": [
+    {
+     "name": "Andrew A Chien"
+    },
+    {
+     "name": "Liuzixuan Lin"
+    },
+    {
+     "name": "Hai Nguyen"
+    },
+    {
+     "name": "Varsha Rao"
+    },
+    {
+     "name": "Tristan Sharma"
+    },
+    {
+     "name": "Rajini Wijayawardana"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/3604930.3605705"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "intro"
+   ]
+  },
+  {
+   "bibtex_key": "tannu2023ssd",
+   "title": "The Dirty Secret of SSDs: Embodied Carbon",
+   "year": 2023,
+   "venue": "ACM SIGEnergy Energy Informatics Review",
+   "authors": [
+    {
+     "name": "Swamit Tannu"
+    },
+    {
+     "name": "Prashant J. Nair"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/3630614.3630616"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[0]"
+   ]
+  },
+  {
+   "bibtex_key": "switzer2023junkyard",
+   "title": "Junkyard Computing: Repurposing Discarded Smartphones to Minimize Carbon",
+   "year": 2023,
+   "venue": "Proceedings of the 28th ACM International Conference on Architectural Support for Programming Languages and Operating Systems, Volume 2",
+   "authors": [
+    {
+     "name": "Jennifer Switzer"
+    },
+    {
+     "name": "Gabriel Marcano"
+    },
+    {
+     "name": "Ryan Kastner"
+    },
+    {
+     "name": "Pat Pannuto"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/3575693.3575710"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[0]"
+   ]
+  },
+  {
+   "bibtex_key": "zhang2024spatialembodied",
+   "title": "Spatial-Temporal Embodied Carbon Models for the Embodied Carbon Accounting of Computer Systems",
+   "year": 2024,
+   "venue": "The 15th ACM International Conference on Future and Sustainable Energy Systems",
+   "authors": [
+    {
+     "name": "Xiaoyang Zhang"
+    },
+    {
+     "name": "Yijie Yang"
+    },
+    {
+     "name": "Dan Wang"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/3632775.3661939"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[0]"
+   ]
+  },
+  {
+   "bibtex_key": "acun2023carbonexplorer",
+   "title": "Carbon Explorer: A Holistic Framework for Designing Carbon Aware Datacenters",
+   "year": 2023,
+   "venue": "Proceedings of the 28th ACM International Conference on Architectural Support for Programming Languages and Operating Systems, Volume 2",
+   "authors": [
+    {
+     "name": "Bilge Acun"
+    },
+    {
+     "name": "Benjamin Lee"
+    },
+    {
+     "name": "Fiodar Kazhamiaka"
+    },
+    {
+     "name": "Kiwan Maeng"
+    },
+    {
+     "name": "Udit Gupta"
+    },
+    {
+     "name": "Manoj Chakkaravarthy"
+    },
+    {
+     "name": "David Brooks"
+    },
+    {
+     "name": "Carole-Jean Wu"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/3575693.3575754"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[0]"
+   ]
+  },
+  {
+   "bibtex_key": "poonia2024circular",
+   "title": "A multi-objective fuzzy mathematical model for circular economy with leasing as a strategy",
+   "year": 2024,
+   "venue": "Management of Environmental Quality: An International Journal",
+   "authors": [
+    {
+     "name": "Vijaypal Poonia"
+    },
+    {
+     "name": "Rakhee Kulshrestha"
+    },
+    {
+     "name": "Kuldip Singh Sangwan"
+    },
+    {
+     "name": "Shivankur Sharma"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1108/meq-06-2023-0185"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[0]"
+   ]
+  },
+  {
+   "bibtex_key": "schroeder2009dram",
+   "title": "DRAM errors in the wild",
+   "year": 2009,
+   "venue": "Proceedings of the eleventh international joint conference on Measurement and modeling of computer systems",
+   "authors": [
+    {
+     "name": "Bianca Schroeder"
+    },
+    {
+     "name": "Eduardo Pinheiro"
+    },
+    {
+     "name": "Wolf-Dietrich Weber"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/1555349.1555372"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[1]"
+   ]
+  },
+  {
+   "bibtex_key": "sridharan2012dram",
+   "title": "A study of DRAM failures in the field",
+   "year": 2012,
+   "venue": "2012 International Conference for High Performance Computing, Networking, Storage and Analysis",
+   "authors": [
+    {
+     "name": "Vilas Sridharan"
+    },
+    {
+     "name": "Dean Liberty"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1109/sc.2012.13"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[1]"
+   ]
+  },
+  {
+   "bibtex_key": "sridharan2015memory",
+   "title": "Memory Errors in Modern Systems",
+   "year": 2015,
+   "venue": "ACM SIGPLAN Notices",
+   "authors": [
+    {
+     "name": "Vilas Sridharan"
+    },
+    {
+     "name": "Nathan DeBardeleben"
+    },
+    {
+     "name": "Sean Blanchard"
+    },
+    {
+     "name": "Kurt B. Ferreira"
+    },
+    {
+     "name": "Jon Stearley"
+    },
+    {
+     "name": "John Shalf"
+    },
+    {
+     "name": "Sudhanva Gurumurthi"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/2775054.2694348"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[1]"
+   ]
+  },
+  {
+   "bibtex_key": "meza2015dram",
+   "title": "Revisiting Memory Errors in Large-Scale Production Data Centers: Analysis and Modeling of New Trends from the Field",
+   "year": 2015,
+   "venue": "2015 45th Annual IEEE/IFIP International Conference on Dependable Systems and Networks",
+   "authors": [
+    {
+     "name": "Justin Meza"
+    },
+    {
+     "name": "Qiang Wu"
+    },
+    {
+     "name": "Sanjeev Kumar"
+    },
+    {
+     "name": "Onur Mutlu"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1109/dsn.2015.57"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[1]"
+   ]
+  },
+  {
+   "bibtex_key": "meza2015flash",
+   "title": "A Large-Scale Study of Flash Memory Failures in the Field",
+   "year": 2015,
+   "venue": "ACM SIGMETRICS Performance Evaluation Review",
+   "authors": [
+    {
+     "name": "Justin Meza"
+    },
+    {
+     "name": "Qiang Wu"
+    },
+    {
+     "name": "Sanjev Kumar"
+    },
+    {
+     "name": "Onur Mutlu"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/2796314.2745848"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[1]"
+   ]
+  },
+  {
+   "bibtex_key": "zivanovic2019dram",
+   "title": "DRAM errors in the field",
+   "year": 2019,
+   "venue": "Proceedings of the International Symposium on Memory Systems",
+   "authors": [
+    {
+     "name": "Darko Zivanovic"
+    },
+    {
+     "name": "Pouya Esmaili Dokht"
+    },
+    {
+     "name": "Sergi Mor\u00e9"
+    },
+    {
+     "name": "Javier Bartolome"
+    },
+    {
+     "name": "Paul M. Carpenter"
+    },
+    {
+     "name": "Petar Radojkovi\u0107"
+    },
+    {
+     "name": "Eduard Ayguad\u00e9"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/3357526.3357558"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[1]"
+   ]
+  },
+  {
+   "bibtex_key": "dramicdcs2024",
+   "title": "Unveiling DRAM Failures Across Different CPU Architectures in Large-Scale Datacenters",
+   "year": 2024,
+   "venue": "2024 IEEE 44th International Conference on Distributed Computing Systems (ICDCS)",
+   "authors": [
+    {
+     "name": "Qiao Yu"
+    },
+    {
+     "name": "Jorge Cardoso"
+    },
+    {
+     "name": "Odej Kao"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1109/icdcs60910.2024.00152"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[1]"
+   ]
+  },
+  {
+   "bibtex_key": "ssdsystor2016",
+   "title": "SSD Failures in Datacenters",
+   "year": 2016,
+   "venue": "Proceedings of the 9th ACM International on Systems and Storage Conference",
+   "authors": [
+    {
+     "name": "Iyswarya Narayanan"
+    },
+    {
+     "name": "Di Wang"
+    },
+    {
+     "name": "Myeongjae Jeon"
+    },
+    {
+     "name": "Bikash Sharma"
+    },
+    {
+     "name": "Laura Caulfield"
+    },
+    {
+     "name": "Anand Sivasubramaniam"
+    },
+    {
+     "name": "Ben Cutler"
+    },
+    {
+     "name": "Jie Liu"
+    },
+    {
+     "name": "Badriddine Khessib"
+    },
+    {
+     "name": "Kushagra Vaid"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/2928275.2928278"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[1]"
+   ]
+  },
+  {
+   "bibtex_key": "ssdnas2024",
+   "title": "SSD Failures in Large-Scale Data Centers: What? Why? and How?",
+   "year": 2024,
+   "venue": "2024 International Conference on Networking, Architecture and Storage (NAS)",
+   "authors": [
+    {
+     "name": "Wenyan You"
+    },
+    {
+     "name": "Jiayuan Dong"
+    },
+    {
+     "name": "Xingdi Feng"
+    },
+    {
+     "name": "Zeyun Chen"
+    },
+    {
+     "name": "Bo Mao"
+    },
+    {
+     "name": "Suzhen Wu"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1109/nas63802.2024.10781343"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[1]"
+   ]
+  },
+  {
+   "bibtex_key": "hochschild2021cores",
+   "title": "Cores that don't count",
+   "year": 2021,
+   "venue": "Proceedings of the Workshop on Hot Topics in Operating Systems",
+   "authors": [
+    {
+     "name": "Peter H. Hochschild"
+    },
+    {
+     "name": "Paul Turner"
+    },
+    {
+     "name": "Jeffrey C. Mogul"
+    },
+    {
+     "name": "Rama Govindaraju"
+    },
+    {
+     "name": "Parthasarathy Ranganathan"
+    },
+    {
+     "name": "David E. Culler"
+    },
+    {
+     "name": "Amin Vahdat"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/3458336.3465297"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[1]"
+   ]
+  },
+  {
+   "bibtex_key": "sdctaco2024",
+   "title": "Understanding Silent Data Corruption in Processors for Mitigating its Effects",
+   "year": 2024,
+   "venue": "ACM Transactions on Architecture and Code Optimization",
+   "authors": [
+    {
+     "name": "Shaobu Wang"
+    },
+    {
+     "name": "Guangyan Zhang"
+    },
+    {
+     "name": "Junyu Wei"
+    },
+    {
+     "name": "Yang Wang"
+    },
+    {
+     "name": "Jiesheng Wu"
+    },
+    {
+     "name": "Qingchao Luo"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/3690825"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[1]"
+   ]
+  },
+  {
+   "bibtex_key": "kokolis2025reliability",
+   "title": "Revisiting Reliability in Large-Scale Machine Learning Research Clusters",
+   "year": 2025,
+   "venue": "2025 IEEE International Symposium on High Performance Computer Architecture (HPCA)",
+   "authors": [
+    {
+     "name": "Apostolos Kokolis"
+    },
+    {
+     "name": "Michael Kuchnik"
+    },
+    {
+     "name": "John Hoffman"
+    },
+    {
+     "name": "Adithya Kumar"
+    },
+    {
+     "name": "Parth Malani"
+    },
+    {
+     "name": "Faye Ma"
+    },
+    {
+     "name": "Zachary DeVito"
+    },
+    {
+     "name": "Shubho Sengupta"
+    },
+    {
+     "name": "Kalyan Saladi"
+    },
+    {
+     "name": "Carole-Jean Wu"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1109/hpca61900.2025.00096"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[1]"
+   ]
+  },
+  {
+   "bibtex_key": "wiesner2021letswait",
+   "title": "Let's wait awhile",
+   "year": 2021,
+   "venue": "Proceedings of the 22nd International Middleware Conference",
+   "authors": [
+    {
+     "name": "Philipp Wiesner"
+    },
+    {
+     "name": "Ilja Behnke"
+    },
+    {
+     "name": "Dominik Scheinert"
+    },
+    {
+     "name": "Kordian Gontarska"
+    },
+    {
+     "name": "Lauritz Thamsen"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/3464298.3493399"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[2]"
+   ]
+  },
+  {
+   "bibtex_key": "radovanovic2023cics",
+   "title": "Carbon-Aware Computing for Datacenters",
+   "year": 2023,
+   "venue": "IEEE Transactions on Power Systems",
+   "authors": [
+    {
+     "name": "Ana Radovanovi\u0107"
+    },
+    {
+     "name": "Ross Koningstein"
+    },
+    {
+     "name": "Ian Schneider"
+    },
+    {
+     "name": "Bokan Chen"
+    },
+    {
+     "name": "Alexandre Duarte"
+    },
+    {
+     "name": "Binz Roy"
+    },
+    {
+     "name": "Diyue Xiao"
+    },
+    {
+     "name": "Maya Haridasan"
+    },
+    {
+     "name": "Patrick Hung"
+    },
+    {
+     "name": "Nick Care"
+    },
+    {
+     "name": "Saurav Talukdar"
+    },
+    {
+     "name": "Eric Mullen"
+    },
+    {
+     "name": "Kendal Smith"
+    },
+    {
+     "name": "MariEllen Cottman"
+    },
+    {
+     "name": "Walfredo Cirne"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1109/tpwrs.2022.3173250"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[2]"
+   ]
+  },
+  {
+   "bibtex_key": "hanafy2024carbonscaler",
+   "title": "CarbonScaler: Leveraging Cloud Workload Elasticity for Optimizing Carbon-Efficiency",
+   "year": 2024,
+   "venue": "ACM SIGMETRICS Performance Evaluation Review",
+   "authors": [
+    {
+     "name": "Walid A. Hanafy"
+    },
+    {
+     "name": "Qianlin Liang"
+    },
+    {
+     "name": "Noman Bashir"
+    },
+    {
+     "name": "David Irwin"
+    },
+    {
+     "name": "Prashant Shenoy"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/3673660.3655048"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[2]"
+   ]
+  },
+  {
+   "bibtex_key": "souza2023ecovisor",
+   "title": "Ecovisor: A Virtual Energy System for Carbon-Efficient Applications",
+   "year": 2023,
+   "venue": "Proceedings of the 28th ACM International Conference on Architectural Support for Programming Languages and Operating Systems, Volume 2",
+   "authors": [
+    {
+     "name": "Abel Souza"
+    },
+    {
+     "name": "Noman Bashir"
+    },
+    {
+     "name": "Jorge Murillo"
+    },
+    {
+     "name": "Walid Hanafy"
+    },
+    {
+     "name": "Qianlin Liang"
+    },
+    {
+     "name": "David Irwin"
+    },
+    {
+     "name": "Prashant Shenoy"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/3575693.3575709"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[2]"
+   ]
+  },
+  {
+   "bibtex_key": "sukprasert2024limitations",
+   "title": "On the Limitations of Carbon-Aware Temporal and Spatial Workload Shifting in the Cloud",
+   "year": 2024,
+   "venue": "Proceedings of the Nineteenth European Conference on Computer Systems",
+   "authors": [
+    {
+     "name": "Thanathorn Sukprasert"
+    },
+    {
+     "name": "Abel Souza"
+    },
+    {
+     "name": "Noman Bashir"
+    },
+    {
+     "name": "David Irwin"
+    },
+    {
+     "name": "Prashant Shenoy"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/3627703.3650079"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[2]"
+   ]
+  },
+  {
+   "bibtex_key": "li2024sprout",
+   "title": "Sprout: Green Generative AI with Carbon-Efficient LLM Inference",
+   "year": 2024,
+   "venue": "Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing",
+   "authors": [
+    {
+     "name": "Baolin Li"
+    },
+    {
+     "name": "Yankai Jiang"
+    },
+    {
+     "name": "Vijay Gadepally"
+    },
+    {
+     "name": "Devesh Tiwari"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.18653/v1/2024.emnlp-main.1215"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[2]"
+   ]
+  },
+  {
+   "bibtex_key": "kwon2023vllm",
+   "title": "Efficient Memory Management for Large Language Model Serving with PagedAttention",
+   "year": 2023,
+   "venue": "Proceedings of the 29th Symposium on Operating Systems Principles",
+   "authors": [
+    {
+     "name": "Woosuk Kwon"
+    },
+    {
+     "name": "Zhuohan Li"
+    },
+    {
+     "name": "Siyuan Zhuang"
+    },
+    {
+     "name": "Ying Sheng"
+    },
+    {
+     "name": "Lianmin Zheng"
+    },
+    {
+     "name": "Cody Hao Yu"
+    },
+    {
+     "name": "Joseph Gonzalez"
+    },
+    {
+     "name": "Hao Zhang"
+    },
+    {
+     "name": "Ion Stoica"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/3600006.3613165"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[3]"
+   ]
+  },
+  {
+   "bibtex_key": "patel2024splitwise",
+   "title": "Splitwise: Efficient Generative LLM Inference Using Phase Splitting",
+   "year": 2024,
+   "venue": "2024 ACM/IEEE 51st Annual International Symposium on Computer Architecture (ISCA)",
+   "authors": [
+    {
+     "name": "Pratyush Patel"
+    },
+    {
+     "name": "Esha Choukse"
+    },
+    {
+     "name": "Chaojie Zhang"
+    },
+    {
+     "name": "Aashaka Shah"
+    },
+    {
+     "name": "\u00cd\u00f1igo Goiri"
+    },
+    {
+     "name": "Saeed Maleki"
+    },
+    {
+     "name": "Ricardo Bianchini"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1109/isca59077.2024.00019"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[3]"
+   ]
+  },
+  {
+   "bibtex_key": "patel2024power",
+   "title": "Characterizing Power Management Opportunities for LLMs in the Cloud",
+   "year": 2024,
+   "venue": "Proceedings of the 29th ACM International Conference on Architectural Support for Programming Languages and Operating Systems, Volume 3",
+   "authors": [
+    {
+     "name": "Pratyush Patel"
+    },
+    {
+     "name": "Esha Choukse"
+    },
+    {
+     "name": "Chaojie Zhang"
+    },
+    {
+     "name": "\u00cd\u00f1igo Goiri"
+    },
+    {
+     "name": "Brijesh Warrier"
+    },
+    {
+     "name": "Nithish Mahalingam"
+    },
+    {
+     "name": "Ricardo Bianchini"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/3620666.3651329"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[3]"
+   ]
+  },
+  {
+   "bibtex_key": "stojkovic2025dynamollm",
+   "title": "DynamoLLM: Designing LLM Inference Clusters for Performance and Energy Efficiency",
+   "year": 2025,
+   "venue": "2025 IEEE International Symposium on High Performance Computer Architecture (HPCA)",
+   "authors": [
+    {
+     "name": "Jovan Stojkovic"
+    },
+    {
+     "name": "Chaojie Zhang"
+    },
+    {
+     "name": "\u00cd\u00f1igo Goiri"
+    },
+    {
+     "name": "Josep Torrellas"
+    },
+    {
+     "name": "Esha Choukse"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1109/hpca61900.2025.00102"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[3]"
+   ]
+  },
+  {
+   "bibtex_key": "li2023pond",
+   "title": "Pond: CXL-Based Memory Pooling Systems for Cloud Platforms",
+   "year": 2023,
+   "venue": "Proceedings of the 28th ACM International Conference on Architectural Support for Programming Languages and Operating Systems, Volume 2",
+   "authors": [
+    {
+     "name": "Huaicheng Li"
+    },
+    {
+     "name": "Daniel S. Berger"
+    },
+    {
+     "name": "Lisa Hsu"
+    },
+    {
+     "name": "Daniel Ernst"
+    },
+    {
+     "name": "Pantea Zardoshti"
+    },
+    {
+     "name": "Stanko Novakovic"
+    },
+    {
+     "name": "Monish Shah"
+    },
+    {
+     "name": "Samir Rajadnya"
+    },
+    {
+     "name": "Scott Lee"
+    },
+    {
+     "name": "Ishwar Agarwal"
+    },
+    {
+     "name": "Mark D. Hill"
+    },
+    {
+     "name": "Marcus Fontoura"
+    },
+    {
+     "name": "Ricardo Bianchini"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/3575693.3578835"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[3]"
+   ]
+  },
+  {
+   "bibtex_key": "maruf2023tpp",
+   "title": "TPP: Transparent Page Placement for CXL-Enabled Tiered-Memory",
+   "year": 2023,
+   "venue": "Proceedings of the 28th ACM International Conference on Architectural Support for Programming Languages and Operating Systems, Volume 3",
+   "authors": [
+    {
+     "name": "Hasan Al Maruf"
+    },
+    {
+     "name": "Hao Wang"
+    },
+    {
+     "name": "Abhishek Dhanotia"
+    },
+    {
+     "name": "Johannes Weiner"
+    },
+    {
+     "name": "Niket Agarwal"
+    },
+    {
+     "name": "Pallab Bhattacharya"
+    },
+    {
+     "name": "Chris Petersen"
+    },
+    {
+     "name": "Mosharaf Chowdhury"
+    },
+    {
+     "name": "Shobhit Kanaujia"
+    },
+    {
+     "name": "Prakash Chauhan"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/3582016.3582063"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[3]"
+   ]
+  },
+  {
+   "bibtex_key": "sun2023demystifying",
+   "title": "Demystifying CXL Memory with Genuine CXL-Ready Systems and Devices",
+   "year": 2023,
+   "venue": "56th Annual IEEE/ACM International Symposium on Microarchitecture",
+   "authors": [
+    {
+     "name": "Yan Sun"
+    },
+    {
+     "name": "Yifan Yuan"
+    },
+    {
+     "name": "Zeduo Yu"
+    },
+    {
+     "name": "Reese Kuper"
+    },
+    {
+     "name": "Chihun Song"
+    },
+    {
+     "name": "Jinghan Huang"
+    },
+    {
+     "name": "Houxiang Ji"
+    },
+    {
+     "name": "Siddharth Agarwal"
+    },
+    {
+     "name": "Jiaqi Lou"
+    },
+    {
+     "name": "Ipoom Jeong"
+    },
+    {
+     "name": "Ren Wang"
+    },
+    {
+     "name": "Jung Ho Ahn"
+    },
+    {
+     "name": "Tianyin Xu"
+    },
+    {
+     "name": "Nam Sung Kim"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/3613424.3614256"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[3]"
+   ]
+  },
+  {
+   "bibtex_key": "berger2023cxlpooling",
+   "title": "Memory Pooling With CXL",
+   "year": 2023,
+   "venue": "IEEE Micro",
+   "authors": [
+    {
+     "name": "Donghyun Gouk"
+    },
+    {
+     "name": "Miryeong Kwon"
+    },
+    {
+     "name": "Hanyeoreum Bae"
+    },
+    {
+     "name": "Sangwon Lee"
+    },
+    {
+     "name": "Myoungsoo Jung"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1109/mm.2023.3237491"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[3]"
+   ]
+  },
+  {
+   "bibtex_key": "caseagainstcxl2023",
+   "title": "A Case Against CXL Memory Pooling",
+   "year": 2023,
+   "venue": "Proceedings of the 22nd ACM Workshop on Hot Topics in Networks",
+   "authors": [
+    {
+     "name": "Philip Levis"
+    },
+    {
+     "name": "Kun Lin"
+    },
+    {
+     "name": "Amy Tai"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/3626111.3628195"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[3]"
+   ]
+  },
+  {
+   "bibtex_key": "rwcache2026",
+   "title": "R/W Cache: Read/Write-Aware KV-Cache Tiering for LLM Serving with CXL Memory",
+   "year": 2026,
+   "venue": "Proceedings of the ACM Turing Award Celebration Conference - China 2026",
+   "authors": [
+    {
+     "name": "Chenyu He"
+    },
+    {
+     "name": "Dingyu Yang"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/3833142.3833181"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[3]"
+   ]
+  },
+  {
+   "bibtex_key": "bitflipkv2026",
+   "title": "Bit-Flip Vulnerability of Shared KV-Cache Blocks in LLM Serving Systems",
+   "year": 2026,
+   "venue": "Proceedings of the 23rd International Conference on Security and Cryptography",
+   "authors": [
+    {
+     "name": "Yuji Yamamoto"
+    },
+    {
+     "name": "Satoshi Matsuura"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.5220/0015138800004103"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[3]"
+   ]
+  },
+  {
+   "bibtex_key": "li2017dnnerrors",
+   "title": "Understanding error propagation in deep learning neural network (DNN) accelerators and applications",
+   "year": 2017,
+   "venue": "Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis",
+   "authors": [
+    {
+     "name": "Guanpeng Li"
+    },
+    {
+     "name": "Siva Kumar Sastry Hari"
+    },
+    {
+     "name": "Michael Sullivan"
+    },
+    {
+     "name": "Timothy Tsai"
+    },
+    {
+     "name": "Karthik Pattabiraman"
+    },
+    {
+     "name": "Joel Emer"
+    },
+    {
+     "name": "Stephen W. Keckler"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1145/3126908.3126964"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[3]"
+   ]
+  },
+  {
+   "bibtex_key": "zadeh1965fuzzy",
+   "title": "Fuzzy sets",
+   "year": 1965,
+   "venue": "Information and Control",
+   "authors": [
+    {
+     "name": "L.A. Zadeh"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1016/s0019-9958(65)90241-x"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "method"
+   ]
+  },
+  {
+   "bibtex_key": "huangfu2018highs",
+   "title": "Parallelizing the dual revised simplex method",
+   "year": 2017,
+   "venue": "Mathematical Programming Computation",
+   "authors": [
+    {
+     "name": "Q. Huangfu"
+    },
+    {
+     "name": "J. A. J. Hall"
+    }
+   ],
+   "externalIds": {
+    "DOI": "10.1007/s12532-017-0130-5"
+   },
+   "verified_via": "crossref",
+   "match_score": 100,
+   "discovered_for": [
+    "method"
+   ]
+  },
+  {
+   "bibtex_key": "llama3",
+   "title": "The Llama 3 Herd of Models",
+   "year": 2024,
+   "venue": "arXiv",
+   "authors": [
+    {
+     "name": "Grattafiori, Aaron"
+    },
+    {
+     "name": "Dubey, Abhimanyu"
+    },
+    {
+     "name": "Jauhri, Abhinav"
+    },
+    {
+     "name": "Pandey, Abhinav"
+    },
+    {
+     "name": "Kadian, Abhishek"
+    },
+    {
+     "name": "Al-Dahle, Ahmad"
+    },
+    {
+     "name": "Letman, Aiesha"
+    },
+    {
+     "name": "Mathur, Akhil"
+    },
+    {
+     "name": "Schelten, Alan"
+    },
+    {
+     "name": "Vaughan, Alex"
+    },
+    {
+     "name": "Yang, Amy"
+    },
+    {
+     "name": "Fan, Angela"
+    },
+    {
+     "name": "Goyal, Anirudh"
+    },
+    {
+     "name": "Hartshorn, Anthony"
+    },
+    {
+     "name": "Yang, Aobo"
+    },
+    {
+     "name": "Mitra, Archi"
+    },
+    {
+     "name": "Sravankumar, Archie"
+    },
+    {
+     "name": "Korenev, Artem"
+    },
+    {
+     "name": "Hinsvark, Arthur"
+    },
+    {
+     "name": "Rao, Arun"
+    },
+    {
+     "name": "Zhang, Aston"
+    },
+    {
+     "name": "Rodriguez, Aurelien"
+    },
+    {
+     "name": "Gregerson, Austen"
+    },
+    {
+     "name": "Spataru, Ava"
+    },
+    {
+     "name": "Roziere, Baptiste"
+    },
+    {
+     "name": "Biron, Bethany"
+    },
+    {
+     "name": "Tang, Binh"
+    },
+    {
+     "name": "Chern, Bobbie"
+    },
+    {
+     "name": "Caucheteux, Charlotte"
+    },
+    {
+     "name": "Nayak, Chaya"
+    }
+   ],
+   "externalIds": {
+    "ArXiv": "2407.21783"
+   },
+   "verified_via": "arxiv.org",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[1]"
+   ]
+  },
+  {
+   "bibtex_key": "griggs2024melange",
+   "title": "M{\\'e}lange: Cost Efficient Large Language Model Serving by Exploiting GPU Heterogeneity",
+   "year": 2024,
+   "venue": "arXiv",
+   "authors": [
+    {
+     "name": "Griggs, Tyler"
+    },
+    {
+     "name": "Liu, Xiaoxuan"
+    },
+    {
+     "name": "Yu, Jiaxiang"
+    },
+    {
+     "name": "Kim, Doyoung"
+    },
+    {
+     "name": "Chiang, Wei-Lin"
+    },
+    {
+     "name": "Cheung, Alvin"
+    },
+    {
+     "name": "Stoica, Ion"
+    }
+   ],
+   "externalIds": {
+    "ArXiv": "2404.14527"
+   },
+   "verified_via": "arxiv.org",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[3]"
+   ]
+  },
+  {
+   "bibtex_key": "wu2022sustainableai",
+   "title": "Sustainable AI: Environmental Implications, Challenges and Opportunities",
+   "year": 2021,
+   "venue": "arXiv",
+   "authors": [
+    {
+     "name": "Wu, Carole-Jean"
+    },
+    {
+     "name": "Raghavendra, Ramya"
+    },
+    {
+     "name": "Gupta, Udit"
+    },
+    {
+     "name": "Acun, Bilge"
+    },
+    {
+     "name": "Ardalani, Newsha"
+    },
+    {
+     "name": "Maeng, Kiwan"
+    },
+    {
+     "name": "Chang, Gloria"
+    },
+    {
+     "name": "Behram, Fiona Aga"
+    },
+    {
+     "name": "Huang, James"
+    },
+    {
+     "name": "Bai, Charles"
+    },
+    {
+     "name": "Gschwind, Michael"
+    },
+    {
+     "name": "Gupta, Anurag"
+    },
+    {
+     "name": "Ott, Myle"
+    },
+    {
+     "name": "Melnikov, Anastasia"
+    },
+    {
+     "name": "Candido, Salvatore"
+    },
+    {
+     "name": "Brooks, David"
+    },
+    {
+     "name": "Chauhan, Geeta"
+    },
+    {
+     "name": "Lee, Benjamin"
+    },
+    {
+     "name": "Lee, Hsien-Hsin S."
+    },
+    {
+     "name": "Akyildiz, Bugra"
+    },
+    {
+     "name": "Balandat, Maximilian"
+    },
+    {
+     "name": "Spisak, Joe"
+    },
+    {
+     "name": "Jain, Ravi"
+    },
+    {
+     "name": "Rabbat, Mike"
+    },
+    {
+     "name": "Hazelwood, Kim"
+    }
+   ],
+   "externalIds": {
+    "ArXiv": "2111.00364"
+   },
+   "verified_via": "arxiv.org",
+   "match_score": 100,
+   "discovered_for": [
+    "intro"
+   ]
+  },
+  {
+   "bibtex_key": "patterson2021carbon",
+   "title": "Carbon Emissions and Large Neural Network Training",
+   "year": 2021,
+   "venue": "arXiv",
+   "authors": [
+    {
+     "name": "Patterson, David"
+    },
+    {
+     "name": "Gonzalez, Joseph"
+    },
+    {
+     "name": "Le, Quoc"
+    },
+    {
+     "name": "Liang, Chen"
+    },
+    {
+     "name": "Munguia, Lluis-Miquel"
+    },
+    {
+     "name": "Rothchild, Daniel"
+    },
+    {
+     "name": "So, David"
+    },
+    {
+     "name": "Texier, Maud"
+    },
+    {
+     "name": "Dean, Jeff"
+    }
+   ],
+   "externalIds": {
+    "ArXiv": "2104.10350"
+   },
+   "verified_via": "arxiv.org",
+   "match_score": 100,
+   "discovered_for": [
+    "intro"
+   ]
+  },
+  {
+   "bibtex_key": "luccioni2023bloom",
+   "title": "Estimating the Carbon Footprint of BLOOM, a 176B Parameter Language Model",
+   "year": 2022,
+   "venue": "arXiv",
+   "authors": [
+    {
+     "name": "Luccioni, Alexandra Sasha"
+    },
+    {
+     "name": "Viguier, Sylvain"
+    },
+    {
+     "name": "Ligozat, Anne-Laure"
+    }
+   ],
+   "externalIds": {
+    "ArXiv": "2211.02001"
+   },
+   "verified_via": "arxiv.org",
+   "match_score": 100,
+   "discovered_for": [
+    "intro"
+   ]
+  },
+  {
+   "bibtex_key": "faiz2024llmcarbon",
+   "title": "LLMCarbon: Modeling the end-to-end Carbon Footprint of Large Language Models",
+   "year": 2023,
+   "venue": "arXiv",
+   "authors": [
+    {
+     "name": "Faiz, Ahmad"
+    },
+    {
+     "name": "Kaneda, Sotaro"
+    },
+    {
+     "name": "Wang, Ruhan"
+    },
+    {
+     "name": "Osi, Rita"
+    },
+    {
+     "name": "Sharma, Prateek"
+    },
+    {
+     "name": "Chen, Fan"
+    },
+    {
+     "name": "Jiang, Lei"
+    }
+   ],
+   "externalIds": {
+    "ArXiv": "2309.14393"
+   },
+   "verified_via": "arxiv.org",
+   "match_score": 100,
+   "discovered_for": [
+    "intro"
+   ]
+  },
+  {
+   "bibtex_key": "zhong2024distserve",
+   "title": "DistServe: Disaggregating Prefill and Decoding for Goodput-optimized Large Language Model Serving",
+   "year": 2024,
+   "venue": "arXiv",
+   "authors": [
+    {
+     "name": "Zhong, Yinmin"
+    },
+    {
+     "name": "Liu, Shengyu"
+    },
+    {
+     "name": "Chen, Junda"
+    },
+    {
+     "name": "Hu, Jianbo"
+    },
+    {
+     "name": "Zhu, Yibo"
+    },
+    {
+     "name": "Liu, Xuanzhe"
+    },
+    {
+     "name": "Jin, Xin"
+    },
+    {
+     "name": "Zhang, Hao"
+    }
+   ],
+   "externalIds": {
+    "ArXiv": "2401.09670"
+   },
+   "verified_via": "arxiv.org",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[3]"
+   ]
+  },
+  {
+   "bibtex_key": "stojkovic2024greener",
+   "title": "Towards Greener LLMs: Bringing Energy-Efficiency to the Forefront of LLM Inference",
+   "year": 2024,
+   "venue": "arXiv",
+   "authors": [
+    {
+     "name": "Stojkovic, Jovan"
+    },
+    {
+     "name": "Choukse, Esha"
+    },
+    {
+     "name": "Zhang, Chaojie"
+    },
+    {
+     "name": "Goiri, Inigo"
+    },
+    {
+     "name": "Torrellas, Josep"
+    }
+   ],
+   "externalIds": {
+    "ArXiv": "2403.20306"
+   },
+   "verified_via": "arxiv.org",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[3]"
+   ]
+  },
+  {
+   "bibtex_key": "dixit2021sdc",
+   "title": "Silent Data Corruptions at Scale",
+   "year": 2021,
+   "venue": "arXiv",
+   "authors": [
+    {
+     "name": "Dixit, Harish Dattatraya"
+    },
+    {
+     "name": "Pendharkar, Sneha"
+    },
+    {
+     "name": "Beadon, Matt"
+    },
+    {
+     "name": "Mason, Chris"
+    },
+    {
+     "name": "Chakravarthy, Tejasvi"
+    },
+    {
+     "name": "Muthiah, Bharath"
+    },
+    {
+     "name": "Sankar, Sriram"
+    }
+   ],
+   "externalIds": {
+    "ArXiv": "2102.11245"
+   },
+   "verified_via": "arxiv.org",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[1]"
+   ]
+  },
+  {
+   "bibtex_key": "schroeder2016flash",
+   "title": "Flash Reliability in Production: The Expected and the Unexpected",
+   "year": 2016,
+   "venue": "FAST",
+   "authors": [
+    {
+     "name": "Bianca Schroeder"
+    },
+    {
+     "name": "Raghav Lagisetty"
+    },
+    {
+     "name": "Arif Merchant"
+    }
+   ],
+   "externalIds": {},
+   "verified_via": "web_search (usenix.org)",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[1]"
+   ]
+  },
+  {
+   "bibtex_key": "pinheiro2007disk",
+   "title": "Failure Trends in a Large Disk Drive Population",
+   "year": 2007,
+   "venue": "FAST",
+   "authors": [
+    {
+     "name": "Eduardo Pinheiro"
+    },
+    {
+     "name": "Wolf-Dietrich Weber"
+    },
+    {
+     "name": "Luiz Andre Barroso"
+    }
+   ],
+   "externalIds": {},
+   "verified_via": "web_search (usenix.org)",
+   "match_score": 100,
+   "discovered_for": [
+    "related_work[1]"
+   ]
+  }
+ ],
+ "cutoff_date": "2026-10-21",
+ "min_cite_paper_count": 47,
+ "verification_note": "Semantic Scholar was rate-limited and OpenAlex budget-exhausted from this network; papers were verified against Crossref DOI metadata, arxiv.org pages, or USENIX pages via web search."
+}
