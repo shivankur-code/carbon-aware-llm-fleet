@@ -1,0 +1,29 @@
+{
+ "overall_score": 66.3,
+ "axis_scores": {
+  "scientific_depth": {
+   "score": 66,
+   "justification": "The reserve-composition experiment (Table 3) is a real test of the SLO mechanism. The body now frames the result honestly: 'the planner did not preferentially use them as reserve' and 'should be read as \"reuse does not lose under a guarantee\" rather than as a strong gain'. By-construction results are acknowledged: 'Y >= 0 holds by construction; the informative result is how fast Y decays'. The Abstract and Introduction still give a causal attribution ('because about a fifth of the reuse plan's reserve sat on hosts with lower embodied carbon and idle power') that the table only half supports. Half of the 214 tCO2e gap is operational (115 t). That is too large to come from a 50 W idle-power delta on 21.7% of the reserve, which is roughly 15 t. It is more consistent with the reuse plan adding 3.6% less reserve capacity (1,272.6 vs 1,320.3 node-equivalents), which the paper does not explain. The 0.037 pp effect is still a single run with no seed-to-seed variation."
+  },
+  "technical_execution": {
+   "score": 55,
+   "justification": "Appendix Table 5 now supplies most of the settings missing in the previous version: utilization cap, beta_LC (including 'beta_LC = 1 in the chance-constrained study', which resolves the double-headroom concern), power, platform embodied carbon, maximum ages, lease and shipping carbon, all cost parameters, and 'illustrative, not fitted' correlation levels. The quarter-to-year age conversion is now stated. However, the entry age of reused parts a_0 is never given a value. It is 5 years for green_gpu DIMMs and SSDs and 4 years for old_gpu parts in the log, and it is the parameter that defines 'reused parts are old'. Initial-fleet ages (6/8/4 quarters), per-repair logistics carbon, and whether the 0.9 screening yield applies only to locally harvested parts are also missing. Because a_0 is a key implementation detail, the cap of 55 applies. Without that omission this axis would score in the low 60s."
+  },
+  "logical_flow": {
+   "score": 74,
+   "justification": "The three-part answer still maps cleanly from the Introduction through Sections 5.2-5.4 to the Conclusion. The new mechanism paragraph ('To identify the mechanism, Table 3 decomposes the strictest setting') follows naturally from the SLO result. The design implications now match the evidence ('Reserve capacity is a special case: its carbon is mostly idle electricity'). Section 5.5 still crams four unrelated studies into one paragraph. Two of its supporting items (Table 6 and Figure 7) are now in an appendix after the references, so the reader has to leave the main text to check robustness claims. Float placement leaves about a third of page 11 blank."
+  },
+  "writing_clarity": {
+   "score": 70,
+   "justification": "The H/Delta notation clash is fixed ('availability loss l_sa = d_sa/Delta (with Delta hours per quarter)'). The age unit is stated, and CXL, PUE, NUMA and SECDED are expanded. Several statements remain imprecise. The Abstract says that 'on mixed and dirty grids even the sign depends on the placeholder CXL slowdown', but the fleet-level savings quoted in that sentence cannot be negative by construction, and only the node-level saving (mixed grid only) was shown to flip sign. The beta_LC=1 baseline of the chance-constrained study appears only in a parenthetical and in Table 5, not in Section 3.3. 'Anywhere between nothing and about three times the nominal value' understates 2.638/0.775 = 3.4x and is informal."
+  },
+  "evidence_presentation": {
+   "score": 66,
+   "justification": "Figures were re-rendered with paper-level labels, and the Figure 2 caption now matches the bars ('several parameters can flip the sign of the small base saving'). Table 4 and Figure 6 now contain the full twelve-row grid. Remaining mismatches are as follows. The Figure 3 caption says the right panel shows 'Y plus cascading', but the right-panel legend shows only X, failure-blind and Y. Table 3 omits the spares-plus-logistics column, so its components do not sum to 'Added carbon' (3,356 + 575 = 3,931, not 4,020). The text reports Y rising 'from 0.480% to 0.500%' at m=3 while Table 4 gives 0.499. No Monte Carlo or seed confidence intervals accompany any SLO result."
+  },
+  "academic_style": {
+   "score": 73,
+   "justification": "The tone is professional and calibrated. Internal project labels and config keys are gone from the figures, and placeholder status and parameter provenance are now stated accurately in the Abstract ('whose parameters are assumed and swept (only the GPU failure rate is taken from published data ...)'). Terminology is more consistent, though 'CXL slowdown' and 'CXL throughput multiplier' still alternate. A few phrases are informal for a systems venue ('anywhere between nothing and about three times'). Results evidence placed after the references may conflict with venue expectations, since the guidelines do not mention appendices."
+  }
+ }
+}

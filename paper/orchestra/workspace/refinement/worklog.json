@@ -1,10 +1,41 @@
 {
-  "gate_a_failure_modes": {
-    "hallucinated_citation": "none (53/53 verified via Crossref / arxiv.org / USENIX)",
-    "hallucinated_result": "none (all numbers traced to experimental_log.md; 15 claim-gate flags are rounding/unit artefacts)",
-    "methodology_fabrication": "none (all described methods exist in src/carbonsched)",
-    "bug_reframed_as_insight": "SUSPECTED: 'reuse saving grows under SLO because reused hosts are the cheapest idle reserve' - reuse share of node-quarters stayed ~0.30; supported mechanism is weaker (part of added reserve sits on low-embodied hosts). Flagged for refinement.",
-    "frame_lock": "none"
+ "gate_a_failure_modes": {
+  "hallucinated_citation": "none (53/53 verified via Crossref / arxiv.org / USENIX)",
+  "hallucinated_result": "none (all numbers traced to experimental_log.md; 15 claim-gate flags are rounding/unit artefacts)",
+  "methodology_fabrication": "none (all described methods exist in src/carbonsched)",
+  "bug_reframed_as_insight": "SUSPECTED: 'reuse saving grows under SLO because reused hosts are the cheapest idle reserve' - reuse share of node-quarters stayed ~0.30; supported mechanism is weaker (part of added reserve sits on low-embodied hosts). Flagged for refinement.",
+  "frame_lock": "none"
+ },
+ "iterations": [
+  {
+   "iter": 0,
+   "score": {
+    "overall": 61.0,
+    "band": "Major Revision"
+   },
+   "weaknesses": [
+    "Unsupported causal claim in the Abstract, Introduction (3) and Conclusion: 'the reuse saving rose to 0.812% because reused hosts are the cheapest idle reserve' / 'because idle reserve is where low-embodied reused hosts are cheapest'. The log shows only that the reuse plan's SLO price was slightly lower (0.785 vs 0.823%). It gives no reserve composition by SKU. old_gpu, not green_gpu, has the lowest embodied carbon (0 vs 2,860 kgCO2e). green_gpu also has 50 W lower idle power, which is an alternative explanation. The paper's own headroom sweep cuts against the claim: the reuse-host share fell from 0.303 to 0.280 as LC headroom rose from 1 to 10, while Y moved only 0.775 to 0.777%. The effect is 0.037 pp, with no Monte Carlo confidence intervals and a reserve-loop tolerance (0.05% of demand, 1.05 overshoot) that could produce differences of similar size. Either report reserve composition and CIs, or restate this as an observed small difference without a mechanism.",
+    "Misreported and overstated SLO validation (Section 5.4): 'Every plan met its target in independent validation (worst region-quarter 0.96-1.07% for a 1% target and 0.10-0.13% for 0.1%)'. The log gives 0.96-1.06% and 0.10-0.12%, and only for reuse plans; no-reuse validation is not logged. Several validated values exceed their targets (1.06% > 1%, 0.12% > 0.1%), so 'met' needs a statement about sampling error (about \u00b10.014 pp at 50,000 samples for 0.1%).",
+    "Figure/text mismatches. The Figure 2 caption claims the CXL multiplier 'alone determines the sign of the saving', but the plotted bars flip sign for the peak-power delta (-2.30), SSD embodied carbon (-2.49), grid CI (-0.41), idle-power delta (-0.41) and others. Figure 6 plots m=3, epsilon=0.01 points at k=2 and k=0.5 that are neither in Table 3 nor in the log. Table 3 silently drops two logged rows. Y_expected for m=3 is given as 0.480%, while the multiplier sweep in Figure 4 gives 0.475% at m=3, and this is not reconciled. Figure 3's header says 'naive 0.19%' and 'Z=+0.00pp' against 0.195% and 0.005 pp in the text. Figures 3, 5 and 6 contain internal labels ('C2/C3 measurements', 'A100-class vs H100-class', raw config keys) that are undefined in the paper.",
+    "Over-claiming given the placeholder GPU parameters. The Abstract headlines mixed- and dirty-grid fleet savings (0.68%, 0.10%) and an SLO result without saying that their sign and size depend on the placeholder CXL multiplier, whose range alone swings the node-level saving from -10.72% to +5.88%. The fuzzy alpha=0 interval already reaches Y=0.000. 'Public and swept parameters' overstates provenance, since only the GPU AFR is public (Section 4.1 itself says 'All other parameters are engineering assumptions'). The design implication that reuse hosts 'belong ... in reserve' rests on the unsupported mechanism above. Statements that the reliability-aware plan 'never chose a plan worse than no reuse' and that the fuzzy 'lower bound never fell below zero' are guaranteed by construction, because no reuse is feasible, and should not be presented as evidence of robustness.",
+    "Key implementation details are missing from Section 4: the leased-capacity carbon premium (1.3x), the shipping carbon (300 kgCO2e per node), the default utilization cap (0.8) and LC headroom multiplier (3), green_gpu and old_gpu power, platform embodied carbon, design life and maximum age, initial-fleet ages, previous-generation GPU Weibull shape, all cost parameters for the Pareto front, and how the correlation dispersion k was chosen. There is also a notation clash (H for both cumulative hazard and hours per quarter), an age-unit inconsistency in the AFR calibration, and unexpanded acronyms (CXL, PUE, SECDED, NUMA)."
+   ],
+   "decision": "baseline"
   },
-  "iterations": []
+  {
+   "iter": 1,
+   "score": {
+    "overall": 66.3,
+    "band": "Minor Revision"
+   },
+   "weaknesses": [
+    "The Abstract and Introduction still overstate the SLO mechanism: 'the reuse saving rose slightly, to 0.812%, because about a fifth of the reuse plan's reserve sat on hosts with lower embodied carbon and idle power'. Table 3 shows that half of the 214 tCO2e gap is operational (115 t). A 50 W idle-power delta on 21.7% of the reserve explains only about 15 t of that. The rest is more plausibly explained by the reuse plan adding 3.6% less reserve capacity (1,272.6 vs 1,320.3 node-equivalents; 30.6 sit on previous-generation hosts with higher idle power per unit capacity), which the paper does not explain. Section 5.4's 'reflecting the lower embodied carbon and slightly lower idle power of reuse-based hosts' repeats the overreach. The effect (0.037 pp) comes from a single decomposition at one setting with no seed variation. Attribute only the embodied half, explain the capacity difference, or soften the Abstract to 'the reuse plan's reserve emitted 5% less'.",
+    "The entry age of reused parts, a_0, is never given a value, although it defines the central premise that reused parts are old. The log gives 5 years for green_gpu DIMMs and SSDs and 4 years for old_gpu parts. Initial-fleet ages (6/8/4 quarters for current-generation hosts), logistics carbon per repair (5/2/1 kgCO2e) and the scope of the 0.9 screening yield (locally harvested parts only) are also missing from Section 4 and Table 5.",
+    "Remaining figure, table and text mismatches. The Figure 3 caption describes 'Y plus cascading' in the right panel, but that panel plots only X, failure-blind and Y. Table 3 drops the spares-plus-logistics column (89 and 97 tCO2e in the log), so its columns do not sum to 'Added carbon'. Section 5.4 says Y rose 'from 0.480% to 0.500%' at m=3, while Table 4 lists 0.499. Figure 2 shows sensitivity bars for parameters (platform embodied carbon, SSD Weibull shape, new-host peak power, PUE) whose ranges and values are not given anywhere in the paper.",
+    "Some statements still go beyond the evidence. The Abstract's 'on mixed and dirty grids even the sign depends on the placeholder CXL slowdown' is attached to fleet savings that cannot be negative by construction, and node-level sign sensitivity was shown only for the mixed grid. The new design implication 'powering reserve hosts down when not needed matters more than which SKU holds it' is not evaluated: the model has no power-down state, and powered-down hosts may not count as instantaneous LC capacity under the SLO. 'At the target within sampling error' is generous for 0.13% against a 0.1% target, which is about 2 standard errors above it.",
+    "Presentation and structure. The accounting-convention table and the cost-carbon front, both used as Results evidence, now sit in an appendix after the references, which the venue guidelines do not provide for. About a third of page 11 is blank because of float placement. The beta_LC=1 baseline of the chance-constrained study is disclosed only parenthetically and should appear in Section 3.3 next to Eq. 5. No confidence intervals are reported for any Monte Carlo-derived quantity."
+   ],
+   "decision": "ACCEPT_IMPROVED (61.0 -> 66.3)"
+  }
+ ]
 }
