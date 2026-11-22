@@ -26,7 +26,7 @@ In the sensitivity sweep (mixed grid, LC tier), the largest swing (16.6 percenta
 → The SSD embodied-carbon value is the first literature number to verify.
 
 ## F3. At node level, failures erode savings only modestly
-Counting age-dependent failures, spare parts, logistics and repair-drain downtime takes **0.1–2.2 percentage points** off the reuse saving. Most failures are GPU failures, which are the same on both node types: about 10.6 failures per node in 6 years for a new node versus 15.2 for a GreenSKU node. The extra failures come from the aged DIMMs and SSDs.
+Counting age-dependent failures, spare parts, logistics and repair-drain downtime takes **0.1–2.2 percentage points** off the reuse saving. Over 6 years a new node sees 4.36 GPU, 5.43 DIMM and 0.81 SSD failures (359 drained hours); a GreenSKU node sees 4.36 GPU, 9.67 DIMM and 1.13 SSD failures (394 h). The aged DIMMs nearly double DIMM failures, but each DIMM swap drains only 8 h, while GPU failures, common to both nodes and draining 72 h each, dominate lost capacity. *(Corrected: an earlier version said most failures were GPU failures; by count DIMMs dominate, by drained hours GPUs do.)*
 → If reliability erodes savings substantially, the cost will come from **fleet-level effects** that the optimizer adds:
 - N+k headroom in the LC tier;
 - correlated failures;

@@ -1,0 +1,292 @@
+{
+  "plotting_plan": [
+    {
+      "figure_id": "fig_lifecycle_model_overview",
+      "title": "Reliability-aware lifecycle model overview",
+      "plot_type": "diagram",
+      "data_source": "idea.md",
+      "objective": "Visual summary (Block Diagram) of the cohort-by-age lifecycle model: inputs (SKUs with component slots, Weibull failure models precomputed into per-age expected failures and drains, regional grid carbon trajectories, demand per tier, reused-part pools) feeding the multi-period LP with decisions buy / keep / cascade (in-place and geographic) / lease / retire, an outer Monte Carlo chance-constraint loop that adds per-region-quarter LC reserve, and outputs X / Y / Z savings and SLO price.",
+      "aspect_ratio": "16:9"
+    },
+    {
+      "figure_id": "fig_fleet_carbon_ladder_by_grid",
+      "title": "Fleet lifecycle carbon ladder and savings by grid",
+      "plot_type": "plot",
+      "data_source": "experimental_log.md",
+      "objective": "Visual summary (Grouped Bar Chart, two panels) of carbon change by component for the failure-blind reuse plan, reliability-aware plan and cascading variants relative to the no-reuse fleet, and of X, Y_naive, Y and Y+Z for clean, mixed and dirty single-grid fleets; reuse pre-existing figure fig1_fleet.png.",
+      "aspect_ratio": "21:9"
+    },
+    {
+      "figure_id": "fig_reliability_breakeven_reused_parts",
+      "title": "Reuse saving versus reused-part failure multiplier",
+      "plot_type": "plot",
+      "data_source": "experimental_log.md",
+      "objective": "Visual summary (Line Chart, log-x) of X, Y and Y_naive versus the reused-part failure-rate multiplier from 0.5 to 20, showing graceful degradation of the reliability-aware plan to zero at about 8 and the failure-blind plan crossing zero near 2.1; reuse pre-existing figure p3_reliab.png.",
+      "aspect_ratio": "3:2"
+    },
+    {
+      "figure_id": "fig_cascade_breakeven_energy_efficiency",
+      "title": "Cascading saving versus old/new GPU batch work per joule",
+      "plot_type": "plot",
+      "data_source": "experimental_log.md",
+      "objective": "Visual summary (Line Chart) of Z and Zg versus old/new BATCH work per joule from 0.47 to 1.87, showing break-even near energy parity; reuse pre-existing figure p3_cascade.png.",
+      "aspect_ratio": "3:2"
+    },
+    {
+      "figure_id": "fig_chance_constrained_slo",
+      "title": "Reuse saving and carbon price under guaranteed SLOs",
+      "plot_type": "plot",
+      "data_source": "experimental_log.md",
+      "objective": "Visual summary (Line Chart, two panels) of Y under guaranteed SLO and SLO carbon price across failure correlation (independent, k=2, k=0.5), SLO targets 1% and 0.1%, and reused-part multipliers 1 and 3; reuse pre-existing figure p4_chance.png.",
+      "aspect_ratio": "21:9"
+    },
+    {
+      "figure_id": "fig_node_sensitivity_tornado",
+      "title": "Node-level sensitivity of the reuse saving",
+      "plot_type": "plot",
+      "data_source": "experimental_log.md",
+      "objective": "Visual summary (Horizontal Bar Chart, tornado layout) of the node-level reuse saving on the mixed grid, LC tier, across parameter ranges, led by the CXL throughput multiplier with a 16.6 pp swing; reuse pre-existing figure p1_tornado_mixed_LC_cutoff.png.",
+      "aspect_ratio": "16:9"
+    }
+  ],
+  "intro_related_work_plan": {
+    "introduction_strategy": {
+      "hook_hypothesis": "Datacenter and AI-inference energy and carbon footprints are growing, and embodied carbon of server hardware is a large share of computing's footprint; component reuse in new server designs has been shown to cut cloud emissions.",
+      "problem_gap_hypothesis": "Reuse-based server designs are evaluated at a single point in time under average grid carbon, while operators make sequential multi-year buy/reuse/cascade/retire decisions and reused DRAM and SSDs are aged parts with age-dependent failures; for 8-GPU LLM-inference hosts, operational carbon dominates. Claims are scoped to a modelled three-grid LLM-inference fleet with public and assumed parameters.",
+      "search_directions": [
+        "Find papers quantifying the carbon footprint of computing and datacenters, including embodied versus operational carbon of servers",
+        "Find papers on the carbon and energy footprint of large language model training and inference",
+        "Find papers proposing low-carbon cloud server designs that reuse DRAM and SSDs or extend hardware lifetime",
+        "Find architectural carbon modelling tools and methodologies for embodied carbon of computer systems",
+        "Find large-scale field studies of DRAM, SSD and GPU failures in datacenters"
+      ]
+    },
+    "related_work_strategy": {
+      "overview": "Investigate four paradigms to show that no prior work jointly optimizes multi-year hardware lifecycle decisions with age-dependent reliability of reused parts for AI-inference fleets.",
+      "subsections": [
+        {
+          "subsection_title": "2.1 Low-Carbon Server Design and Embodied-Carbon Accounting",
+          "methodology_cluster": "Embodied-carbon models and reuse-based server design",
+          "sota_investigation_mission": "Identify papers up to 2026-10-21 that model embodied carbon of servers, SSDs and DRAM, and that design servers with reused or second-life components, including evaluation at fleet scale.",
+          "limitation_hypothesis": "These works evaluate a design at a single point in time and under average grid carbon; they do not model age-dependent failures of reused parts or sequential procurement and retirement.",
+          "limitation_search_queries": [
+            "embodied carbon SSD manufacturing per GB",
+            "reused DRAM CXL cloud server carbon",
+            "second-life hardware repurposing carbon computing",
+            "server lifetime extension carbon datacenter"
+          ],
+          "bridge_to_our_method": "We embed reuse-based SKUs in a multi-period lifecycle model with per-age reliability, spares and repair drains, and evaluate across grids."
+        },
+        {
+          "subsection_title": "2.2 Field Reliability of Memory, Storage and Accelerators",
+          "methodology_cluster": "Large-scale failure studies of DRAM, flash and GPUs",
+          "sota_investigation_mission": "Find field studies up to 2026-10-21 of DRAM errors and their dependence on age, SSD/flash failures and replacement rates, GPU and accelerator failures in large AI clusters, and silent data corruption.",
+          "limitation_hypothesis": "Field studies report failure statistics but do not translate them into the carbon implications of reusing aged parts.",
+          "limitation_search_queries": [
+            "DRAM errors field study age effect",
+            "flash reliability production SSD replacement",
+            "GPU failures large-scale training cluster interruptions",
+            "silent data corruption at scale processors"
+          ],
+          "bridge_to_our_method": "We calibrate age-dependent Weibull hazards from such statistics and propagate them into carbon via spares, drains and SLO headroom."
+        },
+        {
+          "subsection_title": "2.3 Carbon-Aware Scheduling and Operation",
+          "methodology_cluster": "Temporal and spatial workload shifting for carbon",
+          "sota_investigation_mission": "Find carbon-aware scheduling, workload shifting and elastic scaling papers up to 2026-10-21 that exploit grid carbon variation.",
+          "limitation_hypothesis": "These systems treat the hardware fleet as fixed and optimize when and where work runs, not which hardware to buy, reuse, cascade or retire.",
+          "limitation_search_queries": [
+            "temporal workload shifting carbon emissions cloud",
+            "carbon-aware computing datacenters grid",
+            "carbon-efficient cloud workload elasticity",
+            "virtual energy system carbon applications"
+          ],
+          "bridge_to_our_method": "We optimize the fleet itself across its lifecycle, including geographic cascading of old hardware to clean grids, complementary to scheduling."
+        },
+        {
+          "subsection_title": "2.4 Heterogeneous LLM Serving and Tiered Memory",
+          "methodology_cluster": "LLM serving systems, heterogeneous GPUs and CXL memory tiering",
+          "sota_investigation_mission": "Find LLM serving systems, KV-cache management, heterogeneous-GPU serving, CXL memory pooling and tiering, and DNN fault-injection studies up to 2026-10-21.",
+          "limitation_hypothesis": "Heterogeneous serving optimizes cost or throughput, not lifecycle carbon; CXL tiering studies do not consider aged reused DIMMs; DNN fault studies do not target the KV cache on reused memory.",
+          "limitation_search_queries": [
+            "LLM serving paged attention KV cache memory management",
+            "heterogeneous GPU LLM serving cost efficiency",
+            "phase splitting LLM inference different GPUs",
+            "CXL memory pooling cloud",
+            "transparent page placement CXL tiered memory",
+            "error propagation DNN accelerators fault injection"
+          ],
+          "bridge_to_our_method": "We quantify when cascading old GPUs saves carbon and prepare measurements of KV-cache placement and error tolerance on CXL-like reused memory."
+        }
+      ]
+    }
+  },
+  "section_plan": [
+    {
+      "section_title": "Abstract",
+      "subsections": [
+        {
+          "subsection_title": "Abstract",
+          "content_bullets": [
+            "State the gap: reuse evaluated at a point in time vs sequential multi-year decisions with aging reused parts (idea.md Problem Statement).",
+            "Summarize the model: cohort-by-age LP, Weibull reliability, harvest pools, cascading incl. geographic, chance-constrained SLO headroom (idea.md Methodology).",
+            "Report key numbers from experimental_log.md: X 5.766% clean vs 0.675% mixed; Y 0.775% vs X 0.848% fleet; failure-blind crossing near multiplier 2.1 vs reliability-aware stopping near 8; cascading break-even near energy parity; SLO price up to 0.82% with Y 0.812% under 0.1% target and strong correlation.",
+            "State that GPU throughput, power and CXL slowdown were placeholders and measurements are prepared."
+          ],
+          "citation_hints": []
+        }
+      ]
+    },
+    {
+      "section_title": "Lifecycle Model",
+      "subsections": [
+        {
+          "subsection_title": "Fleet State, Decisions and Flow Conservation",
+          "content_bullets": [
+            "Define cohorts (s, tau, r, a, t) and the three SKUs new_gpu, green_gpu, old_gpu from idea.md and the SKU bullet of experimental_log.md.",
+            "Present the flow-conservation equation from idea.md with buy, retire and cascade (in-place and geographic) terms; forced retirement at maximum age.",
+            "Describe reused-part harvest pools with external supply and 0.9 screening yield."
+          ],
+          "citation_hints": [
+            "research paper or technical report introducing 'GreenSKU' reuse-based cloud server designs"
+          ]
+        },
+        {
+          "subsection_title": "Reliability, Capacity and Carbon Accounting",
+          "content_bullets": [
+            "Formalize the Weibull hazard and AFR calibration from idea.md; delayed renewal for replaced parts; precomputed expected failures, drains, spares per age keep the LP linear; proportional-hazards multiplier m for reused parts.",
+            "Give the capacity constraint with throughput, CXL multiplier, utilization cap and LC headroom multiplier.",
+            "Give the lifecycle carbon objective from idea.md: amortized embodied with stranded remainder, idle-plus-dynamic operational power times PUE times declining grid CI, spares and logistics, lease and shipping; epsilon-constraint for cost.",
+            "State the cut-off convention and that alternatives are evaluated."
+          ],
+          "citation_hints": [
+            "research paper or technical report introducing 'ACT' architectural carbon modeling tool",
+            "research paper or technical report introducing the 'HiGHS' linear optimization solver",
+            "research paper or technical report on the 'Weibull distribution' for reliability analysis"
+          ]
+        },
+        {
+          "subsection_title": "Chance-Constrained SLO Headroom",
+          "content_bullets": [
+            "Model concurrent drained LC nodes as M/G/infinity occupancy: Poisson (independent) or negative binomial with dispersion k (correlated).",
+            "Describe the outer loop: solve, sample capacity per region-quarter, add demand minus epsilon-quantile of capacity to installed-capacity reserve, re-solve until P(short) <= epsilon; reserves grow monotonically.",
+            "State validation by independent replay with 50,000 samples."
+          ],
+          "citation_hints": [
+            "research paper or technical report on 'M/G/infinity' queue occupancy distribution",
+            "research paper or technical report on the 'negative binomial distribution' for overdispersed counts"
+          ]
+        }
+      ]
+    },
+    {
+      "section_title": "Evaluation Methodology",
+      "subsections": [
+        {
+          "subsection_title": "Scenarios and Parameters",
+          "content_bullets": [
+            "Describe node-level, pilot and reference fleet scenarios from experimental_log.md (24 quarters, three grids with base CI 40/250/650 gCO2e/kWh, demand growth, initial fleet of about 1,750 hosts, pools).",
+            "Present component parameters: embodied carbon, Weibull shapes, AFRs, drain times; GPU AFR 0.0868 derived from a 54-day interruption report on about 16,384 GPUs.",
+            "State parameter provenance: placeholders for GPU throughput, power and CXL slowdown; all others assumptions with swept ranges."
+          ],
+          "citation_hints": [
+            "Llama Team (The Llama 3 Herd of Models)"
+          ]
+        },
+        {
+          "subsection_title": "Experiment Ladder, Metrics and Solver",
+          "content_bullets": [
+            "Define E0, E1, E2a, E2b, E3, E3g and metrics X, Y_naive, Y, Z, Zg from idea.md.",
+            "Report that the 36-node pilot MILP hit a 300 s limit while the LP relaxation matched within about 0.05 pp and was scale-invariant; reference ladder solves in about 4 s; 40 tests including a hand-calculated case.",
+            "Describe the prepared GPU measurement methodology (serving benchmark, KV offload local vs remote NUMA, KV fault injection with none/SECDED/checksum) as not yet executed."
+          ],
+          "citation_hints": [
+            "Kwon et al. (Efficient Memory Management for Large Language Model Serving with PagedAttention)",
+            "research paper or technical report introducing 'SECDED' error-correcting codes for memory"
+          ]
+        }
+      ]
+    },
+    {
+      "section_title": "Results",
+      "subsections": [
+        {
+          "subsection_title": "Operational Carbon Dominates GPU Hosts",
+          "content_bullets": [
+            "Use the node-level table: operational about 91% of a new host's lifecycle carbon on the mixed grid; reuse cuts node embodied carbon from 8,312 to 2,860 kgCO2e but total by about 6%.",
+            "Node-level savings by grid and tier; tornado: CXL multiplier swing 16.6 pp decides sign on mixed grid."
+          ],
+          "citation_hints": []
+        },
+        {
+          "subsection_title": "Does Reuse Survive Reliability?",
+          "content_bullets": [
+            "Fleet ladder table and Fig. fig_fleet_carbon_ladder_by_grid: X 0.848%, Y_naive 0.195%, Y 0.775%; by grid X 5.766/0.675/0.103%.",
+            "Failure-blind plan loses via 13,104 tCO2e leased capacity vs 530 tCO2e.",
+            "Failure multiplier sweep (fig_reliability_breakeven_reused_parts): Y degrades to 0 at about 8; Y_naive crosses zero near 2.1 and reaches -2.251% at 20.",
+            "Node failure breakdown: DIMM failures 9.67 vs 5.43 per host, GPU failures dominate drained hours."
+          ],
+          "citation_hints": []
+        },
+        {
+          "subsection_title": "When Does Cascading Pay?",
+          "content_bullets": [
+            "Cascade sweep table and fig_cascade_breakeven_energy_efficiency: Z about 0 at 0.70 efficiency ratio; pays near parity; Zg adds 50 to 70% above parity."
+          ],
+          "citation_hints": []
+        },
+        {
+          "subsection_title": "Guaranteeing the SLO",
+          "content_bullets": [
+            "Monte Carlo replay of expected-value plans: worst region-quarter P(short) up to 14.5% (independent) and 15.5% (correlated) for reuse plans; region-quarters above 1%.",
+            "Chance-constrained results table and fig_chance_constrained_slo: SLO price 0.22 to 0.82%; Y grows from 0.775% to 0.812% (and 0.480% to 0.500% at 3x); validated worst P(short) within targets; 2.6x reserve under strong correlation."
+          ],
+          "citation_hints": []
+        },
+        {
+          "subsection_title": "Robustness: Accounting, Fuzzy Uncertainty, Headroom and Cost",
+          "content_bullets": [
+            "Accounting convention table: Y 0.601 to 1.423% or 0 if reused parts charged as new.",
+            "Fuzzy alpha-cuts: Y in [0, 2.638]% at alpha 0 and [0.266, 1.489]% at alpha 0.5.",
+            "Headroom and utilization sweep: Y higher at utilization 0.5.",
+            "Carbon-cost front: cost-minimal plan +2.6% carbon for -16% cost."
+          ],
+          "citation_hints": [
+            "research paper or technical report on 'fuzzy alpha-cut' uncertainty propagation in multi-objective optimization"
+          ]
+        }
+      ]
+    },
+    {
+      "section_title": "Discussion and Limitations",
+      "subsections": [
+        {
+          "subsection_title": "Design Implications",
+          "content_bullets": [
+            "Reuse-based hosts for reserve and lightly loaded capacity; efficient hosts for base load; grid-aware placement of reuse; cascading as cost lever unless near energy parity (experimental_log.md observations)."
+          ],
+          "citation_hints": []
+        },
+        {
+          "subsection_title": "Limitations",
+          "content_bullets": [
+            "Placeholder GPU throughput, power and CXL slowdown; assumed embodied and failure parameters; expected-value reliability inside the LP with Monte Carlo validation; LP relaxation; no proprietary fleet data; GPU measurements prepared but not executed."
+          ],
+          "citation_hints": []
+        }
+      ]
+    },
+    {
+      "section_title": "Conclusion",
+      "subsections": [
+        {
+          "subsection_title": "Conclusion",
+          "content_bullets": [
+            "Restate the three-part answer: grid sets the magnitude; reuse survives reliability if planned for; reuse persists under guaranteed SLOs; next step is GPU measurements."
+          ],
+          "citation_hints": []
+        }
+      ]
+    }
+  ]
+}
