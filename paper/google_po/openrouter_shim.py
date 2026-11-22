@@ -16,7 +16,9 @@ to ``$PO_BRIDGE_DIR/<id>/`` (request.json, request.md, attached images) and the 
 pipeline), acting as the model; requests flagged ``web_search`` are answered with live web search.
 
 Semantic Scholar: requests from utils.scholar_utils are spaced (~1.1 s) and retried on HTTP 429, since the
-public endpoint otherwise drops verifications silently. Every LLM call is logged (model, tokens) to
+public endpoint otherwise drops verifications silently; if a title search is still rate-limited after a retry,
+it is answered from Crossref's bibliographic search in Semantic Scholar's response shape (logged to
+``$PO_S2_FALLBACK_LOG``); the pipeline's own fuzzy-title and cutoff checks still decide what is kept. Every LLM call is logged (model, tokens) to
 ``$PO_CALL_LOG`` for auditing. No file of the Google repository is modified.
 """
 from __future__ import annotations
@@ -98,8 +100,29 @@ def _bridge_call(body: dict) -> dict:
         md.append("")
     meta = dict(id=rid, model=body["model"], web_search="plugins" in body, image_output="modalities" in body,
                 temperature=body.get("temperature"), max_tokens=body.get("max_tokens"), images=images)
+    req_text = "\n".join(md)
     with open(os.path.join(d, "request.md"), "w") as f:
-        f.write("\n".join(md))
+        f.write(req_text)
+    # Replay cache: an identical request (same prompt and images) answered earlier is reused, so a
+    # restarted run does not re-ask the same questions.
+    import hashlib
+    h = hashlib.sha256(req_text.encode()).hexdigest()
+    for other in sorted(os.listdir(root)):
+        od = os.path.join(root, other)
+        if other == rid or not os.path.isdir(od):
+            continue
+        try:
+            if (os.path.exists(os.path.join(od, "response.txt")) and
+                    hashlib.sha256(open(os.path.join(od, "request.md")).read().encode()).hexdigest() == h):
+                with open(os.path.join(od, "response.txt")) as f:
+                    cached = f.read()
+                with open(os.path.join(d, "response.txt"), "w") as f:
+                    f.write(cached)
+                with open(os.path.join(root, "queue.log"), "a") as f:
+                    f.write(f"CACHED {rid} <- {other}\n")
+                return {"choices": [{"message": {"content": cached}}], "usage": {}}
+        except OSError:
+            continue
     with open(os.path.join(d, "request.json"), "w") as f:
         json.dump(meta, f, indent=1)
     os.replace(os.path.join(d, "request.json"), os.path.join(d, "request.json"))
@@ -180,6 +203,41 @@ class OpenRouterGenaiClient:
         self.models = _Models()
 
 
+def _crossref_as_s2(params: dict):
+    """Answer an S2 /paper/search title query from Crossref, in S2's response shape (fallback on 429)."""
+    import re
+    q = params.get("query", "")
+    try:
+        r = requests.get("https://api.crossref.org/works", timeout=30,
+                         params={"query.bibliographic": q, "rows": int(params.get("limit", 3)),
+                                 "select": "DOI,title,author,container-title,issued,abstract,is-referenced-by-count"},
+                         headers={"User-Agent": "paper-orchestra-shim/0.1"})
+        items = r.json()["message"]["items"] if r.status_code == 200 else []
+    except Exception:
+        items = []
+    data = []
+    for it in items:
+        dp = (it.get("issued") or {}).get("date-parts", [[None]])[0]
+        year = dp[0] if dp and dp[0] else None
+        date = "%04d-%02d-%02d" % (dp[0], dp[1], dp[2]) if dp and len(dp) == 3 and all(dp) else None
+        venue = (it.get("container-title") or [""])[0]
+        abstract = it.get("abstract")
+        if abstract:
+            abstract = re.sub(r"<[^>]+>", " ", abstract).strip()
+        data.append({"title": (it.get("title") or [""])[0],
+                     "authors": [{"name": f"{a.get('given', '')} {a.get('family', '')}".strip()} for a in it.get("author", [])],
+                     "venue": venue, "year": year, "abstract": abstract,
+                     "citationCount": it.get("is-referenced-by-count", 0),
+                     "journal": {"name": venue} if venue else None, "publicationDate": date,
+                     "externalIds": {"DOI": it.get("DOI")}})
+    path = os.environ.get("PO_S2_FALLBACK_LOG")
+    if path:
+        with _log_lock, open(path, "a") as f:
+            f.write(json.dumps({"query": q, "source": "crossref", "n": len(data),
+                                "top": data[0]["title"] if data else None}) + "\n")
+    return SimpleNamespace(status_code=200, json=lambda: {"data": data}, text=json.dumps({"data": data}))
+
+
 class _ThrottledRequests:
     """Stand-in for the ``requests`` module inside utils.scholar_utils: spaced GETs with 429 retries."""
 
@@ -205,7 +263,10 @@ class _ThrottledRequests:
                 continue
             if rsp.status_code != 429:
                 return rsp
-            time.sleep(3 * (attempt + 1))
+            url = a[0] if a else kw.get("url", "")
+            if "api.semanticscholar.org" in url and "/paper/search" in url and attempt >= 1:
+                return _crossref_as_s2(kw.get("params") or {})
+            time.sleep(2)
         return rsp
 
 
