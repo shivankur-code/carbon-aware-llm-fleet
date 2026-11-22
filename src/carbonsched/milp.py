@@ -55,7 +55,7 @@ import pandas as pd
 import pulp
 import yaml
 
-from .carbon import purchase_embodied_kg
+from .carbon import part_embodied_kg, purchase_embodied_kg
 from .grid import Region
 from .hardware import SKU, TIERS, Catalog
 from .reliability import HOURS_PER_YEAR, QUARTER, QuarterReliability, node_reliability_table
@@ -93,6 +93,8 @@ class Scenario:
     buy_regions: list[str] | None = None
     integer: bool = True
     scale: float = 1.0                           # multiplies demand, initial fleet and pools (fleet size)
+    allow_refurbish: bool = False
+    refurbish: list[str] | None = None            # refurbishment paths to enable (default: all whose parent is in scope)
     lc_reserve: dict[str, list[float]] | None = None  # extra LC capacity per region/quarter (chance-constrained headroom)
     name: str = "scenario"
 
@@ -149,20 +151,56 @@ class LifecycleModel:
         self.cat, self.regions, self.sc = catalog, regions, sc
         self.T = range(sc.horizon_q)
         self.R = sc.regions
-        self.S = sc.skus
-        self.A = {s: range(sc.max_age_q[s] + 1) for s in self.S}
+        self.S = list(sc.skus)
+        self.max_age = dict(sc.max_age_q)
+        # Refurbishment paths whose parent is in scope; their derived SKUs join the fleet state.
+        self.refurb = {}
+        if sc.allow_refurbish:
+            wanted = set(sc.refurbish) if sc.refurbish is not None else None  # family names (or exact names)
+            for nm, spec in catalog.refurb.items():
+                if wanted is not None and spec.family not in wanted and nm not in wanted:
+                    continue
+                if spec.parent in self.S:
+                    self.refurb[nm] = spec
+                    if nm not in self.S:
+                        self.S.append(nm)
+                    self.max_age[nm] = spec.max_age_q
+        self.A = {s: range(self.max_age[s] + 1) for s in self.S}
         self.rel: dict[str, list[QuarterReliability]] = {}
         for s in self.S:
-            n_ages = sc.max_age_q[s] + 1
+            n_ages = self.max_age[s] + 1
             self.rel[s] = (node_reliability_table(catalog.skus[s].slots, n_ages) if sc.reliability
                            else [QuarterReliability() for _ in range(n_ages)])
+        for nm, spec in self.refurb.items():  # planned refurbishment downtime, first quarter of the second life
+            self.rel[nm][0].drain_hours += spec.downtime_hours
         self._coeffs()
 
     # ---------- precomputed coefficients ----------
     def _coeffs(self) -> None:
         sc = self.sc
-        self.E = {s: purchase_embodied_kg(self.cat.skus[s], sc.embodied_policy) for s in self.S}
-        self.life_q = {s: int(round(self.cat.skus[s].design_life_years * 4)) for s in self.S}
+        self.E = {s: purchase_embodied_kg(self.cat.skus[s], sc.embodied_policy) for s in self.S if s not in self.refurb}
+        self.life_q = {s: int(round(self.cat.skus[s].design_life_years * 4)) for s in self.S if s not in self.refurb}
+        # Refurbishment accounting (no carbon lost or double counted):
+        #  * discarded parts: their unamortized share of the parent's charge is stranded at refurbishment;
+        #  * carried parts: the parent's remaining amortization moves into the refurbished SKU;
+        #  * new parts: charged in full; the refurbished SKU amortizes over its second life (max_age_q).
+        self.E_new_parts, self.E_replaced_parent, self.E_carried_rate, self.carried_rem_q = {}, {}, {}, {}
+        for nm, spec in self.refurb.items():
+            par = self.cat.skus[spec.parent]
+            new_kg = sum(sl.count * par.embodied_new_kg[sl.component.name] for sl in par.slots
+                         if sl.component.name in spec.replace)
+            repl_charge = sum(sl.count * part_embodied_kg(par.embodied_new_kg[sl.component.name], sl.initial_age,
+                                                          par.design_life_years, sc.embodied_policy)
+                              for sl in par.slots if sl.component.name in spec.replace)
+            self.E_new_parts[nm], self.E_replaced_parent[nm] = new_kg, repl_charge
+            self.E_carried_rate[nm] = (self.E[spec.parent] - repl_charge) / self.life_q[spec.parent]
+            self.carried_rem_q[nm] = max(0.0, self.life_q[spec.parent] - spec.a_rep_q)
+            if sc.embodied_accounting == "amortized":
+                carried = (self.E[spec.parent] - repl_charge) * max(0.0, 1.0 - spec.a_rep_q / self.life_q[spec.parent])
+                self.E[nm] = new_kg + carried
+            else:
+                self.E[nm] = new_kg
+            self.life_q[nm] = spec.max_age_q
 
     def sku(self, s: str) -> SKU:
         return self.cat.skus[s]
@@ -190,11 +228,21 @@ class LifecycleModel:
     def embodied_per_q(self, s, a):
         if self.sc.embodied_accounting != "amortized":
             return 0.0
+        if s in self.refurb:
+            # New parts amortize over the second life; carried parts keep the parent's original schedule.
+            # (Re-spreading carried amortization over a longer second life would push carbon past the
+            # horizon's terminal credit and make refurbishment look greener than it is.)
+            new_rate = self.E_new_parts[s] / self.life_q[s] if a < self.life_q[s] else 0.0
+            carried_rate = self.E_carried_rate[s] if a < self.carried_rem_q[s] else 0.0
+            return new_rate + carried_rate
         return self.E[s] / self.life_q[s] if a < self.life_q[s] else 0.0
 
     def stranded(self, s, a):
         if self.sc.embodied_accounting != "amortized":
             return 0.0
+        if s in self.refurb:
+            return (self.E_new_parts[s] * max(0.0, 1.0 - a / self.life_q[s])
+                    + self.E_carried_rate[s] * max(0.0, self.carried_rem_q[s] - a))
         return self.E[s] * max(0.0, 1.0 - a / self.life_q[s])
 
     def lease_kg_per_work(self, tier, r, t):
@@ -212,6 +260,7 @@ class LifecycleModel:
         cat_int = pulp.LpInteger if sc.integer else pulp.LpContinuous
         prob = pulp.LpProblem(f"lifecycle_{sc.name}", pulp.LpMinimize)
         T, R, S = self.T, self.R, self.S
+        max_age = self.max_age
         buy_regions = sc.buy_regions or R
 
         # Only create variables for reachable (age, quarter) pairs: a node can be at age a in
@@ -236,6 +285,10 @@ class LifecycleModel:
                                 if reach(s, a, t):
                                     casc_idx.append((s, r, r2, a, t))
         casc = pulp.LpVariable.dicts("casc", casc_idx, lowBound=0, cat=cat_int)
+        ref_idx = [(nm, tau, r, a, t) for nm, spec in self.refurb.items() for tau in TIERS for r in R
+                   for a in range(spec.ages_q[0], min(spec.ages_q[1], max_age[spec.parent] - 1) + 1)
+                   for t in T if reach(spec.parent, a, t)]
+        ref = pulp.LpVariable.dicts("ref", ref_idx, lowBound=0, cat=cat_int)
         dem_idx = [("LC", r, t) for r in R for t in T] + [("BATCH", "*", t) for t in T]
         lease = pulp.LpVariable.dicts("lease", dem_idx, lowBound=0, upBound=None if sc.allow_lease else 0)
         short = pulp.LpVariable.dicts("short", dem_idx, lowBound=0)
@@ -250,6 +303,9 @@ class LifecycleModel:
         for (s, r, r2, a, t) in casc_idx:
             cas_out[(s, "LC", r, a, t)].append(casc[(s, r, r2, a, t)])
             cas_in[(s, "BATCH", r2, a, t)].append(casc[(s, r, r2, a, t)])
+        for (nm, tau, r, a, t) in ref_idx:  # refurbishment: parent cohort out, second-life cohort in at age 0
+            cas_out[(self.refurb[nm].parent, tau, r, a, t)].append(ref[(nm, tau, r, a, t)])
+            cas_in[(nm, tau, r, 0, t)].append(ref[(nm, tau, r, a, t)])
 
         # Flow conservation + forced retirement + capacity
         for (s, tau, r, a, t) in idx:
@@ -259,7 +315,7 @@ class LifecycleModel:
             prob += (n[(s, tau, r, a, t)] == carried - ret[(s, tau, r, a, t)]
                      - pulp.lpSum(cas_out[(s, tau, r, a, t)]) + pulp.lpSum(cas_in[(s, tau, r, a, t)]) + b,
                      f"flow_{s}_{tau}_{r}_{a}_{t}")
-            if a == sc.max_age_q[s]:
+            if a == max_age[s]:
                 prob += n[(s, tau, r, a, t)] == 0, f"maxage_{s}_{tau}_{r}_{t}"
             prob += w[(s, tau, r, a, t)] <= self.cap(s, tau, a) * n[(s, tau, r, a, t)], f"cap_{s}_{tau}_{r}_{a}_{t}"
 
@@ -286,6 +342,10 @@ class LifecycleModel:
                     pool.get("yield", 0.9) * sl.count * ret.get((s, tau, r, a, t), 0)
                     for s in S for sl in self.sku(s).slots if sl.component.name == comp and sl.initial_age == 0
                     for tau in TIERS for r in R for a in self.A[s])
+                harvest += pulp.lpSum(  # first-life parts discarded during refurbishment
+                    pool.get("yield", 0.9) * sl.count * ref[k]
+                    for k in ref_idx if k[4] == t for sl in self.sku(self.refurb[k[0]].parent).slots
+                    if sl.component.name == comp and sl.initial_age == 0 and comp in self.refurb[k[0]].replace)
                 use = pulp.lpSum(
                     sl.count * buy[(s, tau, r, t)]
                     for s in sc.buyable for sl in self.sku(s).slots if sl.component.name == comp and sl.initial_age > 0
@@ -314,6 +374,14 @@ class LifecycleModel:
             cost.append(self.sku(s).capex_usd * buy[(s, tau, r, t)])
             if sc.embodied_accounting != "amortized":
                 emb.append(self.E[s] * buy[(s, tau, r, t)])
+        for (nm, tau, r, a, t) in ref_idx:
+            spec = self.refurb[nm]
+            cost.append(spec.capex_usd * ref[(nm, tau, r, a, t)])
+            if sc.embodied_accounting == "amortized":
+                # stranded share of the discarded parts (refurbishment age a is exact: one derived SKU per age)
+                emb.append(self.E_replaced_parent[nm] * max(0.0, 1.0 - a / self.life_q[spec.parent]) * ref[(nm, tau, r, a, t)])
+            else:
+                emb.append(self.E_new_parts[nm] * ref[(nm, tau, r, a, t)])
         ship = []
         for (s, r, r2, a, t) in casc_idx:
             moved = r2 != r
@@ -342,14 +410,14 @@ class LifecycleModel:
             prob += expr <= ub, f"eps_{name}"
 
         # Fix decisions (plan re-evaluation)
-        groups = {"buy": buy, "ret": ret, "casc": casc}
+        groups = {"buy": buy, "ret": ret, "casc": casc, "ref": ref}
         for gname, vals in (fix or {}).items():
             var = groups[gname]
             for k, v in vals.items():
                 if k in var:
                     prob += var[k] == v, f"fix_{gname}_{'_'.join(map(str, k))}"
 
-        self._vars = dict(n=n, w=w, ret=ret, buy=buy, casc=casc, lease=lease, short=short)
+        self._vars = dict(n=n, w=w, ret=ret, buy=buy, casc=casc, ref=ref, lease=lease, short=short)
         self._exprs = dict(emb=pulp.lpSum(emb), op=pulp.lpSum(op), rep=pulp.lpSum(rep), ship=pulp.lpSum(ship),
                            lease=pulp.lpSum(lease_kg), carbon=carbon_expr, cost=cost_expr, short=short_expr)
         return prob
@@ -379,13 +447,13 @@ class LifecycleModel:
             dict(sku=s, tier=tau, region=r, age_q=a, t=t, n=val(v["n"][k]), work=val(v["w"][k]))
             for k in v["n"] for (s, tau, r, a, t) in [k] if val(v["n"][k]) > 1e-6])
         rows = []
-        for name in ("buy", "ret", "casc", "lease", "short"):
+        for name in ("buy", "ret", "casc", "ref", "lease", "short"):
             for k, x in v[name].items():
                 x = val(x)
                 if x > 1e-6:
                     rows.append(dict(decision=name, key=k, t=k[-1], value=x))
         values = {g: {k: round(val(x)) if self.sc.integer else val(x) for k, x in v[g].items()}
-                  for g in ("buy", "ret", "casc")}
+                  for g in ("buy", "ret", "casc", "ref")}
         return Solution(status, float(pulp.value(prob.objective)), totals, fleet, pd.DataFrame(rows), values,
                         solve_seconds=elapsed, time_limited=time_limited)
 

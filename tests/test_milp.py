@@ -169,3 +169,81 @@ def test_chance_constrained_loop_meets_target(cat, regions):
     assert hist[-1]["worst_rel_gap"] <= 0.0005 or len(hist) == 12
     check = replay_lc(model, sol, 20000, None, seed=7)
     assert check.p_violation.max() <= 0.03       # 1% target, MC noise + rounding allowance
+
+
+# ----------------------------------------------------------------- refurbishment
+def refurb_scenario(**kw):
+    base = dict(name="refurb", horizon_q=24, regions=["mixed"], skus=["new_gpu"], buyable=["new_gpu"],
+                max_age_q={"new_gpu": 32}, demand={"LC": {"mixed": 10.0}, "BATCH": 0.0},
+                initial_fleet=[{"sku": "new_gpu", "tier": "LC", "region": "mixed", "age_q": 12, "count": 13}],
+                reliability=True, allow_lease=False, allow_cascade=False, integer=False, util_cap=0.8)
+    base.update(kw)
+    return Scenario(**base)
+
+
+def test_derived_refurb_skus_one_per_age(cat):
+    assert {n for n in cat.refurb if n.startswith("new_gpu_rf@")} == {f"new_gpu_rf@{a}" for a in range(14, 19)}
+    for a in (14, 18):
+        ages = {sl.component.name: sl.initial_age for sl in cat.skus[f"new_gpu_rf@{a}"].slots}
+        assert ages["dram_dimm"] == 0 and ages["ssd"] == 0            # replaced -> new
+        assert ages["gpu_hopper"] == pytest.approx(a / 4)            # carried: exact age at refurbishment
+        assert cat.skus[f"new_gpu_rf@{a}"].platform_initial_age == pytest.approx(a / 4)
+    g = {sl.component.name: sl.initial_age for sl in cat.skus["green_gpu_rfm@16"].slots}
+    assert g["dram_dimm"] == 0 and g["ssd"] == pytest.approx(9.0)    # reused SSDs carried: 5 y + 4 y
+
+
+def _model_for(cat, regions, family):
+    parent = next(s.parent for s in cat.refurb.values() if s.family == family)
+    return LifecycleModel(cat, regions, refurb_scenario(skus=[parent], buyable=[], max_age_q={parent: 32},
+                                                        initial_fleet=[], allow_refurbish=True, refurbish=[family]))
+
+
+@pytest.mark.parametrize("name", ["new_gpu_rfm@14", "new_gpu_rf@16", "green_gpu_rfm@18", "old_gpu_rfm@4"])
+def test_refurb_accounting_exact(cat, regions, name):
+    """Parent amortization up to the refurbishment age + stranded discarded parts + the child's full
+    per-quarter schedule = parent embodied + new parts, at every age (nothing lost or double counted)."""
+    spec = cat.refurb[name]
+    m = _model_for(cat, regions, spec.family)
+    p, a, L = spec.parent, spec.ages_q[0], m.life_q[spec.parent]
+    child = sum(m.embodied_per_q(name, k) for k in range(spec.max_age_q + 1))
+    total = m.E[p] * min(a, L) / L + m.E_replaced_parent[name] * max(0, 1 - a / L) + child
+    assert total == pytest.approx(m.E[p] + m.E_new_parts[name])
+    assert m.stranded(name, 0) == pytest.approx(child)
+
+
+def test_refurbish_option_never_hurts_and_conserves_nodes(cat, regions):
+    off = LifecycleModel(cat, regions, refurb_scenario()).solve()
+    on = LifecycleModel(cat, regions, refurb_scenario(allow_refurbish=True)).solve()
+    assert on.carbon_kg <= off.carbon_kg * (1 + 1e-6)
+    d = on.decisions
+    for (nm, tau, r, a, t), v in zip(d[d.decision == "ref"].key, d[d.decision == "ref"].value):
+        f = on.fleet
+        assert f[(f.sku == nm) & (f.age_q == 0) & (f.t == t)].n.sum() >= v - 1e-6
+        assert a == cat.refurb[nm].ages_q[0]
+
+
+def test_refurbish_chosen_when_memory_wears_out_fast(cat, regions):
+    worn = load_catalog(CONFIGS, overrides={"components.components.dram_dimm.failure.afr": 0.2,
+                                            "components.components.dram_dimm.failure.shape": 3.0})
+    sol = LifecycleModel(worn, regions, refurb_scenario(allow_refurbish=True)).solve()
+    d = sol.decisions
+    assert d[d.decision == "ref"].value.sum() > 1.0
+
+
+def test_pool_balance_holds_with_refurbishment(cat, regions):
+    """Regression: reused DIMMs consumed by builds never exceed pool supply (initial + external + harvest
+    from retirements and refurbishment discards, each counted once, in its own quarter)."""
+    sc = refurb_scenario(skus=["new_gpu", "green_gpu"], buyable=["new_gpu", "green_gpu"],
+                         max_age_q={"new_gpu": 32, "green_gpu": 32}, allow_refurbish=True,
+                         demand={"LC": {"mixed": [10 + 2 * t for t in range(24)]}, "BATCH": 0.0},
+                         pools={"dram_dimm": {"initial": 64, "external_per_q": 32, "yield": 0.9},
+                                "ssd": {"initial": 1000, "external_per_q": 100, "yield": 0.9}})
+    sol = LifecycleModel(cat, regions, sc).solve()
+    d = sol.decisions
+    buys = d[d.decision == "buy"]
+    used = 32 * sum(v for k, v in zip(buys.key, buys.value) if k[0] == "green_gpu")
+    refs, rets = d[d.decision == "ref"], d[d.decision == "ret"]
+    harvest_ref = sum(0.9 * 32 * v for k, v in zip(refs.key, refs.value) if "dram_dimm" in cat.refurb[k[0]].replace)
+    harvest_ret = sum(0.9 * 32 * v for k, v in zip(rets.key, rets.value)
+                      if any(sl.component.name == "dram_dimm" and sl.initial_age == 0 for sl in cat.skus[k[0]].slots))
+    assert used <= 64 + 32 * 24 + harvest_ref + harvest_ret + 1e-6

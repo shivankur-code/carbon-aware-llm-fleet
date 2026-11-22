@@ -6,6 +6,9 @@
   E2b     reuse, reliability-aware, no cascade  -> Y = 1 - C(E2b)/C(E0)
   E3      E2b + in-place cascading LC->BATCH    -> Z = saving(E3) - Y   (pp)
   E3g     E3 + geographic cascading             -> Zg = saving(E3g) - Y (pp; only if >1 region)
+  E0r     E0 + refurbishment (no reuse)         -> refurb_alone = 1 - C(E0r)/C(E0)
+  E4      E2b + refurbishment                   -> Rf = saving(E4) - Y (pp)
+  E5      all levers: reuse + cascading (incl. geographic) + refurbishment -> saving_all
 """
 from __future__ import annotations
 
@@ -19,7 +22,7 @@ from .milp import LifecycleModel, Scenario, Solution
 
 
 def run_ladder(base: dict, cat: Catalog, regions: dict[str, Region], time_limit: float = 300,
-               rungs: tuple[str, ...] = ("E0_det", "E0", "E1", "E2a", "E2b", "E3", "E3g")) -> tuple[dict, pd.DataFrame, dict[str, Solution]]:
+               rungs: tuple[str, ...] = ("E0_det", "E0", "E1", "E2a", "E2b", "E3", "E3g", "E0r", "E4", "E5")) -> tuple[dict, pd.DataFrame, dict[str, Solution]]:
     no_reuse = [s for s in base["buyable"] if not cat.skus[s].is_reuse]
 
     def mk(**kw) -> Scenario:
@@ -48,6 +51,13 @@ def run_ladder(base: dict, cat: Catalog, regions: dict[str, Region], time_limit:
         runs["E3"] = solve(mk(allow_cascade=True, allow_geo_cascade=False, reliability=True))
     if "E3g" in rungs and multi:
         runs["E3g"] = solve(mk(allow_cascade=True, allow_geo_cascade=True, reliability=True))
+    if "E0r" in rungs:
+        runs["E0r"] = solve(mk(buyable=no_reuse, allow_cascade=False, allow_geo_cascade=False, reliability=True,
+                               allow_refurbish=True))
+    if "E4" in rungs:
+        runs["E4"] = solve(mk(allow_cascade=False, allow_geo_cascade=False, reliability=True, allow_refurbish=True))
+    if "E5" in rungs:
+        runs["E5"] = solve(mk(allow_cascade=True, allow_geo_cascade=multi, reliability=True, allow_refurbish=True))
 
     C = {k: s.carbon_kg for k, s in runs.items()}
     sav = lambda k, ref: 100 * (1 - C[k] / C[ref])  # noqa: E731
@@ -63,6 +73,13 @@ def run_ladder(base: dict, cat: Catalog, regions: dict[str, Region], time_limit:
     if "E3g" in runs:
         h["saving_E3g"] = sav("E3g", "E0")
         h["Zg_pp"] = h["saving_E3g"] - h["Y"]
+    if "E0r" in runs:
+        h["refurb_alone"] = sav("E0r", "E0")
+    if "E4" in runs:
+        h["saving_E4"] = sav("E4", "E0")
+        h["Rf_pp"] = h["saving_E4"] - h["Y"]
+    if "E5" in runs:
+        h["saving_all"] = sav("E5", "E0")
     h["solve_seconds"] = sum(s.solve_seconds for s in runs.values())
     h["time_limited_runs"] = [k for k, s in runs.items() if s.time_limited]
     table = pd.DataFrame({k: dict(s.totals) for k, s in runs.items()}).T
