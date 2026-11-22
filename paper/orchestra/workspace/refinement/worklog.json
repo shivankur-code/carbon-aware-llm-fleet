@@ -50,6 +50,28 @@
     "Unsupported detail and structure. 'External supply arrives pre-screened' (Section 3.1) is not in the evidence base; the log states only that the 0.9 yield applies to locally harvested parts. Section 5.5 still compresses four studies into one paragraph, and the evidence for three of them (Tables 5 and 7, Figure 7) sits in an appendix after the references. Page 11 has visible float whitespace. The main text uses exactly 12 of 12 pages."
    ],
    "decision": "ACCEPT_IMPROVED (66.3 -> 70.7)"
+  },
+  {
+   "iter": 3,
+   "score": {
+    "overall": 72.7,
+    "band": "Minor Revision"
+   },
+   "weaknesses": [
+    "The SLO mechanism is stated more generally than the evidence supports. The Abstract and Introduction explain the higher reuse saving under the SLO 'because the reuse plan needed about 3% less reserve capacity', and Section 5.4 says the reuse plan paid less 'in every setting'. The log's per-setting reserve table shows that at m=3 the reuse plan holds a larger reserve than the no-reuse plan in 5 of 6 settings (380.2 vs 372.9, 527.7 vs 516.3, 498.1 vs 491.2, 723.7 vs 722.7 and 798.0 vs 795.6 node-equivalent-quarters), yet it still pays a lower price. The smaller-reserve explanation therefore holds only at m=1 (and m=3, k=0.5, epsilon=0.001). The m=3 price advantage must come from reserve composition. The paper does not report this table, and its root cause remains unisolated. Scope the 'because' to m=1 and report the reserve table.",
+    "Two different reserve quantities share near-identical numbers without definition. Section 5.4 gives '1,274 ... node-equivalent-quarters' of reserve for the reuse plan, while Table 3 gives 1,272.6 of 'added reserve capacity' for the same setting (seed 0). The difference between the reserve target R_rt and the added installed capacity in the chance-constrained minus expected-value plan should be defined.",
+    "Evidence for several cited results is outside the main body or only in prose. The entry-age sweep and the reserve sizes appear only as inline numbers. The sensitivity ranges, accounting conventions and cost front sit in an appendix after the references, which the venue guidelines do not provide for. Figures 4 and 5 at 0.52 linewidth have small tick labels.",
+    "The scope of the significance claims should be stated more plainly. The blended three-grid fleet saving is under 1% (Y=0.775%), and the larger clean-grid figures and the cascading verdict rest on assumed or placeholder parameters with no executed GPU measurements. The Conclusion should say explicitly that the paper's contribution is the planning methodology and its break-even analyses, not the size of the savings."
+   ],
+   "decision": "ACCEPT_IMPROVED (70.7 -> 72.7)"
   }
+ ],
+ "halted_because": "iteration_cap_reached",
+ "best_iter": 3,
+ "post_cap_fidelity_fixes": [
+  "Scoped the SLO mechanism: smaller reserve only in the decomposed m=1 setting; at m=3 the reserve target was not smaller in 5/6 settings, so composition drives the lower price",
+  "Distinguished reserve target sum R_rt from added installed capacity (Table 3)",
+  "Conclusion states contribution is method + break-evens, not savings size",
+  "Layout trims to keep main text within 12 pages"
  ]
 }
