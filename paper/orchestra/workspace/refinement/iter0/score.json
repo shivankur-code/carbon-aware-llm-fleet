@@ -1,0 +1,29 @@
+{
+ "overall_score": 61.0,
+ "axis_scores": {
+  "scientific_depth": {
+   "score": 58,
+   "justification": "The cohort LP with precomputed Weibull renewal quantities and an outer Monte Carlo chance-constraint loop is a sound modelling approach, and the X/Y_naive/Y ladder isolates the effect of planning for reliability. But the headline mechanism in the Abstract, Introduction and Conclusion ('the reuse saving rose to 0.812% because reused hosts are the cheapest idle reserve') is never tested: no reserve composition by SKU is reported, and the paper's own headroom sweep shows the reuse-host share *falling* from 0.303 to 0.280 as LC headroom rises from 1 to 10, with Y almost flat (0.775 to 0.777%). The effect being explained is only 0.037 pp and comes with no Monte Carlo or iteration-tolerance error bars. 'It never chose a plan worse than no reuse' and 'the lower bound never fell below zero' hold by construction, because the no-reuse plan is feasible for the reliability-aware optimizer, yet they are presented as empirical robustness findings. The cap of 60 for unsupported claims applies."
+  },
+  "technical_execution": {
+   "score": 55,
+   "justification": "The method is implemented coherently. The LP relaxation is checked against the MIP pilot ('matched the integer X and Y within about 0.05 percentage points'), there is a 40-test suite, and the reserve loop provably terminates. However, Section 4 leaves out parameters that drive the results: the leased-capacity carbon premium (1.3x), the per-node shipping carbon (300 kgCO2e), the default utilization cap (0.8) and LC headroom multiplier (3.0), green_gpu and old_gpu power, platform embodied carbon, design life, initial-fleet ages, maximum age, and every cost parameter behind the Pareto front. The reserve constraint (Eq. 5) stacks R_rt on capacity that is already derated by beta_LC=3, and this double protection is not justified. The cap of 55 for omitted implementation details applies."
+  },
+  "logical_flow": {
+   "score": 72,
+   "justification": "The paper follows the mandatory section order, and the three-part answer from the Introduction (magnitude, survival, SLO) maps cleanly onto Sections 5.1-5.4 and the Conclusion. Every figure and table is referenced at the point of use. Flow weakens in Section 5.5, which packs four unrelated robustness studies into one paragraph, and the design implication 'reuse-based hosts belong ... in reserve' rests on the untested SLO mechanism. The DIMM-versus-GPU drained-hours argument at the end of Section 5.2 interrupts the hazard-multiplier sweep."
+  },
+  "writing_clarity": {
+   "score": 60,
+   "justification": "Most prose is precise and quantitative. H is used both for the cumulative hazard H_c(a) in Eq. 2 and for hours per quarter in l_sa = d_sa/H. Node age a is in quarters, but calibration uses H_c(a*+1)-H_c(a*) as an 'annual' probability. Several acronyms are never expanded (CXL, PUE, SECDED, NUMA), and the figures use undefined internal labels ('C2/C3 measurements', 'A100-class vs H100-class', 'mixed_LC_cutoff', 'green_gpu.cxl_slowdown.LC'). The cap of 60 for undefined acronyms applies."
+  },
+  "evidence_presentation": {
+   "score": 58,
+   "justification": "Tables 1-4 match the experimental log, and Figures 3-5 and 7 support their paragraphs. However, the Figure 2 caption says 'the CXL throughput multiplier alone determines the sign of the saving', while the plotted bars show sign flips for at least six other parameters (peak-power delta, SSD embodied carbon, grid CI, idle-power delta, green platform embodied carbon, SSD failure shape). Figure 6 plots m=3, epsilon=0.01 points under k=2 and k=0.5 that are neither in Table 3 nor in the log. Table 3 drops the logged m=1, k=2, epsilon=0.01 and m=3, epsilon=0.01 rows without explanation. The validation ranges quoted in Section 5.4 do not match the log, and no results carry Monte Carlo confidence intervals."
+  },
+  "academic_style": {
+   "score": 70,
+   "justification": "The tone is professional and free of defensive hedging. The Limitations section is direct, and placeholders are flagged in bold in Section 4.1. Style suffers from raw code identifiers and internal project labels in the figures ('Parameters provisional: GPU throughput/power and CXL slowdown await C2/C3 measurements', 'GreenSKU-style node saving'). Terminology varies: 'CXL slowdown' versus 'CXL throughput multiplier', 'reuse-based host' versus 'green_gpu', and 'Plan blind to failures' versus 'failure-blind'. The Abstract's 'public and swept parameters' overstates provenance, since only the GPU failure rate is public."
+  }
+ }
+}

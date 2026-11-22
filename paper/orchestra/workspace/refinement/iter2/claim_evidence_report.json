@@ -1,0 +1,777 @@
+{
+  "supported": [
+    {
+      "claim": "(2) Reuse \\emph{survives reliability if planned for}: a reliability-aware plan retained a saving of 0.775% against 0.848% when failures were ignored, and degraded gracefully to zero as reused parts became worse, whereas a failure-blind plan kept only 0.195% and became carbon-negative once reused par",
+      "value": "0.775",
+      "section": "Introduction",
+      "context": "st's lifecycle carbon. (2) Reuse \\emph{survives reliability if planned for}: a reliability-aware plan retained a saving of 0.775% against 0.848% when failures were ignored, and degraded gracefully to zero as reused parts became worse, whereas a fail",
+      "evidence_snippet": "naive | Y | Z (pp) | |---|---|---|---|---| | three-grid fleet | 0.848 | 0.195 | 0.775 | 0.005 | | clean grid only | 5.766 | 4.584 | 5.028 | 0.005 | | mixed grid only"
+    },
+    {
+      "claim": "\\section{Evaluation Methodology}   \\subsection{Scenarios and Parameters} \\emph{Node level:} one host per SKU over a six-year life at 60% utilization on three grids with base carbon intensity 40, 250 and 650 gCO _2 e/kWh (clean, mixed, dirty) declining 2%, 5% and 3% per year, and PUE 1.2.",
+      "value": "60",
+      "section": "Evaluation Methodology",
+      "context": "valuation Methodology}   \\subsection{Scenarios and Parameters} \\emph{Node level:} one host per SKU over a six-year life at 60% utilization on three grids with base carbon intensity 40, 250 and 650 gCO _2 e/kWh (clean, mixed, dirty) declining 2%,",
+      "evidence_snippet": "de-level study:* one 8-GPU inference node per SKU over a 6-year service life at 60% utilization, quarterly steps, three grids. Grid carbon intensity in the base y"
+    },
+    {
+      "claim": "The mixed-grid result was dominated by the CXL throughput multiplier, whose range of 0.85--1.0 moved the saving from  -10.72%  to 5.88%, a swing of 16.61 percentage points---three times the next parameter, the reuse host's peak-power delta (5.65), followed by SSD embodied carbon (5.41) and grid carb",
+      "value": "5.88",
+      "section": "Results",
+      "context": "ed-grid result was dominated by the CXL throughput multiplier, whose range of 0.85--1.0 moved the saving from  -10.72%  to 5.88%, a swing of 16.61 percentage points---three times the next parameter, the reuse host's peak-power delta (5.65), followe",
+      "evidence_snippet": "---|---|---|---|---|---| | CXL throughput multiplier (LC) | 0.85 | 1 | -10.72 | 5.88 | 16.61 | | reuse host peak-power delta (W) | -400 | 300 | 3.35 | -2.30 | 5.65"
+    },
+    {
+      "claim": "The reliability-aware plan bought fewer reuse-based hosts as  m  grew, with  Y  falling from 0.863% ( m=0.5 ) to 0.621% ( m=2 ), 0.209% ( m=5 ) and 0 from  m=8  onwards.",
+      "value": "0.621",
+      "section": "Results",
+      "context": "lier  m . The reliability-aware plan bought fewer reuse-based hosts as  m  grew, with  Y  falling from 0.863% ( m=0.5 ) to 0.621% ( m=2 ), 0.209% ( m=5 ) and 0 from  m=8  onwards. Because the planner can always fall back to the no-reuse fleet,  Y>=",
+      "evidence_snippet": "5 | 0.848 | 0.289 | 0.863 | | 1 | 0.848 | 0.195 | 0.775 | | 2 | 0.848 | 0.015 | 0.621 | | 3 | 0.848 | -0.154 | 0.475 | | 5 | 0.848 | -0.467 | 0.209 | | 8 | 0.848 | -"
+    },
+    {
+      "claim": "\\subsection{Guaranteeing the SLO} Replaying the expected-value plans (headroom multiplier 3) against sampled drains showed that the LC tier met demand on average but not everywhere: the worst region-quarter had a 2.7% probability of LC shortfall without reuse and 14.5% with reliability-aware reuse u",
+      "value": "15.5",
+      "section": "Results",
+      "context": ".7% probability of LC shortfall without reuse and 14.5% with reliability-aware reuse under independent failures, rising to 15.5% under correlated failures; under strong correlation ( k=0.5 ), 44--48 of 72 region-quarters exceeded 1%. Table   and Fi",
+      "evidence_snippet": "average but left individual region-quarters with up to 14.5% (independent) and 15.5% (correlated) probability of LC capacity shortfall for reuse plans; correlated"
+    },
+    {
+      "claim": "close to the targets: the largest excess (0.13% against 0.1%) is about two standard errors above the target (the standard error at 0.1% with 50{,}000 samples is about 0.014 percentage points), consistent with Monte Carlo noise in the loop's quantile estimates and its stopping tolerance of 0.05% of d",
+      "value": "0.1",
+      "section": "Results",
+      "context": "the targets: the largest excess (0.13% against 0.1%) is about two standard errors above the target (the standard error at 0.1% with 50{,}000 samples is about 0.014 percentage points), consistent with Monte Carlo noise in the loop's quantile estim",
+      "evidence_snippet": "ounting failures, spares, logistics and drains reduced the reuse saving by only 0.1 to 2.2 percentage points. Over 6 years a new host saw 4.36 GPU, 5.43 DIMM, 0.81"
+    },
+    {
+      "claim": "close to the targets: the largest excess (0.13% against 0.1%) is about two standard errors above the target (the standard error at 0.1% with 50{,}000 samples is about 0.014 percentage points), consistent with Monte Carlo noise in the loop's quantile estimates and its stopping tolerance of 0.05% of d",
+      "value": "0.05",
+      "section": "Results",
+      "context": "0.014 percentage points), consistent with Monte Carlo noise in the loop's quantile estimates and its stopping tolerance of 0.05% of demand; the loop converged in 4 to 15 iterations. The SLO cost 0.22--0.82% extra carbon, rising with strictness and",
+      "evidence_snippet": "linear relaxation solved in under 1 s, matched the integer results within about 0.05 percentage points on X and Y, and gave identical X, Y and Z at 1x and 50x fleet"
+    },
+    {
+      "claim": "In every setting the reuse plan paid a slightly lower price than the no-reuse plan, so the reuse saving \\emph{grew} under the guarantee: from 0.775% to 0.812%, and from 0.480% to 0.499% when reused parts failed three times more than their age predicts.",
+      "value": "0.812",
+      "section": "Results",
+      "context": "an paid a slightly lower price than the no-reuse plan, so the reuse saving \\emph{grew} under the guarantee: from 0.775% to 0.812%, and from 0.480% to 0.499% when reused parts failed three times more than their age predicts. (Because the chance-const",
+      "evidence_snippet": "1 | 0.795 | 0.775 | 0.477 | 0.497 | 0.0105 | 0.0100 | 7 | | 1 | k=0.5 | 0.001 | 0.812 | 0.775 | 0.785 | 0.823 | 0.0012 | 0.0011 | 15 | | 3 | independent | 0.01 | 0.4"
+    },
+    {
+      "claim": "In every setting the reuse plan paid a slightly lower price than the no-reuse plan, so the reuse saving \\emph{grew} under the guarantee: from 0.775% to 0.812%, and from 0.480% to 0.499% when reused parts failed three times more than their age predicts.",
+      "value": "0.499",
+      "section": "Results",
+      "context": "ice than the no-reuse plan, so the reuse saving \\emph{grew} under the guarantee: from 0.775% to 0.812%, and from 0.480% to 0.499% when reused parts failed three times more than their age predicts. (Because the chance-constrained study uses  \\beta_{\\",
+      "evidence_snippet": "1 | 0.488 | 0.480 | 0.489 | 0.497 | 0.0100 | 0.0100 | 7 | | 3 | k=0.5 | 0.001 | 0.499 | 0.480 | 0.803 | 0.823 | 0.0011 | 0.0011 | 15 |  ### Composition of the SLO re"
+    },
+    {
+      "claim": "On a six-year, three-grid fleet whose parameters are assumed and swept (only the GPU failure rate is taken from published data, and GPU throughput, power and CXL slowdown are placeholders), reuse cut lifecycle carbon by 5.77% on a clean grid but only 0.68% and 0.10% on mixed and dirty grids, because",
+      "value": "0.10",
+      "section": "Abstract",
+      "context": "ghput, power and CXL slowdown are placeholders), reuse cut lifecycle carbon by 5.77% on a clean grid but only 0.68% and 0.10% on mixed and dirty grids, because operational carbon was about 91% of a GPU host's lifecycle; at node level on the mixe",
+      "evidence_snippet": "lidated region-quarter shortfall probabilities (0.96 to 1.07% at the 1% target, 0.10 to 0.13% at the 0.1% target) slightly exceeded the targets in some cases; with"
+    },
+    {
+      "claim": "On a six-year, three-grid fleet whose parameters are assumed and swept (only the GPU failure rate is taken from published data, and GPU throughput, power and CXL slowdown are placeholders), reuse cut lifecycle carbon by 5.77% on a clean grid but only 0.68% and 0.10% on mixed and dirty grids, because",
+      "value": "91",
+      "section": "Abstract",
+      "context": "carbon by 5.77% on a clean grid but only 0.68% and 0.10% on mixed and dirty grids, because operational carbon was about 91% of a GPU host's lifecycle; at node level on the mixed grid, the saving changes sign across the placeholder range of the",
+      "evidence_snippet": "| 3.35 | -2.30 | 5.65 | | SSD embodied carbon (kgCO2e) | 150 | 900 | -2.49 | 2.91 | 5.41 | | mixed-grid carbon intensity (g/kWh) | 150 | 350 | 3.80 | -0.41 | 4.2"
+    },
+    {
+      "claim": "A reliability-aware plan retained 0.775% of a 0.848% fleet saving and degraded gracefully to zero as reused parts worsened, while a failure-blind plan retained 0.195% and turned carbon-negative once reused parts failed about 2.1 times more than their age predicts.",
+      "value": "0.775",
+      "section": "Abstract",
+      "context": "mixed grid, the saving changes sign across the placeholder range of the CXL slowdown. A reliability-aware plan retained 0.775% of a 0.848% fleet saving and degraded gracefully to zero as reused parts worsened, while a failure-blind plan retained",
+      "evidence_snippet": "naive | Y | Z (pp) | |---|---|---|---|---| | three-grid fleet | 0.848 | 0.195 | 0.775 | 0.005 | | clean grid only | 5.766 | 4.584 | 5.028 | 0.005 | | mixed grid only"
+    },
+    {
+      "claim": "A reliability-aware plan retained 0.775% of a 0.848% fleet saving and degraded gracefully to zero as reused parts worsened, while a failure-blind plan retained 0.195% and turned carbon-negative once reused parts failed about 2.1 times more than their age predicts.",
+      "value": "0.848",
+      "section": "Abstract",
+      "context": "the saving changes sign across the placeholder range of the CXL slowdown. A reliability-aware plan retained 0.775% of a 0.848% fleet saving and degraded gracefully to zero as reused parts worsened, while a failure-blind plan retained 0.195% and t",
+      "evidence_snippet": "| Fleet | X | Y_naive | Y | Z (pp) | |---|---|---|---|---| | three-grid fleet | 0.848 | 0.195 | 0.775 | 0.005 | | clean grid only | 5.766 | 4.584 | 5.028 | 0.005 | |"
+    },
+    {
+      "claim": "A reliability-aware plan retained 0.775% of a 0.848% fleet saving and degraded gracefully to zero as reused parts worsened, while a failure-blind plan retained 0.195% and turned carbon-negative once reused parts failed about 2.1 times more than their age predicts.",
+      "value": "0.195",
+      "section": "Abstract",
+      "context": "of a 0.848% fleet saving and degraded gracefully to zero as reused parts worsened, while a failure-blind plan retained 0.195% and turned carbon-negative once reused parts failed about 2.1 times more than their age predicts. Guaranteeing a 0.1% p",
+      "evidence_snippet": "| X | Y_naive | Y | Z (pp) | |---|---|---|---|---| | three-grid fleet | 0.848 | 0.195 | 0.775 | 0.005 | | clean grid only | 5.766 | 4.584 | 5.028 | 0.005 | | mixed g"
+    },
+    {
+      "claim": "Guaranteeing a 0.1% per-region-quarter shortfall probability under strongly correlated failures cost up to 0.82% extra carbon, 83--85% of it idle electricity of reserve hosts; the reuse saving rose slightly, to 0.800--0.814% across three Monte Carlo seeds, because the reuse plan needed about 3% less",
+      "value": "0.1",
+      "section": "Abstract",
+      "context": "0.195% and turned carbon-negative once reused parts failed about 2.1 times more than their age predicts. Guaranteeing a 0.1% per-region-quarter shortfall probability under strongly correlated failures cost up to 0.82% extra carbon, 83--85% of i",
+      "evidence_snippet": "ounting failures, spares, logistics and drains reduced the reuse saving by only 0.1 to 2.2 percentage points. Over 6 years a new host saw 4.36 GPU, 5.43 DIMM, 0.81"
+    },
+    {
+      "claim": "Guaranteeing a 0.1% per-region-quarter shortfall probability under strongly correlated failures cost up to 0.82% extra carbon, 83--85% of it idle electricity of reserve hosts; the reuse saving rose slightly, to 0.800--0.814% across three Monte Carlo seeds, because the reuse plan needed about 3% less",
+      "value": "3",
+      "section": "Abstract",
+      "context": "s; the reuse saving rose slightly, to 0.800--0.814% across three Monte Carlo seeds, because the reuse plan needed about 3% less reserve capacity and placed about a fifth of it on lower-embodied hosts, so its reserve emitted 4--6% less. Cascad",
+      "evidence_snippet": "CO2e/kWh (mixed, declining 5%/yr, floor 20) and 650 gCO2e/kWh (dirty, declining 3%/yr, floor 50); PUE was 1.2.   * *Pilot fleet:* 3 years, one region, an existin"
+    },
+    {
+      "claim": "(1) The \\emph{magnitude} of reuse savings is set by the grid: reuse cut fleet lifecycle carbon by 5.77% on a clean grid but by 0.68% on a mixed one and 0.10% on a dirty one, because operational carbon was about 91% of a new host's lifecycle carbon.",
+      "value": "0.10",
+      "section": "Introduction",
+      "context": "e savings is set by the grid: reuse cut fleet lifecycle carbon by 5.77% on a clean grid but by 0.68% on a mixed one and 0.10% on a dirty one, because operational carbon was about 91% of a new host's lifecycle carbon. (2) Reuse \\emph{survives rel",
+      "evidence_snippet": "lidated region-quarter shortfall probabilities (0.96 to 1.07% at the 1% target, 0.10 to 0.13% at the 0.1% target) slightly exceeded the targets in some cases; with"
+    },
+    {
+      "claim": "(1) The \\emph{magnitude} of reuse savings is set by the grid: reuse cut fleet lifecycle carbon by 5.77% on a clean grid but by 0.68% on a mixed one and 0.10% on a dirty one, because operational carbon was about 91% of a new host's lifecycle carbon.",
+      "value": "91",
+      "section": "Introduction",
+      "context": "bon by 5.77% on a clean grid but by 0.68% on a mixed one and 0.10% on a dirty one, because operational carbon was about 91% of a new host's lifecycle carbon. (2) Reuse \\emph{survives reliability if planned for}: a reliability-aware plan retain",
+      "evidence_snippet": "| 3.35 | -2.30 | 5.65 | | SSD embodied carbon (kgCO2e) | 150 | 900 | -2.49 | 2.91 | 5.41 | | mixed-grid carbon intensity (g/kWh) | 150 | 350 | 3.80 | -0.41 | 4.2"
+    },
+    {
+      "claim": "(2) Reuse \\emph{survives reliability if planned for}: a reliability-aware plan retained a saving of 0.775% against 0.848% when failures were ignored, and degraded gracefully to zero as reused parts became worse, whereas a failure-blind plan kept only 0.195% and became carbon-negative once reused par",
+      "value": "0.848",
+      "section": "Introduction",
+      "context": "bon. (2) Reuse \\emph{survives reliability if planned for}: a reliability-aware plan retained a saving of 0.775% against 0.848% when failures were ignored, and degraded gracefully to zero as reused parts became worse, whereas a failure-blind plan",
+      "evidence_snippet": "| Fleet | X | Y_naive | Y | Z (pp) | |---|---|---|---|---| | three-grid fleet | 0.848 | 0.195 | 0.775 | 0.005 | | clean grid only | 5.766 | 4.584 | 5.028 | 0.005 | |"
+    },
+    {
+      "claim": "(2) Reuse \\emph{survives reliability if planned for}: a reliability-aware plan retained a saving of 0.775% against 0.848% when failures were ignored, and degraded gracefully to zero as reused parts became worse, whereas a failure-blind plan kept only 0.195% and became carbon-negative once reused par",
+      "value": "0.195",
+      "section": "Introduction",
+      "context": "ures were ignored, and degraded gracefully to zero as reused parts became worse, whereas a failure-blind plan kept only 0.195% and became carbon-negative once reused parts failed about twice as often as their age predicts. (3) Reuse \\emph{persist",
+      "evidence_snippet": "| X | Y_naive | Y | Z (pp) | |---|---|---|---|---| | three-grid fleet | 0.848 | 0.195 | 0.775 | 0.005 | | clean grid only | 5.766 | 4.584 | 5.028 | 0.005 | | mixed g"
+    },
+    {
+      "claim": "(3) Reuse \\emph{persists under guaranteed SLOs}: meeting a 0.1% per-region-quarter shortfall target under strongly correlated failures cost 0.79--0.82% extra carbon, mostly idle electricity of reserve hosts, and the reuse saving grew slightly, to 0.800--0.814% across seeds, because the reuse plan's ",
+      "value": "0.1",
+      "section": "Introduction",
+      "context": "sed parts failed about twice as often as their age predicts. (3) Reuse \\emph{persists under guaranteed SLOs}: meeting a 0.1% per-region-quarter shortfall target under strongly correlated failures cost 0.79--0.82% extra carbon, mostly idle elect",
+      "evidence_snippet": "ounting failures, spares, logistics and drains reduced the reuse saving by only 0.1 to 2.2 percentage points. Over 6 years a new host saw 4.36 GPU, 5.43 DIMM, 0.81"
+    },
+    {
+      "claim": "We add a reserve  R_{rt}  on \\emph{installed} LC capacity,   \\sum_{s,a}\\theta_{s,\\text{LC}} u (1-\\beta_{\\text{LC}}\\ell_{sa}) n_{s,\\text{LC},rat}+\\text{lease}_{rt}\\ >=\\ D_{rt}+R_{rt},     with expected-value derating  \\beta_{\\text{LC}}=1  inside the LP (the reserve replaces the heuristic multiplier),",
+      "value": "0.05",
+      "section": "Lifecycle Model",
+      "context": "ilon(\\text{capacity}_{rt})\\} , where  Q_\\varepsilon  is the  \\varepsilon -quantile; re-solve until every gap is at most 0.05% of demand. Reserves grow monotonically, so the loop terminates; reserve nodes are idle and therefore pay idle power and",
+      "evidence_snippet": "linear relaxation solved in under 1 s, matched the integer results within about 0.05 percentage points on X and Y, and gave identical X, Y and Z at 1x and 50x fleet"
+    },
+    {
+      "claim": "\\section{Evaluation Methodology}   \\subsection{Scenarios and Parameters} \\emph{Node level:} one host per SKU over a six-year life at 60% utilization on three grids with base carbon intensity 40, 250 and 650 gCO _2 e/kWh (clean, mixed, dirty) declining 2%, 5% and 3% per year, and PUE 1.2.",
+      "value": "2",
+      "section": "Evaluation Methodology",
+      "context": "60% utilization on three grids with base carbon intensity 40, 250 and 650 gCO _2 e/kWh (clean, mixed, dirty) declining 2%, 5% and 3% per year, and PUE 1.2. \\emph{Reference fleet:} 24 quarters and three regions; LC demand starts at 180, 450 a",
+      "evidence_snippet": "quarterly steps, three grids. Grid carbon intensity in the base year was 40 gCO2e/kWh (clean, declining 2%/yr, floor 10), 250 gCO2e/kWh (mixed, declining 5%/yr,"
+    },
+    {
+      "claim": "\\section{Evaluation Methodology}   \\subsection{Scenarios and Parameters} \\emph{Node level:} one host per SKU over a six-year life at 60% utilization on three grids with base carbon intensity 40, 250 and 650 gCO _2 e/kWh (clean, mixed, dirty) declining 2%, 5% and 3% per year, and PUE 1.2.",
+      "value": "5",
+      "section": "Evaluation Methodology",
+      "context": "utilization on three grids with base carbon intensity 40, 250 and 650 gCO _2 e/kWh (clean, mixed, dirty) declining 2%, 5% and 3% per year, and PUE 1.2. \\emph{Reference fleet:} 24 quarters and three regions; LC demand starts at 180, 450 and 3",
+      "evidence_snippet": "0 gCO2e/kWh (clean, declining 2%/yr, floor 10), 250 gCO2e/kWh (mixed, declining 5%/yr, floor 20) and 650 gCO2e/kWh (dirty, declining 3%/yr, floor 50); PUE was 1."
+    },
+    {
+      "claim": "\\section{Evaluation Methodology}   \\subsection{Scenarios and Parameters} \\emph{Node level:} one host per SKU over a six-year life at 60% utilization on three grids with base carbon intensity 40, 250 and 650 gCO _2 e/kWh (clean, mixed, dirty) declining 2%, 5% and 3% per year, and PUE 1.2.",
+      "value": "3",
+      "section": "Evaluation Methodology",
+      "context": "ation on three grids with base carbon intensity 40, 250 and 650 gCO _2 e/kWh (clean, mixed, dirty) declining 2%, 5% and 3% per year, and PUE 1.2. \\emph{Reference fleet:} 24 quarters and three regions; LC demand starts at 180, 450 and 330 node",
+      "evidence_snippet": "CO2e/kWh (mixed, declining 5%/yr, floor 20) and 650 gCO2e/kWh (dirty, declining 3%/yr, floor 50); PUE was 1.2.   * *Pilot fleet:* 3 years, one region, an existin"
+    },
+    {
+      "claim": "\\emph{Reference fleet:} 24 quarters and three regions; LC demand starts at 180, 450 and 330 node-equivalents (clean, mixed, dirty) and grows 25%, 25% and 30% per year; global BATCH demand starts at 150 and grows 35% per year.",
+      "value": "25",
+      "section": "Evaluation Methodology",
+      "context": ":} 24 quarters and three regions; LC demand starts at 180, 450 and 330 node-equivalents (clean, mixed, dirty) and grows 25%, 25% and 30% per year; global BATCH demand starts at 150 and grows 35% per year. The initial fleet holds about 1{,}750",
+      "evidence_snippet": "d started at 180 (clean), 450 (mixed) and 330 (dirty) node-equivalents and grew 25%, 25% and 30% per year; global BATCH demand started at 150 and grew 35% per yea"
+    },
+    {
+      "claim": "\\emph{Reference fleet:} 24 quarters and three regions; LC demand starts at 180, 450 and 330 node-equivalents (clean, mixed, dirty) and grows 25%, 25% and 30% per year; global BATCH demand starts at 150 and grows 35% per year.",
+      "value": "30",
+      "section": "Evaluation Methodology",
+      "context": "s and three regions; LC demand starts at 180, 450 and 330 node-equivalents (clean, mixed, dirty) and grows 25%, 25% and 30% per year; global BATCH demand starts at 150 and grows 35% per year. The initial fleet holds about 1{,}750 hosts: 150/50",
+      "evidence_snippet": "180 (clean), 450 (mixed) and 330 (dirty) node-equivalents and grew 25%, 25% and 30% per year; global BATCH demand started at 150 and grew 35% per year. The initia"
+    },
+    {
+      "claim": "\\emph{Reference fleet:} 24 quarters and three regions; LC demand starts at 180, 450 and 330 node-equivalents (clean, mixed, dirty) and grows 25%, 25% and 30% per year; global BATCH demand starts at 150 and grows 35% per year.",
+      "value": "35",
+      "section": "Evaluation Methodology",
+      "context": "node-equivalents (clean, mixed, dirty) and grows 25%, 25% and 30% per year; global BATCH demand starts at 150 and grows 35% per year. The initial fleet holds about 1{,}750 hosts: 150/500/400 previous-generation hosts at the start of their seco",
+      "evidence_snippet": "and grew 25%, 25% and 30% per year; global BATCH demand started at 150 and grew 35% per year. The initial fleet held 150/500/400 previous-generation hosts (age 0"
+    },
+    {
+      "claim": "Operational carbon was about 91% of a new host's lifecycle carbon.",
+      "value": "91",
+      "section": "Results",
+      "context": "al Carbon Dominates GPU Hosts} Table   gives six-year node-level carbon on the mixed grid. Operational carbon was about 91% of a new host's lifecycle carbon. Reuse cut the host's embodied carbon by about two thirds, from 8{,}312 to 2{,}860 kgC",
+      "evidence_snippet": "| 3.35 | -2.30 | 5.65 | | SSD embodied carbon (kgCO2e) | 150 | 900 | -2.49 | 2.91 | 5.41 | | mixed-grid carbon intensity (g/kWh) | 150 | 350 | 3.80 | -0.41 | 4.2"
+    },
+    {
+      "claim": "Reuse cut the host's embodied carbon by about two thirds, from 8{,}312 to 2{,}860 kgCO _2 e, but changed its total by only about 6%.",
+      "value": "6",
+      "section": "Results",
+      "context": "the host's embodied carbon by about two thirds, from 8{,}312 to 2{,}860 kgCO _2 e, but changed its total by only about 6%. Per unit of work, the reuse-based host saved 18.23% (LC) and 20.73% (BATCH) on the clean grid, 1.26% and 4.28% on the",
+      "evidence_snippet": "/ scenarios:**   * *Node-level study:* one 8-GPU inference node per SKU over a 6-year service life at 60% utilization, quarterly steps, three grids. Grid carbon"
+    },
+    {
+      "claim": "Per unit of work, the reuse-based host saved 18.23% (LC) and 20.73% (BATCH) on the clean grid, 1.26% and 4.28% on the mixed grid, and  -2.04%  and 1.08% on the dirty grid with failures ignored; counting failures lowered these by 0.1 to 2.2 percentage points.",
+      "value": "18.23",
+      "section": "Results",
+      "context": "from 8{,}312 to 2{,}860 kgCO _2 e, but changed its total by only about 6%. Per unit of work, the reuse-based host saved 18.23% (LC) and 20.73% (BATCH) on the clean grid, 1.26% and 4.28% on the mixed grid, and  -2.04%  and 1.08% on the dirty grid",
+      "evidence_snippet": "| Tier | Failures ignored | Failures counted | |---|---|---|---| | clean | LC | 18.23 | 16.04 | | clean | BATCH | 20.73 | 18.61 | | mixed | LC | 1.26 | 0.93 | | mixe"
+    },
+    {
+      "claim": "Per unit of work, the reuse-based host saved 18.23% (LC) and 20.73% (BATCH) on the clean grid, 1.26% and 4.28% on the mixed grid, and  -2.04%  and 1.08% on the dirty grid with failures ignored; counting failures lowered these by 0.1 to 2.2 percentage points.",
+      "value": "20.73",
+      "section": "Results",
+      "context": "2{,}860 kgCO _2 e, but changed its total by only about 6%. Per unit of work, the reuse-based host saved 18.23% (LC) and 20.73% (BATCH) on the clean grid, 1.26% and 4.28% on the mixed grid, and  -2.04%  and 1.08% on the dirty grid with failures ig",
+      "evidence_snippet": "es counted | |---|---|---|---| | clean | LC | 18.23 | 16.04 | | clean | BATCH | 20.73 | 18.61 | | mixed | LC | 1.26 | 0.93 | | mixed | BATCH | 4.28 | 3.96 | | dirty"
+    },
+    {
+      "claim": "Per unit of work, the reuse-based host saved 18.23% (LC) and 20.73% (BATCH) on the clean grid, 1.26% and 4.28% on the mixed grid, and  -2.04%  and 1.08% on the dirty grid with failures ignored; counting failures lowered these by 0.1 to 2.2 percentage points.",
+      "value": "1.26",
+      "section": "Results",
+      "context": "total by only about 6%. Per unit of work, the reuse-based host saved 18.23% (LC) and 20.73% (BATCH) on the clean grid, 1.26% and 4.28% on the mixed grid, and  -2.04%  and 1.08% on the dirty grid with failures ignored; counting failures lowered",
+      "evidence_snippet": "| clean | LC | 18.23 | 16.04 | | clean | BATCH | 20.73 | 18.61 | | mixed | LC | 1.26 | 0.93 | | mixed | BATCH | 4.28 | 3.96 | | dirty | LC | -2.04 | -2.15 | | dirty"
+    },
+    {
+      "claim": "Per unit of work, the reuse-based host saved 18.23% (LC) and 20.73% (BATCH) on the clean grid, 1.26% and 4.28% on the mixed grid, and  -2.04%  and 1.08% on the dirty grid with failures ignored; counting failures lowered these by 0.1 to 2.2 percentage points.",
+      "value": "4.28",
+      "section": "Results",
+      "context": "only about 6%. Per unit of work, the reuse-based host saved 18.23% (LC) and 20.73% (BATCH) on the clean grid, 1.26% and 4.28% on the mixed grid, and  -2.04%  and 1.08% on the dirty grid with failures ignored; counting failures lowered these by 0",
+      "evidence_snippet": "clean | BATCH | 20.73 | 18.61 | | mixed | LC | 1.26 | 0.93 | | mixed | BATCH | 4.28 | 3.96 | | dirty | LC | -2.04 | -2.15 | | dirty | BATCH | 1.08 | 0.98 |  ### No"
+    },
+    {
+      "claim": "Per unit of work, the reuse-based host saved 18.23% (LC) and 20.73% (BATCH) on the clean grid, 1.26% and 4.28% on the mixed grid, and  -2.04%  and 1.08% on the dirty grid with failures ignored; counting failures lowered these by 0.1 to 2.2 percentage points.",
+      "value": "-2.04",
+      "section": "Results",
+      "context": "k, the reuse-based host saved 18.23% (LC) and 20.73% (BATCH) on the clean grid, 1.26% and 4.28% on the mixed grid, and  -2.04%  and 1.08% on the dirty grid with failures ignored; counting failures lowered these by 0.1 to 2.2 percentage points. Th",
+      "evidence_snippet": "1 | | mixed | LC | 1.26 | 0.93 | | mixed | BATCH | 4.28 | 3.96 | | dirty | LC | -2.04 | -2.15 | | dirty | BATCH | 1.08 | 0.98 |  ### Node-level sensitivity: ten larg"
+    },
+    {
+      "claim": "Per unit of work, the reuse-based host saved 18.23% (LC) and 20.73% (BATCH) on the clean grid, 1.26% and 4.28% on the mixed grid, and  -2.04%  and 1.08% on the dirty grid with failures ignored; counting failures lowered these by 0.1 to 2.2 percentage points.",
+      "value": "1.08",
+      "section": "Results",
+      "context": "-based host saved 18.23% (LC) and 20.73% (BATCH) on the clean grid, 1.26% and 4.28% on the mixed grid, and  -2.04%  and 1.08% on the dirty grid with failures ignored; counting failures lowered these by 0.1 to 2.2 percentage points. The mixed-gri",
+      "evidence_snippet": "mixed | BATCH | 4.28 | 3.96 | | dirty | LC | -2.04 | -2.15 | | dirty | BATCH | 1.08 | 0.98 |  ### Node-level sensitivity: ten largest swings (mixed grid, LC, base"
+    },
+    {
+      "claim": "The mixed-grid result was dominated by the CXL throughput multiplier, whose range of 0.85--1.0 moved the saving from  -10.72%  to 5.88%, a swing of 16.61 percentage points---three times the next parameter, the reuse host's peak-power delta (5.65), followed by SSD embodied carbon (5.41) and grid carb",
+      "value": "-10.72",
+      "section": "Results",
+      "context": ". The mixed-grid result was dominated by the CXL throughput multiplier, whose range of 0.85--1.0 moved the saving from  -10.72%  to 5.88%, a swing of 16.61 percentage points---three times the next parameter, the reuse host's peak-power delta (5.65",
+      "evidence_snippet": "(pp) | |---|---|---|---|---|---| | CXL throughput multiplier (LC) | 0.85 | 1 | -10.72 | 5.88 | 16.61 | | reuse host peak-power delta (W) | -400 | 300 | 3.35 | -2.30"
+    },
+    {
+      "claim": "Ignoring failures, reuse saved  X=0.848% .",
+      "value": "0.848",
+      "section": "Results",
+      "context": "ection{Does Reuse Survive Reliability?} Table   and Figure   report the fleet ladder. Ignoring failures, reuse saved  X=0.848% . A reliability-aware plan kept  Y=0.775% , about 91% of it. A failure-blind plan kept only  Y_\\text{naive}=0.195% : it",
+      "evidence_snippet": "| Fleet | X | Y_naive | Y | Z (pp) | |---|---|---|---|---| | three-grid fleet | 0.848 | 0.195 | 0.775 | 0.005 | | clean grid only | 5.766 | 4.584 | 5.028 | 0.005 | |"
+    },
+    {
+      "claim": "A reliability-aware plan kept  Y=0.775% , about 91% of it.",
+      "value": "0.775",
+      "section": "Results",
+      "context": "ble   and Figure   report the fleet ladder. Ignoring failures, reuse saved  X=0.848% . A reliability-aware plan kept  Y=0.775% , about 91% of it. A failure-blind plan kept only  Y_\\text{naive}=0.195% : it purchased the same reuse-heavy fleet as E",
+      "evidence_snippet": "naive | Y | Z (pp) | |---|---|---|---|---| | three-grid fleet | 0.848 | 0.195 | 0.775 | 0.005 | | clean grid only | 5.766 | 4.584 | 5.028 | 0.005 | | mixed grid only"
+    },
+    {
+      "claim": "A reliability-aware plan kept  Y=0.775% , about 91% of it.",
+      "value": "91",
+      "section": "Results",
+      "context": "e   report the fleet ladder. Ignoring failures, reuse saved  X=0.848% . A reliability-aware plan kept  Y=0.775% , about 91% of it. A failure-blind plan kept only  Y_\\text{naive}=0.195% : it purchased the same reuse-heavy fleet as E1, then had",
+      "evidence_snippet": "| 3.35 | -2.30 | 5.65 | | SSD embodied carbon (kgCO2e) | 150 | 900 | -2.49 | 2.91 | 5.41 | | mixed-grid carbon intensity (g/kWh) | 150 | 350 | 3.80 | -0.41 | 4.2"
+    },
+    {
+      "claim": "A failure-blind plan kept only  Y_\\text{naive}=0.195% : it purchased the same reuse-heavy fleet as E1, then had to lease 13{,}104 tCO _2 e of capacity to cover drained nodes, against 530 tCO _2 e for the reliability-aware plan.",
+      "value": "0.195",
+      "section": "Results",
+      "context": "d  X=0.848% . A reliability-aware plan kept  Y=0.775% , about 91% of it. A failure-blind plan kept only  Y_\\text{naive}=0.195% : it purchased the same reuse-heavy fleet as E1, then had to lease 13{,}104 tCO _2 e of capacity to cover drained nodes",
+      "evidence_snippet": "| X | Y_naive | Y | Z (pp) | |---|---|---|---|---| | three-grid fleet | 0.848 | 0.195 | 0.775 | 0.005 | | clean grid only | 5.766 | 4.584 | 5.028 | 0.005 | | mixed g"
+    },
+    {
+      "claim": "Split by grid,  X  was 5.766%, 0.675% and 0.103% and  Y  was 5.028%, 0.568% and 0.087% on clean, mixed and dirty single-grid fleets, while the failure-blind plan saved 4.584% and 0.039% on clean and mixed grids and lost 0.443% on the dirty grid.",
+      "value": "5.766",
+      "section": "Results",
+      "context": "CO _2 e of capacity to cover drained nodes, against 530 tCO _2 e for the reliability-aware plan. Split by grid,  X  was 5.766%, 0.675% and 0.103% and  Y  was 5.028%, 0.568% and 0.087% on clean, mixed and dirty single-grid fleets, while the failur",
+      "evidence_snippet": "-|---| | three-grid fleet | 0.848 | 0.195 | 0.775 | 0.005 | | clean grid only | 5.766 | 4.584 | 5.028 | 0.005 | | mixed grid only | 0.675 | 0.039 | 0.568 | 0.000 | |"
+    },
+    {
+      "claim": "Split by grid,  X  was 5.766%, 0.675% and 0.103% and  Y  was 5.028%, 0.568% and 0.087% on clean, mixed and dirty single-grid fleets, while the failure-blind plan saved 4.584% and 0.039% on clean and mixed grids and lost 0.443% on the dirty grid.",
+      "value": "0.675",
+      "section": "Results",
+      "context": "of capacity to cover drained nodes, against 530 tCO _2 e for the reliability-aware plan. Split by grid,  X  was 5.766%, 0.675% and 0.103% and  Y  was 5.028%, 0.568% and 0.087% on clean, mixed and dirty single-grid fleets, while the failure-blind",
+      "evidence_snippet": "0.005 | | clean grid only | 5.766 | 4.584 | 5.028 | 0.005 | | mixed grid only | 0.675 | 0.039 | 0.568 | 0.000 | | dirty grid only | 0.103 | -0.443 | 0.087 | 0.000 |"
+    },
+    {
+      "claim": "Split by grid,  X  was 5.766%, 0.675% and 0.103% and  Y  was 5.028%, 0.568% and 0.087% on clean, mixed and dirty single-grid fleets, while the failure-blind plan saved 4.584% and 0.039% on clean and mixed grids and lost 0.443% on the dirty grid.",
+      "value": "0.103",
+      "section": "Results",
+      "context": "to cover drained nodes, against 530 tCO _2 e for the reliability-aware plan. Split by grid,  X  was 5.766%, 0.675% and 0.103% and  Y  was 5.028%, 0.568% and 0.087% on clean, mixed and dirty single-grid fleets, while the failure-blind plan saved",
+      "evidence_snippet": "0.005 | | mixed grid only | 0.675 | 0.039 | 0.568 | 0.000 | | dirty grid only | 0.103 | -0.443 | 0.087 | 0.000 |  ### Reused-part failure-rate multiplier sweep, refe"
+    },
+    {
+      "claim": "Split by grid,  X  was 5.766%, 0.675% and 0.103% and  Y  was 5.028%, 0.568% and 0.087% on clean, mixed and dirty single-grid fleets, while the failure-blind plan saved 4.584% and 0.039% on clean and mixed grids and lost 0.443% on the dirty grid.",
+      "value": "5.028",
+      "section": "Results",
+      "context": "odes, against 530 tCO _2 e for the reliability-aware plan. Split by grid,  X  was 5.766%, 0.675% and 0.103% and  Y  was 5.028%, 0.568% and 0.087% on clean, mixed and dirty single-grid fleets, while the failure-blind plan saved 4.584% and 0.039% o",
+      "evidence_snippet": "rid fleet | 0.848 | 0.195 | 0.775 | 0.005 | | clean grid only | 5.766 | 4.584 | 5.028 | 0.005 | | mixed grid only | 0.675 | 0.039 | 0.568 | 0.000 | | dirty grid only"
+    },
+    {
+      "claim": "Split by grid,  X  was 5.766%, 0.675% and 0.103% and  Y  was 5.028%, 0.568% and 0.087% on clean, mixed and dirty single-grid fleets, while the failure-blind plan saved 4.584% and 0.039% on clean and mixed grids and lost 0.443% on the dirty grid.",
+      "value": "0.568",
+      "section": "Results",
+      "context": "ainst 530 tCO _2 e for the reliability-aware plan. Split by grid,  X  was 5.766%, 0.675% and 0.103% and  Y  was 5.028%, 0.568% and 0.087% on clean, mixed and dirty single-grid fleets, while the failure-blind plan saved 4.584% and 0.039% on clean",
+      "evidence_snippet": "grid only | 5.766 | 4.584 | 5.028 | 0.005 | | mixed grid only | 0.675 | 0.039 | 0.568 | 0.000 | | dirty grid only | 0.103 | -0.443 | 0.087 | 0.000 |  ### Reused-part"
+    },
+    {
+      "claim": "Split by grid,  X  was 5.766%, 0.675% and 0.103% and  Y  was 5.028%, 0.568% and 0.087% on clean, mixed and dirty single-grid fleets, while the failure-blind plan saved 4.584% and 0.039% on clean and mixed grids and lost 0.443% on the dirty grid.",
+      "value": "0.087",
+      "section": "Results",
+      "context": "CO _2 e for the reliability-aware plan. Split by grid,  X  was 5.766%, 0.675% and 0.103% and  Y  was 5.028%, 0.568% and 0.087% on clean, mixed and dirty single-grid fleets, while the failure-blind plan saved 4.584% and 0.039% on clean and mixed g",
+      "evidence_snippet": "rid only | 0.675 | 0.039 | 0.568 | 0.000 | | dirty grid only | 0.103 | -0.443 | 0.087 | 0.000 |  ### Reused-part failure-rate multiplier sweep, reference fleet (%)"
+    },
+    {
+      "claim": "Split by grid,  X  was 5.766%, 0.675% and 0.103% and  Y  was 5.028%, 0.568% and 0.087% on clean, mixed and dirty single-grid fleets, while the failure-blind plan saved 4.584% and 0.039% on clean and mixed grids and lost 0.443% on the dirty grid.",
+      "value": "4.584",
+      "section": "Results",
+      "context": "and  Y  was 5.028%, 0.568% and 0.087% on clean, mixed and dirty single-grid fleets, while the failure-blind plan saved 4.584% and 0.039% on clean and mixed grids and lost 0.443% on the dirty grid.   [!htbp]   \\centering   \\caption{Reference flee",
+      "evidence_snippet": "three-grid fleet | 0.848 | 0.195 | 0.775 | 0.005 | | clean grid only | 5.766 | 4.584 | 5.028 | 0.005 | | mixed grid only | 0.675 | 0.039 | 0.568 | 0.000 | | dirty g"
+    },
+    {
+      "claim": "Split by grid,  X  was 5.766%, 0.675% and 0.103% and  Y  was 5.028%, 0.568% and 0.087% on clean, mixed and dirty single-grid fleets, while the failure-blind plan saved 4.584% and 0.039% on clean and mixed grids and lost 0.443% on the dirty grid.",
+      "value": "0.039",
+      "section": "Results",
+      "context": "s 5.028%, 0.568% and 0.087% on clean, mixed and dirty single-grid fleets, while the failure-blind plan saved 4.584% and 0.039% on clean and mixed grids and lost 0.443% on the dirty grid.   [!htbp]   \\centering   \\caption{Reference fleet: six-year",
+      "evidence_snippet": "| clean grid only | 5.766 | 4.584 | 5.028 | 0.005 | | mixed grid only | 0.675 | 0.039 | 0.568 | 0.000 | | dirty grid only | 0.103 | -0.443 | 0.087 | 0.000 |  ### Reu"
+    },
+    {
+      "claim": "Split by grid,  X  was 5.766%, 0.675% and 0.103% and  Y  was 5.028%, 0.568% and 0.087% on clean, mixed and dirty single-grid fleets, while the failure-blind plan saved 4.584% and 0.039% on clean and mixed grids and lost 0.443% on the dirty grid.",
+      "value": "0.443",
+      "section": "Results",
+      "context": "ed and dirty single-grid fleets, while the failure-blind plan saved 4.584% and 0.039% on clean and mixed grids and lost 0.443% on the dirty grid.   [!htbp]   \\centering   \\caption{Reference fleet: six-year lifecycle carbon by plan (tCO _2 e).}",
+      "evidence_snippet": "mixed grid only | 0.675 | 0.039 | 0.568 | 0.000 | | dirty grid only | 0.103 | -0.443 | 0.087 | 0.000 |  ### Reused-part failure-rate multiplier sweep, reference fle"
+    },
+    {
+      "claim": "The reliability-aware plan bought fewer reuse-based hosts as  m  grew, with  Y  falling from 0.863% ( m=0.5 ) to 0.621% ( m=2 ), 0.209% ( m=5 ) and 0 from  m=8  onwards.",
+      "value": "0.863",
+      "section": "Results",
+      "context": "art hazard multiplier  m . The reliability-aware plan bought fewer reuse-based hosts as  m  grew, with  Y  falling from 0.863% ( m=0.5 ) to 0.621% ( m=2 ), 0.209% ( m=5 ) and 0 from  m=8  onwards. Because the planner can always fall back to the n",
+      "evidence_snippet": "(%)  | Multiplier | X | Y_naive | Y | |---|---|---|---| | 0.5 | 0.848 | 0.289 | 0.863 | | 1 | 0.848 | 0.195 | 0.775 | | 2 | 0.848 | 0.015 | 0.621 | | 3 | 0.848 | -0."
+    },
+    {
+      "claim": "The reliability-aware plan bought fewer reuse-based hosts as  m  grew, with  Y  falling from 0.863% ( m=0.5 ) to 0.621% ( m=2 ), 0.209% ( m=5 ) and 0 from  m=8  onwards.",
+      "value": "0.209",
+      "section": "Results",
+      "context": "bility-aware plan bought fewer reuse-based hosts as  m  grew, with  Y  falling from 0.863% ( m=0.5 ) to 0.621% ( m=2 ), 0.209% ( m=5 ) and 0 from  m=8  onwards. Because the planner can always fall back to the no-reuse fleet,  Y>= 0  holds by cons",
+      "evidence_snippet": "| 0.848 | 0.015 | 0.621 | | 3 | 0.848 | -0.154 | 0.475 | | 5 | 0.848 | -0.467 | 0.209 | | 8 | 0.848 | -0.888 | 0.000 | | 12 | 0.848 | -1.386 | 0.000 | | 20 | 0.848 |"
+    },
+    {
+      "claim": "The failure-blind plan crossed zero near  m\\approx2.1  and reached  -2.251%  at  m=20 .",
+      "value": "-2.251",
+      "section": "Results",
+      "context": "without reliability information has no such floor. The failure-blind plan crossed zero near  m\\approx2.1  and reached  -2.251%  at  m=20 . At node level, the aged DIMMs nearly doubled DIMM failures (9.67 against 5.43 per host over six years), but",
+      "evidence_snippet": "| | 8 | 0.848 | -0.888 | 0.000 | | 12 | 0.848 | -1.386 | 0.000 | | 20 | 0.848 | -2.251 | 0.000 |  ### Cascade sweep: old-GPU BATCH throughput, reference fleet  | Old"
+    },
+    {
+      "claim": "\\subsection{Guaranteeing the SLO} Replaying the expected-value plans (headroom multiplier 3) against sampled drains showed that the LC tier met demand on average but not everywhere: the worst region-quarter had a 2.7% probability of LC shortfall without reuse and 14.5% with reliability-aware reuse u",
+      "value": "14.5",
+      "section": "Results",
+      "context": "demand on average but not everywhere: the worst region-quarter had a 2.7% probability of LC shortfall without reuse and 14.5% with reliability-aware reuse under independent failures, rising to 15.5% under correlated failures; under strong correl",
+      "evidence_snippet": "headroom met the SLO on average but left individual region-quarters with up to 14.5% (independent) and 15.5% (correlated) probability of LC capacity shortfall for"
+    },
+    {
+      "claim": "\\subsection{Guaranteeing the SLO} Replaying the expected-value plans (headroom multiplier 3) against sampled drains showed that the LC tier met demand on average but not everywhere: the worst region-quarter had a 2.7% probability of LC shortfall without reuse and 14.5% with reliability-aware reuse u",
+      "value": "1",
+      "section": "Results",
+      "context": "s, rising to 15.5% under correlated failures; under strong correlation ( k=0.5 ), 44--48 of 72 region-quarters exceeded 1%. Table   and Figure   report the chance-constrained plans. In independent validation the worst region-quarter shortfall",
+      "evidence_snippet": "# Experimental Log  ## 1. Experimental Setup  * **Datasets / scenarios:**   * *Node-level study:* one 8-"
+    },
+    {
+      "claim": "In independent validation the worst region-quarter shortfall probability was 0.96--1.07% for a 1% target and 0.10--0.13% for a 0.1% target across reuse and no-reuse plans, i.e.",
+      "value": "1",
+      "section": "Results",
+      "context": "hance-constrained plans. In independent validation the worst region-quarter shortfall probability was 0.96--1.07% for a 1% target and 0.10--0.13% for a 0.1% target across reuse and no-reuse plans, i.e. close to the targets: the largest excess",
+      "evidence_snippet": "# Experimental Log  ## 1. Experimental Setup  * **Datasets / scenarios:**   * *Node-level study:* one 8-"
+    },
+    {
+      "claim": "In independent validation the worst region-quarter shortfall probability was 0.96--1.07% for a 1% target and 0.10--0.13% for a 0.1% target across reuse and no-reuse plans, i.e.",
+      "value": "0.1",
+      "section": "Results",
+      "context": "pendent validation the worst region-quarter shortfall probability was 0.96--1.07% for a 1% target and 0.10--0.13% for a 0.1% target across reuse and no-reuse plans, i.e. close to the targets: the largest excess (0.13% against 0.1%) is about two",
+      "evidence_snippet": "ounting failures, spares, logistics and drains reduced the reuse saving by only 0.1 to 2.2 percentage points. Over 6 years a new host saw 4.36 GPU, 5.43 DIMM, 0.81"
+    },
+    {
+      "claim": "close to the targets: the largest excess (0.13% against 0.1%) is about two standard errors above the target (the standard error at 0.1% with 50{,}000 samples is about 0.014 percentage points), consistent with Monte Carlo noise in the loop's quantile estimates and its stopping tolerance of 0.05% of d",
+      "value": "0.13",
+      "section": "Results",
+      "context": "arget and 0.10--0.13% for a 0.1% target across reuse and no-reuse plans, i.e. close to the targets: the largest excess (0.13% against 0.1%) is about two standard errors above the target (the standard error at 0.1% with 50{,}000 samples is about",
+      "evidence_snippet": "region-quarter shortfall probabilities (0.96 to 1.07% at the 1% target, 0.10 to 0.13% at the 0.1% target) slightly exceeded the targets in some cases; with 50,000 s"
+    },
+    {
+      "claim": "The SLO cost 0.22--0.82% extra carbon, rising with strictness and correlation; strongly correlated failures required about 2.6 ×  the reserve of independent ones at the 0.1% target.",
+      "value": "0.1",
+      "section": "Results",
+      "context": "h strictness and correlation; strongly correlated failures required about 2.6 ×  the reserve of independent ones at the 0.1% target. In every setting the reuse plan paid a slightly lower price than the no-reuse plan, so the reuse saving \\emph{g",
+      "evidence_snippet": "ounting failures, spares, logistics and drains reduced the reuse saving by only 0.1 to 2.2 percentage points. Over 6 years a new host saw 4.36 GPU, 5.43 DIMM, 0.81"
+    },
+    {
+      "claim": "In every setting the reuse plan paid a slightly lower price than the no-reuse plan, so the reuse saving \\emph{grew} under the guarantee: from 0.775% to 0.812%, and from 0.480% to 0.499% when reused parts failed three times more than their age predicts.",
+      "value": "0.775",
+      "section": "Results",
+      "context": "euse plan paid a slightly lower price than the no-reuse plan, so the reuse saving \\emph{grew} under the guarantee: from 0.775% to 0.812%, and from 0.480% to 0.499% when reused parts failed three times more than their age predicts. (Because the ch",
+      "evidence_snippet": "naive | Y | Z (pp) | |---|---|---|---|---| | three-grid fleet | 0.848 | 0.195 | 0.775 | 0.005 | | clean grid only | 5.766 | 4.584 | 5.028 | 0.005 | | mixed grid only"
+    },
+    {
+      "claim": "In every setting the reuse plan paid a slightly lower price than the no-reuse plan, so the reuse saving \\emph{grew} under the guarantee: from 0.775% to 0.812%, and from 0.480% to 0.499% when reused parts failed three times more than their age predicts.",
+      "value": "0.480",
+      "section": "Results",
+      "context": "ower price than the no-reuse plan, so the reuse saving \\emph{grew} under the guarantee: from 0.775% to 0.812%, and from 0.480% to 0.499% when reused parts failed three times more than their age predicts. (Because the chance-constrained study uses",
+      "evidence_snippet": "775 | 0.785 | 0.823 | 0.0012 | 0.0011 | 15 | | 3 | independent | 0.01 | 0.485 | 0.480 | 0.223 | 0.229 | 0.0100 | 0.0105 | 4 | | 3 | independent | 0.001 | 0.484 | 0.4"
+    },
+    {
+      "claim": "(Because the chance-constrained study uses  \\beta_{\\text{LC}}=1 , its expected-value baseline at  m=3  is 0.480% rather than the 0.475% of the  \\beta_{\\text{LC}}=3  sweep.)",
+      "value": "0.480",
+      "section": "Results",
+      "context": "age predicts. (Because the chance-constrained study uses  \\beta_{\\text{LC}}=1 , its expected-value baseline at  m=3  is 0.480% rather than the 0.475% of the  \\beta_{\\text{LC}}=3  sweep.)  To identify the mechanism, Table   decomposes the strictes",
+      "evidence_snippet": "775 | 0.785 | 0.823 | 0.0012 | 0.0011 | 15 | | 3 | independent | 0.01 | 0.485 | 0.480 | 0.223 | 0.229 | 0.0100 | 0.0105 | 4 | | 3 | independent | 0.001 | 0.484 | 0.4"
+    },
+    {
+      "claim": "(Because the chance-constrained study uses  \\beta_{\\text{LC}}=1 , its expected-value baseline at  m=3  is 0.480% rather than the 0.475% of the  \\beta_{\\text{LC}}=3  sweep.)",
+      "value": "0.475",
+      "section": "Results",
+      "context": "the chance-constrained study uses  \\beta_{\\text{LC}}=1 , its expected-value baseline at  m=3  is 0.480% rather than the 0.475% of the  \\beta_{\\text{LC}}=3  sweep.)  To identify the mechanism, Table   decomposes the strictest setting ( \\varepsilon",
+      "evidence_snippet": "| 0.848 | 0.195 | 0.775 | | 2 | 0.848 | 0.015 | 0.621 | | 3 | 0.848 | -0.154 | 0.475 | | 5 | 0.848 | -0.467 | 0.209 | | 8 | 0.848 | -0.888 | 0.000 | | 12 | 0.848 |"
+    },
+    {
+      "claim": "The SLO's added carbon was dominated by idle electricity of reserve hosts (83% without reuse, 85% with reuse), not by embodied carbon.",
+      "value": "83",
+      "section": "Results",
+      "context": "and repeats it for three Monte Carlo seeds. The SLO's added carbon was dominated by idle electricity of reserve hosts (83% without reuse, 85% with reuse), not by embodied carbon. Across seeds, the reuse plan needed 2.6--3.6% less added reserv",
+      "evidence_snippet": "bon. * The chance-constrained reserve was dominated by idle operational energy: 83% (no reuse) and 85% (reuse) of the SLO's added carbon was operational, with emb"
+    },
+    {
+      "claim": "The SLO's added carbon was dominated by idle electricity of reserve hosts (83% without reuse, 85% with reuse), not by embodied carbon.",
+      "value": "85",
+      "section": "Results",
+      "context": "three Monte Carlo seeds. The SLO's added carbon was dominated by idle electricity of reserve hosts (83% without reuse, 85% with reuse), not by embodied carbon. Across seeds, the reuse plan needed 2.6--3.6% less added reserve capacity than the",
+      "evidence_snippet": ") | Swing (pp) | |---|---|---|---|---|---| | CXL throughput multiplier (LC) | 0.85 | 1 | -10.72 | 5.88 | 16.61 | | reuse host peak-power delta (W) | -400 | 300 |"
+    },
+    {
+      "claim": "Across seeds, the reuse plan needed 2.6--3.6% less added reserve capacity than the no-reuse plan and placed 21.3--21.7% of it on reuse-based hosts---less than their 30% share of the fleet, so the planner did not preferentially use them as reserve.",
+      "value": "30",
+      "section": "Results",
+      "context": "less added reserve capacity than the no-reuse plan and placed 21.3--21.7% of it on reuse-based hosts---less than their 30% share of the fleet, so the planner did not preferentially use them as reserve. Its reserve emitted 156--224 tCO _2 e (3",
+      "evidence_snippet": "180 (clean), 450 (mixed) and 330 (dirty) node-equivalents and grew 25%, 25% and 30% per year; global BATCH demand started at 150 and grew 35% per year. The initia"
+    },
+    {
+      "claim": "[!htbp]   \\centering   \\includegraphics[width=0.82\\linewidth]{figures/fig_chance_constrained_slo.png}   \\caption{Left: reuse saving under a guaranteed latency-critical SLO (per region-quarter shortfall probability of at most 1% or 0.1%) for independent and increasingly correlated failures, with reus",
+      "value": "1",
+      "section": "Results",
+      "context": "caption{Left: reuse saving under a guaranteed latency-critical SLO (per region-quarter shortfall probability of at most 1% or 0.1%) for independent and increasingly correlated failures, with reused parts failing as their age predicts (1 × ) o",
+      "evidence_snippet": "# Experimental Log  ## 1. Experimental Setup  * **Datasets / scenarios:**   * *Node-level study:* one 8-"
+    },
+    {
+      "claim": "[!htbp]   \\centering   \\includegraphics[width=0.82\\linewidth]{figures/fig_chance_constrained_slo.png}   \\caption{Left: reuse saving under a guaranteed latency-critical SLO (per region-quarter shortfall probability of at most 1% or 0.1%) for independent and increasingly correlated failures, with reus",
+      "value": "0.1",
+      "section": "Results",
+      "context": "n{Left: reuse saving under a guaranteed latency-critical SLO (per region-quarter shortfall probability of at most 1% or 0.1%) for independent and increasingly correlated failures, with reused parts failing as their age predicts (1 × ) or three",
+      "evidence_snippet": "ounting failures, spares, logistics and drains reduced the reuse saving by only 0.1 to 2.2 percentage points. Over 6 years a new host saw 4.36 GPU, 5.43 DIMM, 0.81"
+    },
+    {
+      "claim": "\\subsection{Robustness: Accounting, Uncertainty, Headroom and Cost}   \\emph{Accounting.} The convention for reused parts changed magnitudes but not rankings (Table  , Appendix  ):  Y  was 0.775% with cut-off and amortized accounting, 0.601% when reused parts carried their unamortized share, 1.423% a",
+      "value": "0.775",
+      "section": "Results",
+      "context": "\\emph{Accounting.} The convention for reused parts changed magnitudes but not rankings (Table  , Appendix  ):  Y  was 0.775% with cut-off and amortized accounting, 0.601% when reused parts carried their unamortized share, 1.423% and 1.067% with",
+      "evidence_snippet": "naive | Y | Z (pp) | |---|---|---|---|---| | three-grid fleet | 0.848 | 0.195 | 0.775 | 0.005 | | clean grid only | 5.766 | 4.584 | 5.028 | 0.005 | | mixed grid only"
+    },
+    {
+      "claim": "\\subsection{Robustness: Accounting, Uncertainty, Headroom and Cost}   \\emph{Accounting.} The convention for reused parts changed magnitudes but not rankings (Table  , Appendix  ):  Y  was 0.775% with cut-off and amortized accounting, 0.601% when reused parts carried their unamortized share, 1.423% a",
+      "value": "0.601",
+      "section": "Results",
+      "context": "parts changed magnitudes but not rankings (Table  , Appendix  ):  Y  was 0.775% with cut-off and amortized accounting, 0.601% when reused parts carried their unamortized share, 1.423% and 1.067% with upfront accounting, and 0 when reused parts w",
+      "evidence_snippet": "pfront | 1.544 | 0.918 | 1.423 | | residual share | amortized | 0.667 | 0.029 | 0.601 | | residual share | upfront | 1.181 | 0.562 | 1.067 | | charged as new | amort"
+    },
+    {
+      "claim": "\\subsection{Robustness: Accounting, Uncertainty, Headroom and Cost}   \\emph{Accounting.} The convention for reused parts changed magnitudes but not rankings (Table  , Appendix  ):  Y  was 0.775% with cut-off and amortized accounting, 0.601% when reused parts carried their unamortized share, 1.423% a",
+      "value": "1.423",
+      "section": "Results",
+      "context": "dix  ):  Y  was 0.775% with cut-off and amortized accounting, 0.601% when reused parts carried their unamortized share, 1.423% and 1.067% with upfront accounting, and 0 when reused parts were charged as new, in which case the failure-blind plan l",
+      "evidence_snippet": "mortized | 0.848 | 0.195 | 0.775 | | cut-off (zero) | upfront | 1.544 | 0.918 | 1.423 | | residual share | amortized | 0.667 | 0.029 | 0.601 | | residual share | upf"
+    },
+    {
+      "claim": "\\subsection{Robustness: Accounting, Uncertainty, Headroom and Cost}   \\emph{Accounting.} The convention for reused parts changed magnitudes but not rankings (Table  , Appendix  ):  Y  was 0.775% with cut-off and amortized accounting, 0.601% when reused parts carried their unamortized share, 1.423% a",
+      "value": "1.067",
+      "section": "Results",
+      "context": "was 0.775% with cut-off and amortized accounting, 0.601% when reused parts carried their unamortized share, 1.423% and 1.067% with upfront accounting, and 0 when reused parts were charged as new, in which case the failure-blind plan lost 0.506--",
+      "evidence_snippet": "mortized | 0.667 | 0.029 | 0.601 | | residual share | upfront | 1.181 | 0.562 | 1.067 | | charged as new | amortized | 0.000 | -0.557 | 0.000 | | charged as new | up"
+    },
+    {
+      "claim": "\\subsection{Robustness: Accounting, Uncertainty, Headroom and Cost}   \\emph{Accounting.} The convention for reused parts changed magnitudes but not rankings (Table  , Appendix  ):  Y  was 0.775% with cut-off and amortized accounting, 0.601% when reused parts carried their unamortized share, 1.423% a",
+      "value": "-0.557",
+      "section": "Results",
+      "context": "% with upfront accounting, and 0 when reused parts were charged as new, in which case the failure-blind plan lost 0.506--0.557%. \\emph{Fuzzy uncertainty.} With triangular factors on failure rates  ×[0.5,1,3] , embodied carbon  ×[0.5,1,2]  and the",
+      "evidence_snippet": "hare | upfront | 1.181 | 0.562 | 1.067 | | charged as new | amortized | 0.000 | -0.557 | 0.000 | | charged as new | upfront | 0.000 | -0.506 | 0.000 |  ### Fuzzy alph"
+    },
+    {
+      "claim": "\\emph{Cost.} The cost-minimal plan emitted 499.5 ktCO _2 e at USD 1.437 billion and the carbon-minimal plan 486.8 ktCO _2 e at USD 1.719 billion: 2.6% more carbon for 16% less cost, with most of the carbon gain available within about 5% extra cost (Figure  , Appendix  ).",
+      "value": "2.6",
+      "section": "Results",
+      "context": "mal plan emitted 499.5 ktCO _2 e at USD 1.437 billion and the carbon-minimal plan 486.8 ktCO _2 e at USD 1.719 billion: 2.6% more carbon for 16% less cost, with most of the carbon gain available within about 5% extra cost (Figure  , Appendix  )",
+      "evidence_snippet": "ith reserves growing monotonically; strongly correlated failures required about 2.6x the reserve of independent failures at the 0.1% target. * Under a guaranteed S"
+    },
+    {
+      "claim": "\\emph{Cost.} The cost-minimal plan emitted 499.5 ktCO _2 e at USD 1.437 billion and the carbon-minimal plan 486.8 ktCO _2 e at USD 1.719 billion: 2.6% more carbon for 16% less cost, with most of the carbon gain available within about 5% extra cost (Figure  , Appendix  ).",
+      "value": "16",
+      "section": "Results",
+      "context": "5 ktCO _2 e at USD 1.437 billion and the carbon-minimal plan 486.8 ktCO _2 e at USD 1.719 billion: 2.6% more carbon for 16% less cost, with most of the carbon gain available within about 5% extra cost (Figure  , Appendix  ).  \\section{Discussi",
+      "evidence_snippet": "rived from a published interruption report of a 54-day pretraining run on about 16,384 GPUs with 148 faulty-GPU and 72 GPU-memory interruptions, i.e. 0.0908 event"
+    },
+    {
+      "claim": "\\emph{Cost.} The cost-minimal plan emitted 499.5 ktCO _2 e at USD 1.437 billion and the carbon-minimal plan 486.8 ktCO _2 e at USD 1.719 billion: 2.6% more carbon for 16% less cost, with most of the carbon gain available within about 5% extra cost (Figure  , Appendix  ).",
+      "value": "5",
+      "section": "Results",
+      "context": "ktCO _2 e at USD 1.719 billion: 2.6% more carbon for 16% less cost, with most of the carbon gain available within about 5% extra cost (Figure  , Appendix  ).  \\section{Discussion and Limitations}   \\subsection{Design Implications} Three impli",
+      "evidence_snippet": "0 gCO2e/kWh (clean, declining 2%/yr, floor 10), 250 gCO2e/kWh (mixed, declining 5%/yr, floor 20) and 650 gCO2e/kWh (dirty, declining 3%/yr, floor 50); PUE was 1."
+    },
+    {
+      "claim": "[!htbp]   \\centering   \\caption{Parameter ranges of the node-level sensitivity analysis (mixed grid, LC tier, base saving 0.93%).}       \\small    {lrrrrr}     \\toprule     Parameter & Low & High & Saving at low (%) & Saving at high (%) & Swing (pp) \\\\     \\midrule     CXL throughput multiplier (LC)",
+      "value": "0.93",
+      "section": "Additional Settings and Results",
+      "context": "htbp]   \\centering   \\caption{Parameter ranges of the node-level sensitivity analysis (mixed grid, LC tier, base saving 0.93%).}       \\small    {lrrrrr}     \\toprule     Parameter & Low & High & Saving at low (%) & Saving at high (%) & Swing (p",
+      "evidence_snippet": "| LC | 18.23 | 16.04 | | clean | BATCH | 20.73 | 18.61 | | mixed | LC | 1.26 | 0.93 | | mixed | BATCH | 4.28 | 3.96 | | dirty | LC | -2.04 | -2.15 | | dirty | BATC"
+    },
+    {
+      "claim": "The mixed-integer formulation of a 36-node pilot hit a 300 s limit without proving optimality, while its LP relaxation solved in under 1 s, matched the integer  X  and  Y  within about 0.05 percentage points, and gave identical results at 1 ×  and 50 ×  fleet scale; all fleet results therefore use t",
+      "value": "1",
+      "section": "Evaluation Methodology",
+      "context": "solved in under 1 s, matched the integer  X  and  Y  within about 0.05 percentage points, and gave identical results at 1 ×  and 50 ×  fleet scale; all fleet results therefore use the relaxation, and a full ladder solves in about 4 s. A suite",
+      "evidence_snippet": "# Experimental Log  ## 1. Experimental Setup  * **Datasets / scenarios:**   * *Node-level study:* one 8-"
+    },
+    {
+      "claim": "The mixed-integer formulation of a 36-node pilot hit a 300 s limit without proving optimality, while its LP relaxation solved in under 1 s, matched the integer  X  and  Y  within about 0.05 percentage points, and gave identical results at 1 ×  and 50 ×  fleet scale; all fleet results therefore use t",
+      "value": "50",
+      "section": "Evaluation Methodology",
+      "context": "under 1 s, matched the integer  X  and  Y  within about 0.05 percentage points, and gave identical results at 1 ×  and 50 ×  fleet scale; all fleet results therefore use the relaxation, and a full ladder solves in about 4 s. A suite of 40 test",
+      "evidence_snippet": "ed, declining 5%/yr, floor 20) and 650 gCO2e/kWh (dirty, declining 3%/yr, floor 50); PUE was 1.2.   * *Pilot fleet:* 3 years, one region, an existing fleet of 24"
+    },
+    {
+      "claim": "The SLO cost 0.22--0.82% extra carbon, rising with strictness and correlation; strongly correlated failures required about 2.6 ×  the reserve of independent ones at the 0.1% target.",
+      "value": "2.6",
+      "section": "Results",
+      "context": "SLO cost 0.22--0.82% extra carbon, rising with strictness and correlation; strongly correlated failures required about 2.6 ×  the reserve of independent ones at the 0.1% target. In every setting the reuse plan paid a slightly lower price than t",
+      "evidence_snippet": "ith reserves growing monotonically; strongly correlated failures required about 2.6x the reserve of independent failures at the 0.1% target. * Under a guaranteed S"
+    },
+    {
+      "claim": "[!htbp]   \\centering   \\includegraphics[width=0.82\\linewidth]{figures/fig_chance_constrained_slo.png}   \\caption{Left: reuse saving under a guaranteed latency-critical SLO (per region-quarter shortfall probability of at most 1% or 0.1%) for independent and increasingly correlated failures, with reus",
+      "value": "3",
+      "section": "Results",
+      "context": "ndent and increasingly correlated failures, with reused parts failing as their age predicts (1 × ) or three times more (3 × ). Right: carbon price of the SLO for the reuse plan relative to its expected-value plan.}        \\subsection{Robustnes",
+      "evidence_snippet": "CO2e/kWh (mixed, declining 5%/yr, floor 20) and 650 gCO2e/kWh (dirty, declining 3%/yr, floor 50); PUE was 1.2.   * *Pilot fleet:* 3 years, one region, an existin"
+    },
+    {
+      "claim": "[!htbp]   \\centering   \\caption{Remaining model settings (assumptions unless stated).}       \\small    {ll}     \\toprule     Setting & Value \\\\     \\midrule     Utilization cap  u ; LC headroom multiplier  \\beta_{\\text{LC}}  & 0.8; 3 (1 in the chance-constrained study) \\\\     \\texttt{old\\_gpu} power",
+      "value": "1.3",
+      "section": "Additional Settings and Results",
+      "context": "}, \\texttt{green} / \\texttt{old}) & 6 years; 32 / 16 quarters \\\\     Leased capacity carbon; shipping between regions & 1.3 ×  new host per unit work; 300 kgCO _2 e/node \\\\     Capital cost (\\texttt{new} / \\texttt{green} / \\texttt{old}) & USD 30",
+      "evidence_snippet": "interruptions, i.e. 0.0908 events per GPU-year); previous-generation GPU shape 1.3, AFR 0.0868; CPU shape 1.0, AFR 0.002; DIMM shape 1.6, AFR 0.01; SSD shape 1.3,"
+    },
+    {
+      "claim": "(Because the chance-constrained study uses  \\beta_{\\text{LC}}=1 , its expected-value baseline at  m=3  is 0.480% rather than the 0.475% of the  \\beta_{\\text{LC}}=3  sweep.)",
+      "value": "3",
+      "section": "Results",
+      "context": "their age predicts. (Because the chance-constrained study uses  \\beta_{\\text{LC}}=1 , its expected-value baseline at  m=3  is 0.480% rather than the 0.475% of the  \\beta_{\\text{LC}}=3  sweep.)  To identify the mechanism, Table   decomposes the s",
+      "evidence_snippet": "CO2e/kWh (mixed, declining 5%/yr, floor 20) and 650 gCO2e/kWh (dirty, declining 3%/yr, floor 50); PUE was 1.2.   * *Pilot fleet:* 3 years, one region, an existin"
+    },
+    {
+      "claim": "[!htbp]   \\centering   \\caption{Six-year lifecycle carbon per node (kgCO _2 e), mixed grid, LC tier, failures counted.}        {lrrrrr}     \\toprule     SKU & Embodied & Operational & Spares + logistics & Total  \\downarrow  & Failures/node \\\\     \\midrule     \\texttt{new\\_gpu} & 8{,}312 & 96{,}662 &",
+      "value": "10.62",
+      "section": "Results",
+      "context": "& Total  \\downarrow  & Failures/node \\\\     \\midrule     \\texttt{new\\_gpu} & 8{,}312 & 96{,}662 & 1{,}291 & 106{,}265 & 10.62 \\\\     \\texttt{green\\_gpu} & 2{,}860 & 95{,}511 & 1{,}575 & 99{,}945 & 15.18 \\\\     \\texttt{old\\_gpu} & 0 & 62{,}344 & 1{,",
+      "evidence_snippet": "--|---|---|---|---|---|---| | new_gpu | 8,312 | 96,662 | 1,263 | 28 | 106,265 | 10.62 | | green_gpu | 2,860 | 95,511 | 1,542 | 33 | 99,945 | 15.18 | | old_gpu | 0 |"
+    },
+    {
+      "claim": "[!htbp]   \\centering   \\caption{Six-year lifecycle carbon per node (kgCO _2 e), mixed grid, LC tier, failures counted.}        {lrrrrr}     \\toprule     SKU & Embodied & Operational & Spares + logistics & Total  \\downarrow  & Failures/node \\\\     \\midrule     \\texttt{new\\_gpu} & 8{,}312 & 96{,}662 &",
+      "value": "15.18",
+      "section": "Results",
+      "context": "8{,}312 & 96{,}662 & 1{,}291 & 106{,}265 & 10.62 \\\\     \\texttt{green\\_gpu} & 2{,}860 & 95{,}511 & 1{,}575 & 99{,}945 & 15.18 \\\\     \\texttt{old\\_gpu} & 0 & 62{,}344 & 1{,}896 & 64{,}240 & 18.42 \\\\     \\bottomrule         [!htbp]   \\centering   \\in",
+      "evidence_snippet": "3 | 28 | 106,265 | 10.62 | | green_gpu | 2,860 | 95,511 | 1,542 | 33 | 99,945 | 15.18 | | old_gpu | 0 | 62,344 | 1,844 | 52 | 64,240 | 18.42 |  ### Node-level saving"
+    },
+    {
+      "claim": "[!htbp]   \\centering   \\caption{Six-year lifecycle carbon per node (kgCO _2 e), mixed grid, LC tier, failures counted.}        {lrrrrr}     \\toprule     SKU & Embodied & Operational & Spares + logistics & Total  \\downarrow  & Failures/node \\\\     \\midrule     \\texttt{new\\_gpu} & 8{,}312 & 96{,}662 &",
+      "value": "18.42",
+      "section": "Results",
+      "context": "\\_gpu} & 2{,}860 & 95{,}511 & 1{,}575 & 99{,}945 & 15.18 \\\\     \\texttt{old\\_gpu} & 0 & 62{,}344 & 1{,}896 & 64{,}240 & 18.42 \\\\     \\bottomrule         [!htbp]   \\centering   \\includegraphics[width=0.6\\linewidth]{figures/fig_node_sensitivity_torna",
+      "evidence_snippet": "| 1,542 | 33 | 99,945 | 15.18 | | old_gpu | 0 | 62,344 | 1,844 | 52 | 64,240 | 18.42 |  ### Node-level saving of green_gpu over new_gpu per unit of work (%), cut-of"
+    },
+    {
+      "claim": "\\\\     \\midrule     no reuse & 1{,}320.3 & 0 & 0 & 4{,}020 [3{,}994--4{,}047] & 3{,}356 & 575 & 89 \\\\     reuse & 965.6 & 276.4 & 30.6 & 3{,}806 [3{,}806--3{,}838] & 3{,}241 & 465 & 97 \\\\     \\bottomrule",
+      "value": "320.3",
+      "section": "Results",
+      "context": "ed & Prev.-gen. & Added carbon  \\downarrow  & Operational & Embodied & Spares + log. \\\\     \\midrule     no reuse & 1{,}320.3 & 0 & 0 & 4{,}020 [3{,}994--4{,}047] & 3{,}356 & 575 & 89 \\\\     reuse & 965.6 & 276.4 & 30.6 & 3{,}806 [3{,}806--3{,}838",
+      "evidence_snippet": "of which spares + logistics | |---|---|---|---|---|---|---|---| | no reuse | 1,320.3 | 0 | 0 | 4,020 | 3,356 | 575 | 89 | | reuse | 965.6 | 276.4 | 30.6 | 3,806 | 3"
+    },
+    {
+      "claim": "\\\\     \\midrule     no reuse & 1{,}320.3 & 0 & 0 & 4{,}020 [3{,}994--4{,}047] & 3{,}356 & 575 & 89 \\\\     reuse & 965.6 & 276.4 & 30.6 & 3{,}806 [3{,}806--3{,}838] & 3{,}241 & 465 & 97 \\\\     \\bottomrule",
+      "value": "965.6",
+      "section": "Results",
+      "context": "log. \\\\     \\midrule     no reuse & 1{,}320.3 & 0 & 0 & 4{,}020 [3{,}994--4{,}047] & 3{,}356 & 575 & 89 \\\\     reuse & 965.6 & 276.4 & 30.6 & 3{,}806 [3{,}806--3{,}838] & 3{,}241 & 465 & 97 \\\\     \\bottomrule         [!htbp]   \\centering   \\capti",
+      "evidence_snippet": "--|---|---| | no reuse | 1,320.3 | 0 | 0 | 4,020 | 3,356 | 575 | 89 | | reuse | 965.6 | 276.4 | 30.6 | 3,806 | 3,241 | 465 | 97 |  ### SLO reserve decomposition acro"
+    },
+    {
+      "claim": "\\\\     \\midrule     no reuse & 1{,}320.3 & 0 & 0 & 4{,}020 [3{,}994--4{,}047] & 3{,}356 & 575 & 89 \\\\     reuse & 965.6 & 276.4 & 30.6 & 3{,}806 [3{,}806--3{,}838] & 3{,}241 & 465 & 97 \\\\     \\bottomrule",
+      "value": "276.4",
+      "section": "Results",
+      "context": "\\midrule     no reuse & 1{,}320.3 & 0 & 0 & 4{,}020 [3{,}994--4{,}047] & 3{,}356 & 575 & 89 \\\\     reuse & 965.6 & 276.4 & 30.6 & 3{,}806 [3{,}806--3{,}838] & 3{,}241 & 465 & 97 \\\\     \\bottomrule         [!htbp]   \\centering   \\caption{Chanc",
+      "evidence_snippet": "--| | no reuse | 1,320.3 | 0 | 0 | 4,020 | 3,356 | 575 | 89 | | reuse | 965.6 | 276.4 | 30.6 | 3,806 | 3,241 | 465 | 97 |  ### SLO reserve decomposition across Monte"
+    },
+    {
+      "claim": "\\\\     \\midrule     no reuse & 1{,}320.3 & 0 & 0 & 4{,}020 [3{,}994--4{,}047] & 3{,}356 & 575 & 89 \\\\     reuse & 965.6 & 276.4 & 30.6 & 3{,}806 [3{,}806--3{,}838] & 3{,}241 & 465 & 97 \\\\     \\bottomrule",
+      "value": "30.6",
+      "section": "Results",
+      "context": "drule     no reuse & 1{,}320.3 & 0 & 0 & 4{,}020 [3{,}994--4{,}047] & 3{,}356 & 575 & 89 \\\\     reuse & 965.6 & 276.4 & 30.6 & 3{,}806 [3{,}806--3{,}838] & 3{,}241 & 465 & 97 \\\\     \\bottomrule         [!htbp]   \\centering   \\caption{Chance-const",
+      "evidence_snippet": "reuse | 1,320.3 | 0 | 0 | 4,020 | 3,356 | 575 | 89 | | reuse | 965.6 | 276.4 | 30.6 | 3,806 | 3,241 | 465 | 97 |  ### SLO reserve decomposition across Monte Carlo"
+    },
+    {
+      "claim": "[!htbp]   \\centering   \\caption{Parameter ranges of the node-level sensitivity analysis (mixed grid, LC tier, base saving 0.93%).}       \\small    {lrrrrr}     \\toprule     Parameter & Low & High & Saving at low (%) & Saving at high (%) & Swing (pp) \\\\     \\midrule     CXL throughput multiplier (LC)",
+      "value": "10.72",
+      "section": "Additional Settings and Results",
+      "context": "& Saving at low (%) & Saving at high (%) & Swing (pp) \\\\     \\midrule     CXL throughput multiplier (LC) & 0.85 & 1 & -10.72 & 5.88 & 16.61 \\\\     Reuse host peak-power delta (W) & -400 & 300 & 3.35 & -2.30 & 5.65 \\\\     SSD embodied carbon (kgCO",
+      "evidence_snippet": "(pp) | |---|---|---|---|---|---| | CXL throughput multiplier (LC) | 0.85 | 1 | -10.72 | 5.88 | 16.61 | | reuse host peak-power delta (W) | -400 | 300 | 3.35 | -2.30"
+    },
+    {
+      "claim": "[!htbp]   \\centering   \\caption{Parameter ranges of the node-level sensitivity analysis (mixed grid, LC tier, base saving 0.93%).}       \\small    {lrrrrr}     \\toprule     Parameter & Low & High & Saving at low (%) & Saving at high (%) & Swing (pp) \\\\     \\midrule     CXL throughput multiplier (LC)",
+      "value": "16.61",
+      "section": "Additional Settings and Results",
+      "context": "w (%) & Saving at high (%) & Swing (pp) \\\\     \\midrule     CXL throughput multiplier (LC) & 0.85 & 1 & -10.72 & 5.88 & 16.61 \\\\     Reuse host peak-power delta (W) & -400 & 300 & 3.35 & -2.30 & 5.65 \\\\     SSD embodied carbon (kgCO _2 e) & 150 & 9",
+      "evidence_snippet": "|---|---|---|---| | CXL throughput multiplier (LC) | 0.85 | 1 | -10.72 | 5.88 | 16.61 | | reuse host peak-power delta (W) | -400 | 300 | 3.35 | -2.30 | 5.65 | | SSD"
+    }
+  ],
+  "unsupported": [
+    {
+      "claim": "On a six-year, three-grid fleet whose parameters are assumed and swept (only the GPU failure rate is taken from published data, and GPU throughput, power and CXL slowdown are placeholders), reuse cut lifecycle carbon by 5.77% on a clean grid but only 0.68% and 0.10% on mixed and dirty grids, because",
+      "value": "5.77",
+      "section": "Abstract",
+      "context": "is taken from published data, and GPU throughput, power and CXL slowdown are placeholders), reuse cut lifecycle carbon by 5.77% on a clean grid but only 0.68% and 0.10% on mixed and dirty grids, because operational carbon was about 91% of a GPU ho"
+    },
+    {
+      "claim": "Guaranteeing a 0.1% per-region-quarter shortfall probability under strongly correlated failures cost up to 0.82% extra carbon, 83--85% of it idle electricity of reserve hosts; the reuse saving rose slightly, to 0.800--0.814% across three Monte Carlo seeds, because the reuse plan needed about 3% less",
+      "value": "0.82",
+      "section": "Abstract",
+      "context": "r age predicts. Guaranteeing a 0.1% per-region-quarter shortfall probability under strongly correlated failures cost up to 0.82% extra carbon, 83--85% of it idle electricity of reserve hosts; the reuse saving rose slightly, to 0.800--0.814% across"
+    },
+    {
+      "claim": "(1) The \\emph{magnitude} of reuse savings is set by the grid: reuse cut fleet lifecycle carbon by 5.77% on a clean grid but by 0.68% on a mixed one and 0.10% on a dirty one, because operational carbon was about 91% of a new host's lifecycle carbon.",
+      "value": "5.77",
+      "section": "Introduction",
+      "context": "question in three parts. (1) The \\emph{magnitude} of reuse savings is set by the grid: reuse cut fleet lifecycle carbon by 5.77% on a clean grid but by 0.68% on a mixed one and 0.10% on a dirty one, because operational carbon was about 91% of a new"
+    },
+    {
+      "claim": "(1) The \\emph{magnitude} of reuse savings is set by the grid: reuse cut fleet lifecycle carbon by 5.77% on a clean grid but by 0.68% on a mixed one and 0.10% on a dirty one, because operational carbon was about 91% of a new host's lifecycle carbon.",
+      "value": "0.68",
+      "section": "Introduction",
+      "context": "The \\emph{magnitude} of reuse savings is set by the grid: reuse cut fleet lifecycle carbon by 5.77% on a clean grid but by 0.68% on a mixed one and 0.10% on a dirty one, because operational carbon was about 91% of a new host's lifecycle carbon. (2)"
+    },
+    {
+      "claim": "On a six-year, three-grid fleet whose parameters are assumed and swept (only the GPU failure rate is taken from published data, and GPU throughput, power and CXL slowdown are placeholders), reuse cut lifecycle carbon by 5.77% on a clean grid but only 0.68% and 0.10% on mixed and dirty grids, because",
+      "value": "0.68",
+      "section": "Abstract",
+      "context": "GPU throughput, power and CXL slowdown are placeholders), reuse cut lifecycle carbon by 5.77% on a clean grid but only 0.68% and 0.10% on mixed and dirty grids, because operational carbon was about 91% of a GPU host's lifecycle; at node level o"
+    },
+    {
+      "claim": "Guaranteeing a 0.1% per-region-quarter shortfall probability under strongly correlated failures cost up to 0.82% extra carbon, 83--85% of it idle electricity of reserve hosts; the reuse saving rose slightly, to 0.800--0.814% across three Monte Carlo seeds, because the reuse plan needed about 3% less",
+      "value": "-85",
+      "section": "Abstract",
+      "context": "ng a 0.1% per-region-quarter shortfall probability under strongly correlated failures cost up to 0.82% extra carbon, 83--85% of it idle electricity of reserve hosts; the reuse saving rose slightly, to 0.800--0.814% across three Monte Carlo seed"
+    },
+    {
+      "claim": "Guaranteeing a 0.1% per-region-quarter shortfall probability under strongly correlated failures cost up to 0.82% extra carbon, 83--85% of it idle electricity of reserve hosts; the reuse saving rose slightly, to 0.800--0.814% across three Monte Carlo seeds, because the reuse plan needed about 3% less",
+      "value": "-0.814",
+      "section": "Abstract",
+      "context": "ost up to 0.82% extra carbon, 83--85% of it idle electricity of reserve hosts; the reuse saving rose slightly, to 0.800--0.814% across three Monte Carlo seeds, because the reuse plan needed about 3% less reserve capacity and placed about a fifth o"
+    },
+    {
+      "claim": "Guaranteeing a 0.1% per-region-quarter shortfall probability under strongly correlated failures cost up to 0.82% extra carbon, 83--85% of it idle electricity of reserve hosts; the reuse saving rose slightly, to 0.800--0.814% across three Monte Carlo seeds, because the reuse plan needed about 3% less",
+      "value": "-6",
+      "section": "Abstract",
+      "context": "needed about 3% less reserve capacity and placed about a fifth of it on lower-embodied hosts, so its reserve emitted 4--6% less. Cascading paid only near energy parity between old and new GPUs. We provide the measurement methodology to replac"
+    },
+    {
+      "claim": "(3) Reuse \\emph{persists under guaranteed SLOs}: meeting a 0.1% per-region-quarter shortfall target under strongly correlated failures cost 0.79--0.82% extra carbon, mostly idle electricity of reserve hosts, and the reuse saving grew slightly, to 0.800--0.814% across seeds, because the reuse plan's ",
+      "value": "-0.82",
+      "section": "Introduction",
+      "context": "under guaranteed SLOs}: meeting a 0.1% per-region-quarter shortfall target under strongly correlated failures cost 0.79--0.82% extra carbon, mostly idle electricity of reserve hosts, and the reuse saving grew slightly, to 0.800--0.814% across see"
+    },
+    {
+      "claim": "(3) Reuse \\emph{persists under guaranteed SLOs}: meeting a 0.1% per-region-quarter shortfall target under strongly correlated failures cost 0.79--0.82% extra carbon, mostly idle electricity of reserve hosts, and the reuse saving grew slightly, to 0.800--0.814% across seeds, because the reuse plan's ",
+      "value": "-0.814",
+      "section": "Introduction",
+      "context": "s cost 0.79--0.82% extra carbon, mostly idle electricity of reserve hosts, and the reuse saving grew slightly, to 0.800--0.814% across seeds, because the reuse plan's reserve was smaller and partly held on lower-embodied hosts. Cascading old GPUs"
+    },
+    {
+      "claim": "Above parity, geographic cascading to the clean region's BATCH tier added roughly 50--70% on top ( Z_g=0.184  and 0.521 at ratios 1.168 and 1.869).",
+      "value": "-70",
+      "section": "Results",
+      "context": "io 1.168) and 0.346 (ratio 1.869). Above parity, geographic cascading to the clean region's BATCH tier added roughly 50--70% on top ( Z_g=0.184  and 0.521 at ratios 1.168 and 1.869). Because cascading avoids only the embodied carbon of new host"
+    },
+    {
+      "claim": "\\subsection{Guaranteeing the SLO} Replaying the expected-value plans (headroom multiplier 3) against sampled drains showed that the LC tier met demand on average but not everywhere: the worst region-quarter had a 2.7% probability of LC shortfall without reuse and 14.5% with reliability-aware reuse u",
+      "value": "2.7",
+      "section": "Results",
+      "context": "against sampled drains showed that the LC tier met demand on average but not everywhere: the worst region-quarter had a 2.7% probability of LC shortfall without reuse and 14.5% with reliability-aware reuse under independent failures, rising to"
+    },
+    {
+      "claim": "In independent validation the worst region-quarter shortfall probability was 0.96--1.07% for a 1% target and 0.10--0.13% for a 0.1% target across reuse and no-reuse plans, i.e.",
+      "value": "-1.07",
+      "section": "Results",
+      "context": "report the chance-constrained plans. In independent validation the worst region-quarter shortfall probability was 0.96--1.07% for a 1% target and 0.10--0.13% for a 0.1% target across reuse and no-reuse plans, i.e. close to the targets: the large"
+    },
+    {
+      "claim": "In independent validation the worst region-quarter shortfall probability was 0.96--1.07% for a 1% target and 0.10--0.13% for a 0.1% target across reuse and no-reuse plans, i.e.",
+      "value": "-0.13",
+      "section": "Results",
+      "context": "lans. In independent validation the worst region-quarter shortfall probability was 0.96--1.07% for a 1% target and 0.10--0.13% for a 0.1% target across reuse and no-reuse plans, i.e. close to the targets: the largest excess (0.13% against 0.1%) i"
+    },
+    {
+      "claim": "The SLO cost 0.22--0.82% extra carbon, rising with strictness and correlation; strongly correlated failures required about 2.6 ×  the reserve of independent ones at the 0.1% target.",
+      "value": "-0.82",
+      "section": "Results",
+      "context": "le estimates and its stopping tolerance of 0.05% of demand; the loop converged in 4 to 15 iterations. The SLO cost 0.22--0.82% extra carbon, rising with strictness and correlation; strongly correlated failures required about 2.6 ×  the reserve of"
+    },
+    {
+      "claim": "Across seeds, the reuse plan needed 2.6--3.6% less added reserve capacity than the no-reuse plan and placed 21.3--21.7% of it on reuse-based hosts---less than their 30% share of the fleet, so the planner did not preferentially use them as reserve.",
+      "value": "-3.6",
+      "section": "Results",
+      "context": "y of reserve hosts (83% without reuse, 85% with reuse), not by embodied carbon. Across seeds, the reuse plan needed 2.6--3.6% less added reserve capacity than the no-reuse plan and placed 21.3--21.7% of it on reuse-based hosts---less than their"
+    },
+    {
+      "claim": "Across seeds, the reuse plan needed 2.6--3.6% less added reserve capacity than the no-reuse plan and placed 21.3--21.7% of it on reuse-based hosts---less than their 30% share of the fleet, so the planner did not preferentially use them as reserve.",
+      "value": "-21.7",
+      "section": "Results",
+      "context": "arbon. Across seeds, the reuse plan needed 2.6--3.6% less added reserve capacity than the no-reuse plan and placed 21.3--21.7% of it on reuse-based hosts---less than their 30% share of the fleet, so the planner did not preferentially use them as"
+    },
+    {
+      "claim": "Its reserve emitted 156--224 tCO _2 e (3.9--5.5%) less, of which 104--111 tCO _2 e was embodied carbon; the 50 W idle-power advantage of reuse-based hosts explains only a small part of the 63--130 tCO _2 e operational gap, which stems mainly from the smaller reserve.",
+      "value": "-5.5",
+      "section": "Results",
+      "context": "are of the fleet, so the planner did not preferentially use them as reserve. Its reserve emitted 156--224 tCO _2 e (3.9--5.5%) less, of which 104--111 tCO _2 e was embodied carbon; the 50 W idle-power advantage of reuse-based hosts explains only"
+    },
+    {
+      "claim": "\\emph{Utilization and headroom.}  Y  was higher at a 0.5 utilization cap (0.783--0.806%) than at 0.8 (0.775--0.777%), consistent with embodied carbon mattering more on lightly loaded capacity; the share of node-quarters on reuse-based hosts fell from 0.303 to 0.280 as the LC headroom multiplier rose",
+      "value": "-0.806",
+      "section": "Results",
+      "context": "nd about three times the nominal value. \\emph{Utilization and headroom.}  Y  was higher at a 0.5 utilization cap (0.783--0.806%) than at 0.8 (0.775--0.777%), consistent with embodied carbon mattering more on lightly loaded capacity; the share of n"
+    },
+    {
+      "claim": "\\emph{Utilization and headroom.}  Y  was higher at a 0.5 utilization cap (0.783--0.806%) than at 0.8 (0.775--0.777%), consistent with embodied carbon mattering more on lightly loaded capacity; the share of node-quarters on reuse-based hosts fell from 0.303 to 0.280 as the LC headroom multiplier rose",
+      "value": "-0.777",
+      "section": "Results",
+      "context": "inal value. \\emph{Utilization and headroom.}  Y  was higher at a 0.5 utilization cap (0.783--0.806%) than at 0.8 (0.775--0.777%), consistent with embodied carbon mattering more on lightly loaded capacity; the share of node-quarters on reuse-based"
+    }
+  ],
+  "uncertain": [],
+  "summary": {
+    "total": 112,
+    "supported": 92,
+    "unsupported": 20,
+    "uncertain": 0
+  }
+}
