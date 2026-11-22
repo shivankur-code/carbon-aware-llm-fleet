@@ -29,3 +29,9 @@ _Written by: section-writing-agent, Step 4_
 **Draft:** drafts/paper.tex, 4,644 words, compiles to 18 pages (main text ends on p.12, within the 12-page limit; references excluded).
 **Gates:** orphan-cite OK (53/53); anti-leakage OK; latex_sanity reported a brace mismatch that is a false positive (escaped \{ \} in the reserve-update formula; braces balance and the document compiles without errors); claim-evidence: 74/89 supported, 15 flagged are rounding/unit artefacts (e.g. 5.77 vs 5.766, 2.7% vs 0.0272, en-dash ranges parsed as negatives), each checked by hand; figure lint: 3 low-resolution warnings (275-300 dpi).
 **Known weaknesses for refinement:** placeholder GPU parameters; small absolute fleet savings; no measured C2/C3 results.
+
+## §4 · Refinement Log
+_Written by: content-refinement-agent, Step 5_
+
+**Iter 0 review (independent reviewer):** overall 61.0 (Major Revision). Main issues: untested 'cheapest idle reserve' mechanism, validation numbers absent from the log, tornado caption contradicted by the figure, over-claiming relative to placeholder parameters, missing implementation details/notation.
+**Iter 1 actions:** ran a new reserve-composition experiment (results/p4_reserve_composition.json): reserve carbon is 83-85% idle electricity; reuse plan holds 21.7% of reserve on reuse-based hosts (below fleet share) and saves 214 tCO2e (5.3%), half embodied/half operational -> mechanism restated; full SLO table + validation with sampling error; parameter table; notation (Delta for hours/quarter, hazard in years); acronyms expanded; 'never worse' and fuzzy floor reframed as by-construction; abstract ties mixed/dirty results to placeholders; figures re-rendered without internal labels; settings, accounting table and Pareto moved to appendix to keep main text within 12 pages.

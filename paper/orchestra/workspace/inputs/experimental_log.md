@@ -8,6 +8,7 @@
   * *Reference fleet:* 6 years (24 quarters), three regions (clean, mixed, dirty). LC demand started at 180 (clean), 450 (mixed) and 330 (dirty) node-equivalents and grew 25%, 25% and 30% per year; global BATCH demand started at 150 and grew 35% per year. The initial fleet held 150/500/400 previous-generation hosts (age 0 in their second life, parts 4 years old) and 100/350/250 current-generation hosts (ages 6/8/4 quarters) in clean/mixed/dirty, about 1,750 hosts in total. Reused-part pools started at 3,200 DIMMs and 800 SSDs and received 2,400 DIMMs and 600 SSDs per quarter from an external general-purpose fleet, with a 0.9 screening yield on locally harvested parts. One node-equivalent is one fully busy current-generation 8-GPU host.
 * **SKUs:** `new_gpu`: 8 current-generation GPUs, 2 standard CPUs, 32 DIMMs (64 GB), 8 SSDs (3.84 TB), all new; idle 2,500 W, peak 10,200 W; platform embodied carbon 1,500 kgCO2e; 6-year design life. `green_gpu`: new GPUs, 2 energy-efficient CPUs, 32 reused DIMMs and 8 reused SSDs (parts 5 years old at entry); power 50 W below `new_gpu` at idle and 100 W below at peak; CXL throughput multiplier 0.95 (LC) and 0.98 (BATCH). `old_gpu`: previous-generation 8-GPU host cascaded as a whole (parts 4 years old), idle 1,800 W, peak 6,500 W, relative throughput 0.30 (LC) and 0.45 (BATCH).
 * **Component parameters:** embodied carbon per unit was 150 kgCO2e (current GPU), 120 (previous GPU), 30 (CPU), 20 (DIMM), 614 (SSD). Weibull shape and annualized failure rate: GPU shape 1.0, AFR 0.0868 (derived from a published interruption report of a 54-day pretraining run on about 16,384 GPUs with 148 faulty-GPU and 72 GPU-memory interruptions, i.e. 0.0908 events per GPU-year); previous-generation GPU shape 1.3, AFR 0.0868; CPU shape 1.0, AFR 0.002; DIMM shape 1.6, AFR 0.01; SSD shape 1.3, AFR 0.01. Drain time per failure was 72 h (GPU), 24 h (CPU), 8 h (DIMM) and 2 h (SSD). Failed parts were replaced by new spares (delayed renewal process).
+* **Further model parameters:** previous-generation GPU Weibull shape 1.3; `old_gpu` idle 1,800 W and peak 6,500 W; platform (chassis, board, NICs, PSUs) embodied carbon 1,500 kgCO2e (`new_gpu`, `old_gpu`) and 1,600 kgCO2e (`green_gpu`); design life 6 years for all SKUs; maximum age 32 quarters (`new_gpu`, `green_gpu`) and 16 quarters for `old_gpu` in its second life. Costs for the Pareto front: capital cost USD 300,000 (`new_gpu`), 280,000 (`green_gpu`) and 15,000 (`old_gpu` refurbishment/move); electricity USD 0.08/kWh at the meter times PUE; leased capacity USD 60,000 per node-equivalent-quarter; cascading USD 3,000 per node plus USD 5,000 shipping between regions; repair cost per failure USD 2,500 (current GPU), 4,000 (previous GPU), 800 (CPU), 300 (DIMM), 400 (SSD). Logistics carbon per repair 5 kgCO2e (GPU), 2 (CPU), 1 (DIMM, SSD). The negative-binomial dispersions k=2 and k=0.5 were illustrative levels of failure correlation (variance m + m^2/k for mean m, versus m for Poisson), not values fitted to data. The hazard is defined over part age in years; node ages in quarters are converted (one quarter = 0.25 years).
 * **Parameter provenance:** the GPU failure rate was derived from published data; all other parameters were engineering assumptions with ranges and were swept. GPU throughput, power and the CXL slowdown were placeholders because GPU measurements had not yet been run.
 * **Evaluation metrics:** lifecycle carbon (kgCO2e) split into embodied, operational, spares plus logistics, leased capacity and shipping; carbon saving of a reuse plan relative to a no-reuse plan, in percent: X (failures ignored in both), Y_naive (failure-blind reuse plan replayed with failures), Y (reliability-aware reuse plan), Z (additional saving from in-place cascading, percentage points), Zg (with geographic cascading). Monte Carlo metrics: per region-quarter probability that instantaneous LC capacity is below demand. Carbon price of an SLO: carbon of the chance-constrained plan relative to the expected-value plan.
 * **Baselines compared:** no-reuse fleet (only new hardware can be bought, no cascading); failure-blind reuse plan; expected-value headroom (capacity derated by 3x the expected drain) versus chance-constrained headroom.
@@ -109,20 +110,29 @@
 | reliability-aware reuse | negative binomial k=2 | 0.1546 | 0.0077 | 14 |
 | reliability-aware reuse | negative binomial k=0.5 | 0.1548 | 0.0242 | 44 |
 
-### Chance-constrained SLO headroom (validated by independent replay with 50,000 samples)
+### Chance-constrained SLO headroom (expected-value baseline uses LC headroom multiplier 1; validated by independent replay with 50,000 samples)
 
-| Reused-part multiplier | Correlation | Target P(short) | Y under guaranteed SLO (%) | Y expected-value (%) | SLO carbon price, reuse (%) | SLO carbon price, no reuse (%) | Validated worst P(short), reuse | Iterations |
-|---|---|---|---|---|---|---|---|---|
-| 1 | independent | 0.01 | 0.786 | 0.775 | 0.217 | 0.229 | 0.0106 | 4 |
-| 1 | independent | 0.001 | 0.788 | 0.775 | 0.301 | 0.314 | 0.0011 | 4 |
-| 1 | k=2 | 0.01 | 0.786 | 0.775 | 0.292 | 0.303 | 0.0096 | 5 |
-| 1 | k=2 | 0.001 | 0.792 | 0.775 | 0.427 | 0.445 | 0.0010 | 8 |
-| 1 | k=0.5 | 0.01 | 0.795 | 0.775 | 0.477 | 0.497 | 0.0105 | 7 |
-| 1 | k=0.5 | 0.001 | 0.812 | 0.775 | 0.785 | 0.823 | 0.0012 | 15 |
-| 3 | independent | 0.01 | 0.485 | 0.480 | 0.223 | 0.229 | 0.0100 | 4 |
-| 3 | independent | 0.001 | 0.484 | 0.480 | 0.310 | 0.314 | 0.0012 | 4 |
-| 3 | k=2 | 0.001 | 0.490 | 0.480 | 0.435 | 0.445 | 0.0010 | 6 |
-| 3 | k=0.5 | 0.001 | 0.500 | 0.480 | 0.803 | 0.823 | 0.0011 | 15 |
+| Reused-part multiplier | Correlation | Target P(short) | Y under guaranteed SLO (%) | Y expected-value (%) | SLO carbon price, reuse (%) | SLO carbon price, no reuse (%) | Validated worst P(short), reuse | Validated worst P(short), no reuse | Iterations |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | independent | 0.01 | 0.786 | 0.775 | 0.217 | 0.229 | 0.0106 | 0.0105 | 4 |
+| 1 | independent | 0.001 | 0.788 | 0.775 | 0.301 | 0.314 | 0.0011 | 0.0013 | 4 |
+| 1 | k=2 | 0.01 | 0.786 | 0.775 | 0.292 | 0.303 | 0.0096 | 0.0102 | 5 |
+| 1 | k=2 | 0.001 | 0.792 | 0.775 | 0.427 | 0.445 | 0.0010 | 0.0011 | 8 |
+| 1 | k=0.5 | 0.01 | 0.795 | 0.775 | 0.477 | 0.497 | 0.0105 | 0.0100 | 7 |
+| 1 | k=0.5 | 0.001 | 0.812 | 0.775 | 0.785 | 0.823 | 0.0012 | 0.0011 | 15 |
+| 3 | independent | 0.01 | 0.485 | 0.480 | 0.223 | 0.229 | 0.0100 | 0.0105 | 4 |
+| 3 | independent | 0.001 | 0.484 | 0.480 | 0.310 | 0.314 | 0.0012 | 0.0013 | 4 |
+| 3 | k=2 | 0.01 | 0.484 | 0.480 | 0.299 | 0.303 | 0.0107 | 0.0102 | 6 |
+| 3 | k=2 | 0.001 | 0.490 | 0.480 | 0.435 | 0.445 | 0.0010 | 0.0011 | 6 |
+| 3 | k=0.5 | 0.01 | 0.488 | 0.480 | 0.489 | 0.497 | 0.0100 | 0.0100 | 7 |
+| 3 | k=0.5 | 0.001 | 0.499 | 0.480 | 0.803 | 0.823 | 0.0011 | 0.0011 | 15 |
+
+### Composition of the SLO reserve (target 0.001, negative binomial k=0.5, reused-part multiplier 1): chance-constrained minus expected-value plan
+
+| Plan | Added LC capacity on new hosts | on reuse-based hosts | on previous-generation hosts | Added carbon (tCO2e) | of which operational | of which embodied | of which spares + logistics |
+|---|---|---|---|---|---|---|---|
+| no reuse | 1,320.3 | 0 | 0 | 4,020 | 3,356 | 575 | 89 |
+| reuse | 965.6 | 276.4 | 30.6 | 3,806 | 3,241 | 465 | 97 |
 
 ### Embodied-carbon accounting conventions, reference fleet (%)
 
@@ -178,6 +188,10 @@
 * Expected-value headroom met the SLO on average but left individual region-quarters with up to 14.5% (independent) and 15.5% (correlated) probability of LC capacity shortfall for reuse plans; correlated failures greatly increased the number of exposed region-quarters for all plans.
 * The chance-constrained loop converged in 4 to 15 iterations, with reserves growing monotonically; strongly correlated failures required about 2.6x the reserve of independent failures at the 0.1% target.
 * Under a guaranteed SLO the reuse plan paid a slightly lower carbon price than the no-reuse plan, so the reuse saving increased (0.775% to 0.812%, and 0.480% to 0.500% with 3x worse reused parts). Reserve capacity is idle by design, and reuse-based hosts have the lowest embodied carbon.
+* The chance-constrained reserve was dominated by idle operational energy: 83% (no reuse) and 85% (reuse) of the SLO's added carbon was operational, with embodied carbon 14% and 12%. The reuse plan placed 21.7% of its added reserve capacity on reuse-based hosts (below their 30% share of fleet node-quarters) and 2.4% on previous-generation hosts; the reserve's added carbon was 214 tCO2e (5.3%) lower than in the no-reuse plan, split between 111 tCO2e less embodied and 115 tCO2e less operational carbon. This difference produced the increase of the reuse saving under the guarantee.
+* The expected-value baseline of the chance-constrained study used LC headroom multiplier 1, whereas the multiplier sweep used 3; this explains Y at multiplier 3 of 0.480% in the former versus 0.475% in the latter.
+* The worst validated region-quarter shortfall probabilities (0.96 to 1.07% at the 1% target, 0.10 to 0.13% at the 0.1% target) slightly exceeded the targets in some cases; with 50,000 samples the standard error at a 0.1% probability is about 0.014 percentage points, and the reserve loop stopped when capacity gaps were within 0.05% of demand.
+* By construction the planner can always fall back to the no-reuse plan, so the reliability-aware saving cannot be negative; the informative result is how fast it decays.
 * An earlier Monte Carlo replay that rounded each age cohort to whole nodes dropped planned capacity and overstated violation probabilities by up to 5x; replaying the planned fleet resolved the discrepancy.
 * Under fuzzy uncertainty the lower bound of Y never went below zero; the upper bound was driven mostly by embodied-carbon uncertainty.
 * Cost-minimal planning emitted 2.6% more carbon than carbon-minimal planning while costing 16% less; most of the carbon gain was available within about 5% extra cost over the cheapest plan.
