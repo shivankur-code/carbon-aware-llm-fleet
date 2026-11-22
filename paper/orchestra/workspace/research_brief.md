@@ -22,3 +22,10 @@ _Written by: literature-review-agent, Step 3_
 **Positioning:** no verified work jointly optimizes multi-year buy/reuse/cascade/retire decisions with age-dependent reliability of reused parts for AI-inference fleets; carbon-aware scheduling is complementary (moves work, not hardware).
 **Citation coverage:** 53/53 cited in Introduction + Related Work.
 **Caution:** abstracts were mostly unavailable; descriptions of cited works are kept at title/venue level, with no numbers quoted from them.
+
+## §3 · Draft Status
+_Written by: section-writing-agent, Step 4_
+
+**Draft:** drafts/paper.tex, 4,644 words, compiles to 18 pages (main text ends on p.12, within the 12-page limit; references excluded).
+**Gates:** orphan-cite OK (53/53); anti-leakage OK; latex_sanity reported a brace mismatch that is a false positive (escaped \{ \} in the reserve-update formula; braces balance and the document compiles without errors); claim-evidence: 74/89 supported, 15 flagged are rounding/unit artefacts (e.g. 5.77 vs 5.766, 2.7% vs 0.0272, en-dash ranges parsed as negatives), each checked by hand; figure lint: 3 low-resolution warnings (275-300 dpi).
+**Known weaknesses for refinement:** placeholder GPU parameters; small absolute fleet savings; no measured C2/C3 results.
