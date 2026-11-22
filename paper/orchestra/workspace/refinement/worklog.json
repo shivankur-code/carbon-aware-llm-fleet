@@ -36,6 +36,20 @@
     "Presentation and structure. The accounting-convention table and the cost-carbon front, both used as Results evidence, now sit in an appendix after the references, which the venue guidelines do not provide for. About a third of page 11 is blank because of float placement. The beta_LC=1 baseline of the chance-constrained study is disclosed only parenthetically and should appear in Section 3.3 next to Eq. 5. No confidence intervals are reported for any Monte Carlo-derived quantity."
    ],
    "decision": "ACCEPT_IMPROVED (61.0 -> 66.3)"
+  },
+  {
+   "iter": 2,
+   "score": {
+    "overall": 70.7,
+    "band": "Minor Revision"
+   },
+   "weaknesses": [
+    "The SLO result is only partly explained, and seed coverage is narrow. The Abstract's 'because the reuse plan needed about 3% less reserve capacity' names a proximate cause whose own cause 'we did not isolate'. 'Stems mainly from the smaller reserve' is an inference rather than a measured attribution, although a 2.6-3.6% capacity reduction times about 3,300 tCO2e is the right order of magnitude. Seed replication (three seeds) covers only epsilon=0.001, k=0.5, m=1. The other eleven settings in Table 4 and Figure 6, and the '2.6x reserve' claim, are single-run, and Section 5.4 quotes the seed-0 value 0.812 without saying so.",
+    "The headline SLO price depends on unfitted correlation levels. 'Up to 0.82% extra carbon' in the Abstract and Introduction comes from k=0.5, which Table 6 describes as 'illustrative, not fitted'. The price roughly doubles from independent failures (0.30-0.31%) to k=0.5 (0.79-0.82%). The Abstract should state that k is illustrative, or report the independent-failure price alongside it.",
+    "The entry age a_0 is never swept. It now appears as 5 years for reused DIMMs and SSDs, and it is the parameter behind the premise that reused parts are old. The hazard multiplier m scales hazard magnitude, but it does not capture shifts along the Weibull wear-out curve (DIMM shape 1.6) that a different a_0 would produce. A sweep of a_0 = 3/5/7 years at fleet level would close this gap.",
+    "Unsupported detail and structure. 'External supply arrives pre-screened' (Section 3.1) is not in the evidence base; the log states only that the 0.9 yield applies to locally harvested parts. Section 5.5 still compresses four studies into one paragraph, and the evidence for three of them (Tables 5 and 7, Figure 7) sits in an appendix after the references. Page 11 has visible float whitespace. The main text uses exactly 12 of 12 pages."
+   ],
+   "decision": "ACCEPT_IMPROVED (66.3 -> 70.7)"
   }
  ]
 }

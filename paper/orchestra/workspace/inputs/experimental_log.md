@@ -93,6 +93,31 @@
 | 12 | 0.848 | -1.386 | 0.000 |
 | 20 | 0.848 | -2.251 | 0.000 |
 
+### Reused-part entry-age sweep (reused DIMMs and SSDs of green_gpu), reference fleet (%)
+
+| Entry age (years) | X | Y_naive | Y |
+|---|---|---|---|
+| 3 | 0.848 | 0.217 | 0.795 |
+| 5 | 0.848 | 0.195 | 0.775 |
+| 7 | 0.848 | 0.176 | 0.759 |
+
+### Total LC reserve of chance-constrained plans (node-equivalent-quarters, summed over region-quarters)
+
+| Reused-part multiplier | Correlation | Target P(short) | Reserve, reuse plan | Reserve, no-reuse plan |
+|---|---|---|---|---|
+| 1 | independent | 0.01 | 370.6 | 372.9 |
+| 1 | independent | 0.001 | 512.1 | 516.3 |
+| 1 | k=2 | 0.01 | 487.7 | 491.2 |
+| 1 | k=2 | 0.001 | 713.3 | 722.7 |
+| 1 | k=0.5 | 0.01 | 779.5 | 795.6 |
+| 1 | k=0.5 | 0.001 | 1,274.4 | 1,320.3 |
+| 3 | independent | 0.01 | 380.2 | 372.9 |
+| 3 | independent | 0.001 | 527.7 | 516.3 |
+| 3 | k=2 | 0.01 | 498.1 | 491.2 |
+| 3 | k=2 | 0.001 | 723.7 | 722.7 |
+| 3 | k=0.5 | 0.01 | 798.0 | 795.6 |
+| 3 | k=0.5 | 0.001 | 1,301.0 | 1,320.3 |
+
 ### Cascade sweep: old-GPU BATCH throughput, reference fleet
 
 | Old BATCH throughput | Old/new BATCH work per joule | Z (pp) | Zg (pp) |
@@ -200,7 +225,7 @@
 * As reused parts became less reliable, the reliability-aware planner bought fewer reuse-based hosts and stopped reusing entirely at a multiplier of about 8; it never produced a plan worse than no reuse. The failure-blind plan crossed zero at a multiplier of about 2.1.
 * In-place and geographic cascading added essentially nothing at the placeholder old-GPU efficiency (old/new BATCH work per joule 0.70). Cascading began to pay only near energy parity (about 0.93 to 1.0); above parity, geographic cascading to the clean-grid BATCH tier added roughly 50 to 70% on top of in-place cascading.
 * Expected-value headroom met the SLO on average but left individual region-quarters with up to 14.5% (independent) and 15.5% (correlated) probability of LC capacity shortfall for reuse plans; correlated failures greatly increased the number of exposed region-quarters for all plans.
-* The chance-constrained loop converged in 4 to 15 iterations, with reserves growing monotonically; strongly correlated failures required about 2.6x the reserve of independent failures at the 0.1% target.
+* The chance-constrained loop converged in 4 to 15 iterations, with reserves growing monotonically; strongly correlated failures required about 2.5x the reserve of independent failures at the 0.1% target (2.49x for the reuse plan, 2.56x for the no-reuse plan).
 * Under a guaranteed SLO the reuse plan paid a slightly lower carbon price than the no-reuse plan, so the reuse saving increased (0.775% to 0.812%, and 0.480% to 0.499% with 3x worse reused parts). Reserve capacity is idle by design, and reuse-based hosts have the lowest embodied carbon.
 * The chance-constrained reserve was dominated by idle operational energy: 83% (no reuse) and 85% (reuse) of the SLO's added carbon was operational, with embodied carbon 14% and 12%. The reuse plan placed 21.7% of its added reserve capacity on reuse-based hosts (below their 30% share of fleet node-quarters) and 2.4% on previous-generation hosts; the reserve's added carbon was 214 tCO2e (5.3%) lower than in the no-reuse plan, split between 111 tCO2e less embodied and 115 tCO2e less operational carbon. Across three Monte Carlo seeds the reuse plan needed 2.6 to 3.6% less added reserve capacity than the no-reuse plan and placed 21.3 to 21.7% of it on reuse-based hosts; the cause of the smaller reserve requirement was not isolated. The 50 W idle-power difference of reuse-based hosts accounts for only a small part of the operational gap.
 * The expected-value baseline of the chance-constrained study used LC headroom multiplier 1, whereas the multiplier sweep used 3; this explains Y at multiplier 3 of 0.480% in the former versus 0.475% in the latter.
