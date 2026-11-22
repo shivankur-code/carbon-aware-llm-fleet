@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # Write the paper with Google's official paper-orchestra (google-research/paper-orchestra), unmodified,
-# with its Gemini calls served by OpenRouter (see openrouter_shim.py). Needs OpenRouter credit (~USD 10-20).
+# with its Gemini calls served by a shim (see openrouter_shim.py):
+#   PO_BACKEND=openrouter (default) -> OpenRouter, needs credit (~USD 10-20)
+#   PO_BACKEND=bridge PO_BRIDGE_DIR=<dir> -> each call is written to <dir>/<id>/request.md and the run waits
+#     for <dir>/<id>/response.txt, written by an external answerer (in our run: Claude Code agents).
+# Needs texlive incl. texlive-science (the ICLR template uses algorithm.sty).
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 PO_DIR="${PO_DIR:-$HERE/.paper-orchestra}"
@@ -14,6 +18,8 @@ VENV="${VENV:-$HERE/.venv}"
 OUT="${OUT:-$HERE/output}"
 mkdir -p "$OUT"
 export PO_CALL_LOG="$OUT/llm_calls.jsonl"
+export PO_S2_CACHE="${PO_S2_CACHE:-$OUT/literature_lookup_cache.json}"        # pins the literature lookups across restarts
+export PO_S2_FALLBACK_LOG="${PO_S2_FALLBACK_LOG:-$OUT/s2_crossref_fallback.jsonl}"
 PYTHONUNBUFFERED=1 "$VENV/bin/python" "$HERE/run_paper_orchestra.py" --po-repo "$PO_DIR" -- \
   --raw_materials_dir "$HERE/raw_materials" \
   --latex_template_dir "$PO_DIR/templates/iclr2025" \
