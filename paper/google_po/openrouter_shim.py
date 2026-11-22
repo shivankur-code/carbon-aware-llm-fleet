@@ -249,6 +249,30 @@ class _ThrottledRequests:
 
     def get(self, *a, **kw):
         kw["timeout"] = max(kw.get("timeout", 0) or 0, 30)
+        # Disk cache of successful title searches (S2 or Crossref fallback) so restarts skip the slow step.
+        cache_path = os.environ.get("PO_S2_CACHE")
+        url = a[0] if a else kw.get("url", "")
+        key = json.dumps([url, kw.get("params")], sort_keys=True, default=str)
+        if cache_path and "/paper/search" in url:
+            with _log_lock:
+                cache = json.load(open(cache_path)) if os.path.exists(cache_path) else {}
+            if key in cache:
+                body = cache[key]
+                return SimpleNamespace(status_code=200, json=lambda: body, text=json.dumps(body))
+            rsp = self._get_uncached(*a, **kw)
+            if rsp is not None and rsp.status_code == 200:
+                try:
+                    body = rsp.json()
+                    with _log_lock:
+                        cache = json.load(open(cache_path)) if os.path.exists(cache_path) else {}
+                        cache[key] = body
+                        json.dump(cache, open(cache_path, "w"))
+                except Exception:
+                    pass
+            return rsp
+        return self._get_uncached(*a, **kw)
+
+    def _get_uncached(self, *a, **kw):
         rsp = None
         for attempt in range(self.retries):
             with self._lock:
