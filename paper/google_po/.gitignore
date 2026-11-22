@@ -1,0 +1,4 @@
+.paper-orchestra/
+.venv/
+output/latex_writeup/*.aux
+output/**/*.log
