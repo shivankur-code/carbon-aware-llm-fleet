@@ -49,3 +49,36 @@ skus:
       BATCH: {value: 0.45, low: 0.25, high: 0.7, status: assumption, source: "PLACEHOLDER until C2: A100 vs H100 throughput-bound; the cascade hypothesis is BATCH ratio > LC ratio"}
     capex_usd: {value: 15000, low: 5000, high: 40000, unit: USD, status: assumption, source: "Refurbish / move cost; no new purchase"}
     design_life_years: {value: 6, low: 4, high: 7, unit: yr, status: assumption, source: "As new_gpu"}
+
+# Refurbishment paths (Phase 5). A host whose node age is inside ages_q (quarters) can have the listed
+# component classes replaced by new parts and continue as the derived SKU for up to max_age_q quarters.
+# "_rfm" = memory only (DIMMs); "_rf" = memory + storage. Costs and downtime are assumptions (swept).
+refurbish:
+  new_gpu_rfm:
+    from: new_gpu
+    replace: [dram_dimm]
+    ages_q: [14, 18]
+    max_age_q: 20
+    capex_usd: {value: 15000, low: 5000, high: 40000, unit: USD, status: assumption, source: "32 new 64 GB DIMMs + labour"}
+    downtime_hours: {value: 24, low: 8, high: 72, unit: h, status: assumption, source: "Drain, part swap, burn-in"}
+  new_gpu_rf:
+    from: new_gpu
+    replace: [dram_dimm, ssd]
+    ages_q: [14, 18]
+    max_age_q: 20
+    capex_usd: {value: 25000, low: 10000, high: 50000, unit: USD, status: assumption, source: "32 DIMMs + 8 SSDs + labour"}
+    downtime_hours: {value: 24, low: 8, high: 72, unit: h, status: assumption, source: "Drain, part swap, burn-in"}
+  green_gpu_rfm:
+    from: green_gpu
+    replace: [dram_dimm]
+    ages_q: [14, 18]
+    max_age_q: 20
+    capex_usd: {value: 15000, low: 5000, high: 40000, unit: USD, status: assumption, source: "As new_gpu_rfm"}
+    downtime_hours: {value: 24, low: 8, high: 72, unit: h, status: assumption, source: "As new_gpu_rfm"}
+  old_gpu_rfm:
+    from: old_gpu
+    replace: [dram_dimm]
+    ages_q: [2, 6]
+    max_age_q: 12
+    capex_usd: {value: 15000, low: 5000, high: 40000, unit: USD, status: assumption, source: "As new_gpu_rfm"}
+    downtime_hours: {value: 24, low: 8, high: 72, unit: h, status: assumption, source: "As new_gpu_rfm"}

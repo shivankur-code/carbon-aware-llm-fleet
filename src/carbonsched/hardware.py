@@ -44,11 +44,47 @@ class SKU:
         return any(s.initial_age > 0 for s in self.slots)
 
 
+@dataclass(frozen=True)
+class RefurbSpec:
+    """Refurbishment of a ``parent`` host at node age ``ages_q[0] == ages_q[1]`` (quarters): its ``replace``
+    component classes are swapped for new parts and it continues as SKU ``name`` at age 0 of a second life
+    lasting at most ``max_age_q`` quarters. A config path with an age window is expanded into one spec (and
+    one derived SKU, named ``family@age``) per age, so carried parts' ages and their remaining amortization
+    are exact - no midpoint approximation the optimizer could exploit."""
+    name: str
+    parent: str
+    replace: tuple[str, ...]
+    ages_q: tuple[int, int]
+    max_age_q: int
+    capex_usd: float
+    downtime_hours: float
+    family: str = ""            # config-level path name; one spec (and derived SKU) per refurbishment age
+
+    @property
+    def a_rep_q(self) -> float:
+        return 0.5 * (self.ages_q[0] + self.ages_q[1])
+
+
 @dataclass
 class Catalog:
     components: dict[str, ComponentReliability]
     skus: dict[str, SKU]
     registry: dict[str, Param]
+    refurb: dict[str, RefurbSpec] = field(default_factory=dict)
+
+
+def derive_refurbished(parent: SKU, spec: RefurbSpec, components: dict[str, ComponentReliability]) -> SKU:
+    """Refurbished SKU: replaced slots become new parts (base component model, age 0); carried slots keep
+    the parent's component model (incl. any reused-part hazard multiplier) and age by ``a_rep_q``."""
+    dt = spec.a_rep_q / 4.0
+    slots = tuple(
+        Slot(component=components[sl.component.name], count=sl.count, initial_age=0.0)
+        if sl.component.name in spec.replace else
+        Slot(component=sl.component, count=sl.count, initial_age=sl.initial_age + dt)
+        for sl in parent.slots)
+    return replace(parent, name=spec.name, slots=slots, capex_usd=spec.capex_usd,
+                   platform_initial_age=parent.platform_initial_age + dt,
+                   description=f"{parent.name} refurbished at ~{spec.a_rep_q:g} q: new {', '.join(spec.replace)}")
 
 
 def load_measured(config_dir: Path) -> dict[str, dict]:
@@ -123,7 +159,18 @@ def load_catalog(config_dir: str | Path = "configs", overrides: dict[str, float]
             registry[path] = Param(path=path, value=float(m["value"]), low=None, high=None,
                                    source=f"MEASURED: {m.get('source', '')} (was {old.value:g}: {old.source})",
                                    status="measured", unit=old.unit)
-    return Catalog(components=components, skus=skus, registry=registry)
+    refurb: dict[str, RefurbSpec] = {}
+    for family, r in (skus_raw.get("refurbish") or {}).items():
+        if r["from"] not in skus:
+            raise ValueError(f"refurbish {family}: unknown parent {r['from']}")
+        for age in range(int(r["ages_q"][0]), int(r["ages_q"][1]) + 1):
+            name = f"{family}@{age}"
+            spec = RefurbSpec(name=name, parent=r["from"], replace=tuple(r["replace"]), ages_q=(age, age),
+                              max_age_q=int(r["max_age_q"]), capex_usd=float(r["capex_usd"]),
+                              downtime_hours=float(r.get("downtime_hours", 0.0)), family=family)
+            refurb[name] = spec
+            skus[name] = derive_refurbished(skus[spec.parent], spec, components)
+    return Catalog(components=components, skus=skus, registry=registry, refurb=refurb)
 
 
 def _reused_variant(c: ComponentReliability, m: float) -> ComponentReliability:

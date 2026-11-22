@@ -136,7 +136,8 @@ paper/              claims.md, figures, parameters.md, related_work.md, refs.bib
 | **P3** ✅ | Reference 3-grid fleet: X/Y/Z + Figure 1; reliability break-even, cascade break-even, Monte Carlo SLO tails, accounting, fuzzy α-cuts, Pareto → `paper/notes/P3_FINDINGS.md`; GPU scripts in `gpu/` |
 | **P4** ✅ | Chance-constrained LC headroom (solve → Monte Carlo → reserve, validated) → `paper/notes/P4_FINDINGS.md`; paper bundle (`paper/build_bundle.py`) |
 | **P4g** (GPU) | C2: vLLM LC vs BATCH sweeps per GPU generation with NVML power; C3: KV offload under emulated CXL + fault injection |
-| **P5** | GPU measurements → `configs/measured.yaml` → rerun → `paper/` bundle → **paper-orchestra** |
+| **P5** ✅ | Refurbish decision (exact per-age accounting, pool feedback, tests) → `paper/notes/P5_FINDINGS.md` |
+| **P6** | GPU measurements → `configs/measured.yaml` → rerun → `paper/` bundle → **paper-orchestra** |
 
 ## 8. Honesty and scoping
 - This is a **modelling study** using public parameters. No Azure-internal data is used or implied. That matters because of the author's employer, and the brief and paper must say so explicitly.

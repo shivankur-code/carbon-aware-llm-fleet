@@ -86,7 +86,7 @@ def cmd_ladder(args) -> None:
         b["initial_fleet"] = [f for f in base["initial_fleet"] if f["region"] == r]
         b["pools"] = {c: dict(p, initial=p["initial"] * share, external_per_q=p["external_per_q"] * share)
                       for c, p in base["pools"].items()}
-        hr, _, _ = run_ladder(b, cat, regions, rungs=("E0_det", "E0", "E1", "E2a", "E2b", "E3"))
+        hr, _, _ = run_ladder(b, cat, regions, rungs=("E0_det", "E0", "E1", "E2a", "E2b", "E3", "E0r", "E4"))
         rows.append(dict(region=r, **{k: v for k, v in hr.items() if isinstance(v, float)}))
         print(r, fmt(hr))
     save(pd.DataFrame(rows), "ladder_by_region")
