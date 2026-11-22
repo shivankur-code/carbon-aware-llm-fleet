@@ -1,5 +1,13 @@
 # Paper bundle (input for paper-orchestra)
 
+**Written paper:** [`paper.pdf`](paper.pdf) (LaTeX: `paper.tex`), produced by running the PaperOrchestra pipeline on this bundle. The full audit trail is in [`orchestra/workspace/`](orchestra/workspace):
+- inputs;
+- outline;
+- verified citation pool;
+- drafts;
+- three refinement iterations with independent reviews scored 61.0 → 66.3 → 70.7 → 72.7;
+- worklog and provenance.
+
 Everything a paper-writing pipeline needs. Generated files are rebuilt from results with:
 
 ```bash

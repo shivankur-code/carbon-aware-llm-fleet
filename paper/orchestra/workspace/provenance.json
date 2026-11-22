@@ -1,0 +1,55 @@
+{
+ "created_at": "2026-11-22T05:58:19.410995+00:00",
+ "pipeline": "PaperOrchestra skill pack (Ar9av/PaperOrchestra @ 6a31913) executed by Claude Code; official google-research/paper-orchestra needs Gemini/OpenAI keys",
+ "inputs": {
+  "idea.md": {
+   "sha256": "e6dfb81a2a16d7a3f6758e02e1e673619f529bdee1c602a9d1db6a8218eb84ce",
+   "bytes": 9277
+  },
+  "experimental_log.md": {
+   "sha256": "118ecc28a8b486ea6235c413bf1e549cb9a74f2fa7b6d0f3d572ecddaa795c30",
+   "bytes": 20148
+  },
+  "template.tex": {
+   "sha256": "5c17ce24edff374645a7cd9160a4515580db1e45cd1ce07e861bf2d21e63e165",
+   "bytes": 886
+  },
+  "conference_guidelines.md": {
+   "sha256": "145ddb6282503687e0fc05b2956aa60ed0ad6652ab82acc74c4c15097af52ea2",
+   "bytes": 1110
+  }
+ },
+ "outline": {
+  "outline.json": "fcbe7a106dbe875c034655dab394dbc144d6371d2a71bef130bed84fc8b12b08",
+  "outline_reconciled.json": "6475b4adcec76de07a8150ae311201e2c7b85ca16d720752546e9d0ebace0c33"
+ },
+ "refs": {
+  "sha256": "0b6127cb16dc7b09184847d003c8e19b811af21f1577ae5a2a28a1cce4e831b1",
+  "n_entries": 53,
+  "verification": "Crossref DOI metadata (42), arxiv.org (9), USENIX via web search (2); Semantic Scholar rate-limited, OpenAlex budget exhausted"
+ },
+ "figures": {
+  "fig_carbon_cost_pareto.png": "3d83a3542826ad1b43d83bcec702cb3d2e297faa2ef703666dd4926ae8dfba49",
+  "fig_cascade_breakeven_energy_efficiency.png": "fe82a59eae765e7dca16560afa6f257476acabe7432185c39c2a61b414d39cb4",
+  "fig_chance_constrained_slo.png": "1d15c9056f17762a5e7dcdc5953ef8ff2baef7e7b34aa5dd3ff0ebde9d0f7cc2",
+  "fig_fleet_carbon_ladder_by_grid.png": "9c9935fa286995bab26ae9e1df7f65c2ea6d19041242051229cf1bb00fecc123",
+  "fig_lifecycle_model_overview.png": "eac6b9f8eaa8a86a4a2c9265ae50c60a81d605459c06ac38828a38048e41c6ca",
+  "fig_node_sensitivity_tornado.png": "006878366d1718c5ac1f0a4cdba6b2927f62cdf57825839bb620e97f5b05e6ab",
+  "fig_reliability_breakeven_reused_parts.png": "442a0dc68447a3e1148cb280d922e5d1e548689c6ad0508310e7226297a5b1b3"
+ },
+ "final": {
+  "paper.tex": "63f76068bb06e22aab463cd4dff213038812b2a03a250d91f661316c4b66b2d4",
+  "paper.pdf": "45729978356ed2c70b305c2f2ce71bd03d2803c84e34e016fbc727cca2ca6526"
+ },
+ "refinement": {
+  "scores": [
+   61.0,
+   66.3,
+   70.7,
+   72.7
+  ],
+  "best_iter": 3,
+  "halted_because": "iteration_cap_reached",
+  "post_cap_fidelity_fixes": "4 factual scope corrections from the iter-3 review (m=3 reserve mechanism, reserve-quantity definitions, contribution scope) + layout trims; not re-scored"
+ }
+}

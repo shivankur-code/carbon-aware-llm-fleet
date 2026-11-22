@@ -35,3 +35,9 @@ _Written by: content-refinement-agent, Step 5_
 
 **Iter 0 review (independent reviewer):** overall 61.0 (Major Revision). Main issues: untested 'cheapest idle reserve' mechanism, validation numbers absent from the log, tornado caption contradicted by the figure, over-claiming relative to placeholder parameters, missing implementation details/notation.
 **Iter 1 actions:** ran a new reserve-composition experiment (results/p4_reserve_composition.json): reserve carbon is 83-85% idle electricity; reuse plan holds 21.7% of reserve on reuse-based hosts (below fleet share) and saves 214 tCO2e (5.3%), half embodied/half operational -> mechanism restated; full SLO table + validation with sampling error; parameter table; notation (Delta for hours/quarter, hazard in years); acronyms expanded; 'never worse' and fuzzy floor reframed as by-construction; abstract ties mixed/dirty results to placeholders; figures re-rendered without internal labels; settings, accounting table and Pareto moved to appendix to keep main text within 12 pages.
+
+## §5 · Outcome
+_Written by: orchestrator_
+
+Refinement scores (independent reviewer, conservative rubric): 61.0 -> 66.3 -> 70.7 -> 72.7 (Minor Revision band); halted at the 3-iteration cap, best = iter3, plus post-cap factual scope fixes from the iter-3 review. Final: final/paper.pdf (main text 12 pages, references + appendix after).
+Remaining reviewer concerns (acknowledged, not fixable without new data): placeholder GPU parameters; root cause of the smaller reserve requirement not isolated; supporting tables/figure in an appendix after the references.

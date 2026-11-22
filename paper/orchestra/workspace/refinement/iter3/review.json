@@ -1,0 +1,60 @@
+{
+  "axis_scores": {
+    "scientific_depth": {
+      "score": 72,
+      "justification": "Claims are now carefully bounded. The paper states that Y >= 0 holds by construction, that k is illustrative ('up to 0.82% under an illustrative strong failure correlation'), and that the operational-gap attribution is an inference ('we infer, but did not measure, that the smaller reserve accounts for most of it'). The entry-age sweep (Y = 0.795/0.775/0.759% at 3/5/7 years) closes the a_0 gap. The remaining depth problem is how far the SLO mechanism generalizes. The Abstract explains the SLO gain 'because the reuse plan needed about 3% less reserve capacity', but the log's reserve-size table shows the opposite at m=3: there the reuse plan holds a larger reserve in 5 of 6 settings (e.g. 527.7 vs 516.3 node-equivalent-quarters for independent failures at epsilon=0.001), yet the paper says it still paid a lower price 'in every setting'. Significance is also limited: the blended-fleet saving is under 1% (0.775%), and the larger clean-grid numbers rest on assumed parameters."
+    },
+    "technical_execution": {
+      "score": 70,
+      "justification": "The methodology is now fully specified. a_0, initial ages, the scope of the screening yield, logistics carbon, all cost settings, beta_LC=1 under the chance constraint, and every sensitivity range appear in Sections 3-4 and Tables 5-6. The design choices are tested by sweeps of the hazard multiplier, entry age, cascade efficiency, accounting, utilization and headroom, by fuzzy alpha-cuts, and by a three-seed replication of the key decomposition. Single-seed status is disclosed for the other settings ('These results come from one Monte Carlo seed per setting'). Two limits remain. The LP relaxation is validated only on a 36-node pilot whose MIP did not reach proven optimality. The cause of the reserve difference between plans remains unisolated even though the per-setting reserve sizes needed to probe it exist."
+    },
+    "logical_flow": {
+      "score": 76,
+      "justification": "The three-part answer threads cleanly from the Abstract and Introduction through Sections 5.2-5.4 to the Conclusion. Section 5.5 is now split into labelled paragraphs (Accounting, Fuzzy uncertainty, Utilization and headroom, Cost), which fixes the earlier crowding. The mechanism paragraph moves logically from decomposition to seed ranges to a stated inference and an explicit open question. Robustness evidence (Tables 5 and 7, Figure 7) still lives in an appendix after the references, so the reader has to leave the main text to verify Section 5.5."
+    },
+    "writing_clarity": {
+      "score": 73,
+      "justification": "The prose is precise, the notation is consistent, and units and seeds are labelled ('0.775% to 0.812% (seed 0; 0.800-0.814% over three seeds)'). Two quantities are easily confused. Section 5.4 cites '1,274 versus 512 node-equivalent-quarters' of reserve for the reuse plan, while Table 3 reports 965.6 + 276.4 + 30.6 = 1,272.6 of 'added reserve capacity' for the same setting, and the difference between total reserve R and added installed capacity is never defined. 'Anywhere between nothing and about three times the nominal value' remains informal and understates 3.4x. 'CXL slowdown' and 'CXL throughput multiplier' still alternate."
+    },
+    "evidence_presentation": {
+      "score": 72,
+      "justification": "Every figure and table is referenced, the captions match the plotted content, and all main-text numbers trace to the log, including the corrected 2.5x reserve ratio (1,274/512 and 1,320/516). The new entry-age results appear only in prose. The per-setting reserve sizes appear only for the strictest setting, even though the full reserve table directly tests the paper's mechanism claim. Reporting it, or at least the m=3 rows where the reuse plan's reserve is larger, would make the 'every setting' statement verifiable. Figures 4 and 5 are now set at 0.52 linewidth, and their tick labels are small in print."
+    },
+    "academic_style": {
+      "score": 75,
+      "justification": "The tone is measured and professional, with calibrated hedges ('best read as \"reuse does not lose under a guarantee\" rather than as a strong gain') and no defensive language. Limitations are direct, and the placeholder disclosures meet the venue's honesty requirement. Remaining issues are minor: informal phrasing in the fuzzy paragraph, mixed CXL terminology, and reliance on an appendix after the references for cited results, which the venue rules do not explicitly provide for."
+    }
+  },
+  "strengths": [
+    "A clear, decision-relevant question answered with a well-defined E0-E3g ladder. Every reported number traces to the log, and the by-construction floor Y >= 0 is explicitly separated from the informative decay rate.",
+    "The value of reliability-aware planning is shown convincingly. The failure-blind plan leases 13,104 vs 530 tCO2e and breaks even near m of about 2.1, and the result is robust to the reused-part entry age (Y = 0.759-0.795% for 3-7 years).",
+    "Chance-constrained SLO headroom is validated by an independent 50,000-sample replay. The residual excess is quantified (about 2 SE), seed variation is reported for the key decomposition, and the price is given under both independent failures (0.30-0.31%) and illustrative correlation (up to 0.82%).",
+    "Placeholders, parameter provenance, all sensitivity ranges and all model settings are fully disclosed, together with a concrete GPU measurement plan that would replace the placeholders.",
+    "Broad robustness coverage: accounting conventions, fuzzy alpha-cuts, utilization and headroom, and a carbon-cost front, now presented in clearly labelled paragraphs."
+  ],
+  "weaknesses": [
+    "The SLO mechanism is stated more generally than the evidence supports. The Abstract and Introduction explain the higher reuse saving under the SLO 'because the reuse plan needed about 3% less reserve capacity', and Section 5.4 says the reuse plan paid less 'in every setting'. The log's per-setting reserve table shows that at m=3 the reuse plan holds a larger reserve than the no-reuse plan in 5 of 6 settings (380.2 vs 372.9, 527.7 vs 516.3, 498.1 vs 491.2, 723.7 vs 722.7 and 798.0 vs 795.6 node-equivalent-quarters), yet it still pays a lower price. The smaller-reserve explanation therefore holds only at m=1 (and m=3, k=0.5, epsilon=0.001). The m=3 price advantage must come from reserve composition. The paper does not report this table, and its root cause remains unisolated. Scope the 'because' to m=1 and report the reserve table.",
+    "Two different reserve quantities share near-identical numbers without definition. Section 5.4 gives '1,274 ... node-equivalent-quarters' of reserve for the reuse plan, while Table 3 gives 1,272.6 of 'added reserve capacity' for the same setting (seed 0). The difference between the reserve target R_rt and the added installed capacity in the chance-constrained minus expected-value plan should be defined.",
+    "Evidence for several cited results is outside the main body or only in prose. The entry-age sweep and the reserve sizes appear only as inline numbers. The sensitivity ranges, accounting conventions and cost front sit in an appendix after the references, which the venue guidelines do not provide for. Figures 4 and 5 at 0.52 linewidth have small tick labels.",
+    "The scope of the significance claims should be stated more plainly. The blended three-grid fleet saving is under 1% (Y=0.775%), and the larger clean-grid figures and the cascading verdict rest on assumed or placeholder parameters with no executed GPU measurements. The Conclusion should say explicitly that the paper's contribution is the planning methodology and its break-even analyses, not the size of the savings."
+  ],
+  "questions": [
+    "At m=3, why does the reuse plan hold a larger chance-constrained reserve than the no-reuse plan yet pay a lower SLO price? What is the reserve composition by SKU in those settings?",
+    "What drives the 2.6-3.6% smaller reserve requirement at m=1: the age mix of the LC fleet, lower drain variance, or regional placement?",
+    "How does the failure-blind break-even multiplier (about 2.1 at a_0 = 5 years) shift at a_0 = 3 and 7 years?",
+    "Once the GPU measurements are executed, which conclusions would change if the measured CXL multiplier lay below 0.90?"
+  ],
+  "hallucination_check": [
+    "SUPPORTED: the entry-age sweep, Y = 0.795/0.775/0.759% and failure-blind 0.217/0.195/0.176% at 3/5/7 years, matches the log.",
+    "SUPPORTED: 'about 2.5x the reserve ... (1,274 versus 512 ... 1,320 versus 516)' matches the corrected log (1,274.4/512.1 = 2.49; 1,320.3/516.3 = 2.56).",
+    "SUPPORTED: '0.30-0.31% extra carbon under independent failures' at epsilon=0.001 matches the log (0.301, 0.310 reuse; 0.314 no reuse). 'Up to 0.82% under an illustrative strong correlation' is consistent with k being illustrative and not fitted.",
+    "SUPPORTED: 'about 3,300 tCO2e of operational reserve carbon' (3,241-3,356) and the order-of-magnitude argument for the operational gap, which is now explicitly labelled as an inference.",
+    "SCOPE OVERREACH: 'because the reuse plan needed about 3% less reserve capacity' (Abstract, Introduction) is true only at m=1 and m=3/k=0.5/epsilon=0.001. The log's reserve table shows a larger reuse-plan reserve in the other five m=3 settings, while 'in every setting the reuse plan paid a slightly lower price' remains true.",
+    "AMBIGUITY: 1,274 node-equivalent-quarters of reserve (Section 5.4, from the reserve table, 1,274.4) versus 1,272.6 of added capacity (Table 3, seed 0) for the same setting. These are different quantities and are not defined as such.",
+    "RESOLVED: 'external supply arrives pre-screened' was removed from the paper (it is now in the log in any case). The 2.6x figure was corrected to 2.5x.",
+    "VERIFIED: all other quantitative statements and Tables 1-7 match the log within rounding. No number contradicts the log."
+  ],
+  "decision": "Borderline",
+  "decision_band": "Minor Revision",
+  "overall_score": 72.7
+}
