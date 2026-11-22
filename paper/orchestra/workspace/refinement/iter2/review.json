@@ -1,0 +1,60 @@
+{
+  "axis_scores": {
+    "scientific_depth": {
+      "score": 70,
+      "justification": "The SLO mechanism is now decomposed across three Monte Carlo seeds. The paper reports the result plainly: 'the 50 W idle-power advantage of reuse-based hosts explains only a small part of the 63-130 tCO2e operational gap, which stems mainly from the smaller reserve. We did not isolate why the reuse fleet needs less reserve.' It frames the effect as 'reuse does not lose under a guarantee' (0.025-0.039 pp). By-construction floors are acknowledged. Three limits remain. The root cause of the 2.6-3.6% smaller reserve is unknown, so the Abstract's 'because' explains the result only proximately. The headline SLO price ('up to 0.82%') depends on a correlation level k=0.5 that the appendix calls 'illustrative, not fitted', yet the Abstract does not say so. The entry age a_0 (5 years) underpins the premise that 'reused parts are old', but it is never swept; the hazard multiplier m is only a partial proxy for it."
+    },
+    "technical_execution": {
+      "score": 66,
+      "justification": "The implementation details are now essentially complete. Section 3.1 states 'reused DIMMs and SSDs enter at a_0=5 years and all parts of old_gpu ... at a_0=4 years'. Initial-fleet ages, per-repair logistics carbon, the scope of the screening yield and all cost settings appear in Section 4.1 and Table 6. Section 3.3 now says beta_LC=1 is used inside the LP when the reserve is active. The hard cap no longer applies. Three things hold the score back. Seed replication covers only the single decomposition setting; Table 4 and Figure 6 are single-seed. There is no sensitivity analysis on a_0 or on the dispersion k, although the SLO price roughly doubles from independent failures to k=0.5. The LP-relaxation validation rests on one 36-node pilot whose MIP did not reach proven optimality."
+    },
+    "logical_flow": {
+      "score": 74,
+      "justification": "The narrative remains clean from the Abstract's three-part answer through Sections 5.2-5.4 to the Conclusion. The mechanism paragraph now flows from decomposition to seed ranges to an honest statement of what was not isolated. The design implication on standby states is correctly scoped as future work. Section 5.5 still packs accounting, fuzzy, utilization and cost studies into one paragraph. Three appendix items carry results cited in the main text (Tables 5 and 7, Figure 7). Page 11 still has noticeable float whitespace."
+    },
+    "writing_clarity": {
+      "score": 72,
+      "justification": "The prose is precise and the notation consistent (Delta for hours per quarter, age units stated). The Abstract's sign claim is now correctly scoped: 'at node level on the mixed grid, the saving changes sign across the placeholder range of the CXL slowdown'. Section 5.4 gives the seed-0 values ('from 0.775% to 0.812%'), while the Abstract and Introduction give the three-seed range (0.800-0.814%), and the text never says which seed Table 4 uses. 'Anywhere between nothing and about three times the nominal value' is informal and understates 3.4x. ECC is not expanded."
+    },
+    "evidence_presentation": {
+      "score": 71,
+      "justification": "The figure and table mismatches are fixed. The Figure 3 caption now matches its panels. Table 3 includes the spares-plus-logistics column and states that the components 'sum to the added carbon up to leased capacity' (3,241 + 465 + 97 = 3,803 against 3,806). Table 5 gives the range and value behind every Figure 2 bar. Table 4 shows 0.499, matching the text. Seed ranges appear only for added carbon in Table 3. Capacity, operational and embodied ranges are given only in prose. The other eleven SLO settings in Table 4 and Figure 6 have no uncertainty. The '2.6x the reserve' claim has no supporting table."
+    },
+    "academic_style": {
+      "score": 74,
+      "justification": "The tone is measured and professional, with hedges placed where the evidence is thin and no defensive language. Figure labels are paper-level. Terminology is mostly consistent, although 'CXL slowdown' and 'CXL throughput multiplier' still alternate. 'External supply arrives pre-screened' adds an assumption that the evidence base does not state. The main text uses exactly the full 12-page budget, leaving no margin for camera-ready additions."
+    }
+  },
+  "strengths": [
+    "A clear, decision-relevant question answered with a well-defined E0-E3g ladder. Every reported fleet number traces to the log, and the by-construction floor Y >= 0 is separated from the informative decay rate.",
+    "Quantifies the value of reliability-aware planning. The failure-blind plan leases 13,104 vs 530 tCO2e and breaks even near m of about 2.1, while the reliability-aware plan degrades gracefully to zero.",
+    "Chance-constrained SLO headroom is validated by an independent 50,000-sample replay, and the residual excess (about 2 standard errors at worst) is stated honestly. The full 12-setting grid is reported, and the reserve decomposition is replicated across three seeds with the unexplained part acknowledged.",
+    "Placeholders and provenance are reported transparently. All sensitivity ranges (Table 5), all model settings including a_0 (Table 6), illustrative rather than fitted correlation levels, and a concrete GPU measurement plan are given.",
+    "Broad robustness coverage: accounting conventions, fuzzy alpha-cuts interpreted by interval width, utilization and headroom, and a carbon-cost front."
+  ],
+  "weaknesses": [
+    "The SLO result is only partly explained, and seed coverage is narrow. The Abstract's 'because the reuse plan needed about 3% less reserve capacity' names a proximate cause whose own cause 'we did not isolate'. 'Stems mainly from the smaller reserve' is an inference rather than a measured attribution, although a 2.6-3.6% capacity reduction times about 3,300 tCO2e is the right order of magnitude. Seed replication (three seeds) covers only epsilon=0.001, k=0.5, m=1. The other eleven settings in Table 4 and Figure 6, and the '2.6x reserve' claim, are single-run, and Section 5.4 quotes the seed-0 value 0.812 without saying so.",
+    "The headline SLO price depends on unfitted correlation levels. 'Up to 0.82% extra carbon' in the Abstract and Introduction comes from k=0.5, which Table 6 describes as 'illustrative, not fitted'. The price roughly doubles from independent failures (0.30-0.31%) to k=0.5 (0.79-0.82%). The Abstract should state that k is illustrative, or report the independent-failure price alongside it.",
+    "The entry age a_0 is never swept. It now appears as 5 years for reused DIMMs and SSDs, and it is the parameter behind the premise that reused parts are old. The hazard multiplier m scales hazard magnitude, but it does not capture shifts along the Weibull wear-out curve (DIMM shape 1.6) that a different a_0 would produce. A sweep of a_0 = 3/5/7 years at fleet level would close this gap.",
+    "Unsupported detail and structure. 'External supply arrives pre-screened' (Section 3.1) is not in the evidence base; the log states only that the 0.9 yield applies to locally harvested parts. Section 5.5 still compresses four studies into one paragraph, and the evidence for three of them (Tables 5 and 7, Figure 7) sits in an appendix after the references. Page 11 has visible float whitespace. The main text uses exactly 12 of 12 pages."
+  ],
+  "questions": [
+    "Why does the reuse fleet need 2.6-3.6% less chance-constrained reserve? Is it the different age mix of the LC fleet, the lower per-node drain variance of a more heterogeneous fleet, or a difference in where the reserve is placed by region?",
+    "Do the SLO price difference and the sign of the Y increase hold across seeds for the other settings, especially m=3 and epsilon=0.01?",
+    "How do Y and the failure-blind break-even change if reused parts enter at 3 or 7 years instead of 5?",
+    "What dispersion k do published correlated-failure data (e.g. rack- or power-domain failures) support for GPU inference hosts, and what is the SLO price at that value?"
+  ],
+  "hallucination_check": [
+    "SUPPORTED: three-seed ranges. Y under SLO 0.800-0.814%; reserve capacity reduction 2.6-3.6% (1,272.6/1,320.3, 1,282.2/1,326.0, 1,283.0/1,317.0); reuse-based share 21.3-21.7%; carbon gap 156-224 tCO2e (3.9-5.5%; Abstract '4-6%' is acceptable rounding); embodied gap 104-111; operational gap 63-130; Y gain 0.025-0.039 pp. The Table 3 bracketed ranges [3,994-4,047] and [3,806-3,838] match the log.",
+    "SUPPORTED: Table 5 sensitivity ranges and values match the log's top-10 table exactly. a_0 = 5 and 4 years, initial ages 6/8/4 quarters, logistics carbon 5/2/1 kgCO2e and the yield scope (locally harvested parts) match the log.",
+    "SUPPORTED: 0.499 at m=3, k=0.5, epsilon=0.001 is consistent in the text, Table 4 and the log. '0.13% ... about two standard errors above the target' is correct ((0.13-0.10)/0.014 = 2.1).",
+    "SUPPORTED: Table 3 components sum to the added carbon up to leased capacity (no reuse 3,356+575+89 = 4,020; reuse 3,241+465+97 = 3,803 vs 3,806).",
+    "INFERENCE NOT IN LOG (minor): 'which stems mainly from the smaller reserve' (Section 5.4). The log says only that the 50 W idle difference explains a small part and that the cause of the smaller reserve was not isolated. The inference is plausible by order of magnitude but is not a measured attribution.",
+    "NOT IN LOG (minor): 'external supply arrives pre-screened' (Section 3.1).",
+    "UNSHOWN SUPPORT (persisting): 'strongly correlated failures required about 2.6x the reserve of independent ones'. It is supported only by a qualitative log note, with no table.",
+    "VERIFIED: all other quantitative statements and Tables 1, 2, 4, 6 and 7 match the log within rounding. Figure 3's caption now matches its panels. No numbers contradict the log."
+  ],
+  "decision": "Borderline",
+  "decision_band": "Minor Revision",
+  "overall_score": 70.7
+}
