@@ -1,0 +1,40 @@
+{
+  "no_reuse": {
+    "carbon_ev": 488475644.9932187,
+    "carbon_cc": 492495685.4592923,
+    "delta_carbon_kg": 4020040.4660735726,
+    "delta_embodied_kg": 575487.0569853783,
+    "delta_operational_kg": 3355789.5029397607,
+    "delta_repair_kg": 88763.90614765044,
+    "delta_lease_kg": 0.0,
+    "delta_lc_capacity_by_sku": {
+      "new_gpu": 1320.2686846497818
+    },
+    "delta_node_quarters_by_sku": {
+      "new_gpu": 1661.6565649241966
+    },
+    "total_reserve": 1320.26868464975,
+    "iterations": 15
+  },
+  "reuse": {
+    "carbon_ev": 484691166.7257475,
+    "carbon_cc": 488497378.0165777,
+    "delta_carbon_kg": 3806211.290830195,
+    "delta_embodied_kg": 464501.613993261,
+    "delta_operational_kg": 3240824.2847215533,
+    "delta_repair_kg": 97106.99174099881,
+    "delta_lease_kg": 3778.4003736578743,
+    "delta_lc_capacity_by_sku": {
+      "new_gpu": 965.5561861794049,
+      "old_gpu": 30.626793715095236,
+      "green_gpu": 276.3879714800805
+    },
+    "delta_node_quarters_by_sku": {
+      "old_gpu": 129.25850032372827,
+      "green_gpu": 366.447141761073,
+      "new_gpu": 1215.1106725699574
+    },
+    "total_reserve": 1274.43747885567,
+    "iterations": 6
+  }
+}
