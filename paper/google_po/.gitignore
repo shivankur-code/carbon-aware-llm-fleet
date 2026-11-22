@@ -2,3 +2,4 @@
 .venv/
 output/latex_writeup/*.aux
 output/**/*.log
+output/
