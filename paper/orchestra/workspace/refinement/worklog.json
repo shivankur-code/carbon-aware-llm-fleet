@@ -1,0 +1,10 @@
+{
+  "gate_a_failure_modes": {
+    "hallucinated_citation": "none (53/53 verified via Crossref / arxiv.org / USENIX)",
+    "hallucinated_result": "none (all numbers traced to experimental_log.md; 15 claim-gate flags are rounding/unit artefacts)",
+    "methodology_fabrication": "none (all described methods exist in src/carbonsched)",
+    "bug_reframed_as_insight": "SUSPECTED: 'reuse saving grows under SLO because reused hosts are the cheapest idle reserve' - reuse share of node-quarters stayed ~0.30; supported mechanism is weaker (part of added reserve sits on low-embodied hosts). Flagged for refinement.",
+    "frame_lock": "none"
+  },
+  "iterations": []
+}

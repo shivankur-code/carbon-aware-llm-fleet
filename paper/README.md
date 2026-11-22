@@ -14,7 +14,7 @@ python paper/build_bundle.py
 | `brief_headline.md` | The X / Y / Z sentence and Figure 1 for the research brief | yes |
 | `parameters.md` | All model parameters with value, range, unit, status, source | yes (`experiments/p1_node_lifecycle.py`) |
 | `related_work.md` | Related-work draft with citation keys | hand-written |
-| `refs.bib` | BibTeX; entries marked `VERIFY` must be checked against publisher pages | hand-written |
+| `refs.bib` | BibTeX, 53 entries verified against Crossref DOI metadata, arxiv.org or USENIX pages (copied from the PaperOrchestra run) | generated |
 | `notes/P1..P4_FINDINGS.md` | Phase-by-phase findings with reproduction commands | hand-written |
 | `figures/` | All figures (PNG, 150 dpi) | yes (experiment scripts) |
 
