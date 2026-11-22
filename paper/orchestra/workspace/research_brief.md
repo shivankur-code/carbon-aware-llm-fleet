@@ -14,3 +14,11 @@ _Written by: outline-agent, Step 1_
 - GPU throughput, power and CXL slowdown are placeholders; cascade and mixed-grid sign conclusions depend on them.
 - Most embodied-carbon and failure parameters are assumptions (swept, but not measured).
 - Absolute savings on the three-grid fleet are below 1%; the story rests on structure (break-evens, planning effect), which must be framed carefully.
+
+## §2 · Literature Landscape
+_Written by: literature-review-agent, Step 3_
+
+**Verified pool:** 53 papers (Crossref DOI metadata 42, arxiv.org 9, USENIX via web search 2); Semantic Scholar was rate-limited and OpenAlex budget-exhausted from this network. Cutoff 2026-10-21; two 2026 papers (KV-cache CXL tiering; KV-cache bit-flip vulnerability) are framed as concurrent work.
+**Positioning:** no verified work jointly optimizes multi-year buy/reuse/cascade/retire decisions with age-dependent reliability of reused parts for AI-inference fleets; carbon-aware scheduling is complementary (moves work, not hardware).
+**Citation coverage:** 53/53 cited in Introduction + Related Work.
+**Caution:** abstracts were mostly unavailable; descriptions of cited works are kept at title/venue level, with no numbers quoted from them.

@@ -1,0 +1,71 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{natbib}
+\bibliographystyle{plainnat}
+
+\title{TODO: Title}
+\author{Anonymous Authors}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+TODO: Abstract.
+\end{abstract}
+
+\section{Introduction}
+Computing's carbon footprint now has two components of comparable concern: the operational carbon of the electricity that servers draw, and the embodied carbon emitted when their chips, memory, storage and chassis are manufactured \citep{gupta2022chasing,gupta2022act}. Machine learning sharpens both. Training and serving large models consume substantial energy \citep{strubell2019energy,patterson2021carbon,wu2022sustainableai}, end-to-end accounting of large language models (LLMs) must include the hardware they run on \citep{luccioni2023bloom,faiz2024llmcarbon}, and the carbon impact of generative-AI inference has been examined both today and in projection \citep{chien2023genai}. Because inference fleets are provisioned for years and refreshed continuously, how operators buy, reuse and retire hardware is itself a carbon lever.
+
+One of the few levers demonstrated at cloud scale is \emph{component reuse}: building new server SKUs from energy-efficient CPUs together with DRAM and SSDs harvested from retired servers, with the reused memory attached over CXL \citep{wang2024greensku}. Reuse targets embodied carbon, which is large for storage and memory \citep{tannu2023ssd} and which architectural carbon models make explicit \citep{gupta2022act}; second-life hardware can be greener whenever the workload tolerates it \citep{switzer2023junkyard}.
+
+Two properties of real fleets, however, are missing from such evaluations. First, \emph{decisions are sequential}. A reuse-based design is evaluated as a server at a point in time, under an average grid carbon intensity, while an operator decides every quarter, over many years, whether to buy new hosts, build reuse-based hosts, cascade older hosts to lighter service tiers, lease capacity or retire hardware---across regions whose grids differ and decarbonize at different rates. Second, \emph{reused parts are old}. DRAM and SSD failure rates vary with age and usage in the field \citep{schroeder2009dram,meza2015dram,schroeder2016flash}, and accelerator fleets fail frequently at scale \citep{llama3,kokolis2025reliability}. Every failure consumes a spare part, which carries embodied carbon, and drains node capacity for hours to days, which must be covered by headroom that itself carries embodied and idle carbon. Because a point-in-time evaluation neither tracks part age nor sizes headroom against concurrent failures, it cannot tell whether the embodied savings of reuse survive reliability. The gap widens for LLM inference: on 8-GPU hosts, operational carbon dwarfs embodied carbon, so the reach of an embodied-carbon lever depends on the grid.
+
+We close this gap with a reliability-aware, multi-period lifecycle optimization for LLM-inference fleets. The model tracks the fleet as cohorts by SKU, service tier, region and age; it precomputes age-dependent expected failures, repair drains and spare parts from Weibull hazards so that the optimization stays linear; it couples reuse to a finite supply of harvested parts; and it allows cascading of previous-generation GPU hosts to a batch-inference tier, including shipping them to a clean-grid region. An outer Monte Carlo loop sizes per-region-quarter reserve so that a latency-critical service-level objective (SLO) holds with a target probability under independent or correlated failures. We evaluate a six-year, three-grid fleet with public and swept parameters; GPU throughput, power and CXL slowdown are placeholders pending measurements whose methodology we provide.
+
+Our results answer the question in three parts. (1) The \emph{magnitude} of reuse savings is set by the grid: reuse cut fleet lifecycle carbon by 5.77\% on a clean grid but by 0.68\% on a mixed one and 0.10\% on a dirty one, because operational carbon was about 91\% of a new host's lifecycle carbon. (2) Reuse \emph{survives reliability if planned for}: a reliability-aware plan retained a saving of 0.775\% against 0.848\% when failures were ignored, and degraded gracefully to zero as reused parts became worse, whereas a failure-blind plan kept only 0.195\% and became carbon-negative once reused parts failed about twice as often as their age predicts. (3) Reuse \emph{persists under guaranteed SLOs}: meeting a 0.1\% per-region-quarter shortfall target under strongly correlated failures cost 0.79--0.82\% extra carbon, yet the reuse saving grew to 0.812\%, because idle reserve is where low-embodied reused hosts are cheapest. Cascading old GPUs paid only when their batch work per joule approached that of new GPUs.
+
+Our contributions are: (i) a lifecycle model for reuse-based AI servers that jointly represents age-dependent component reliability, reused-part supply, cascading (in place and geographic) and regional grid decarbonization; (ii) break-even conditions for reused-part reliability and for cascading efficiency; (iii) chance-constrained SLO headroom validated by independent Monte Carlo replay, with the carbon price of the SLO; and (iv) design guidance for reliability-aware reuse in AI fleets, together with a measurement methodology to ground the remaining parameters.
+
+\section{Background and Related Work}
+\paragraph{Low-carbon server design and embodied-carbon accounting.}
+Architectural carbon models quantify the embodied carbon of processors, memory and storage and expose its trade-off against operational efficiency \citep{gupta2022act,gupta2022chasing}; spatial-temporal embodied-carbon models refine how that carbon is attributed over a device's life \citep{zhang2024spatialembodied}, and datacenter-level frameworks co-design capacity with carbon-free energy supply \citep{acun2023carbonexplorer}. On the design side, reuse-based cloud servers combine efficient CPUs with reused DRAM over CXL and reused SSDs \citep{wang2024greensku}, SSD manufacturing has been identified as an embodied-carbon hot spot \citep{tannu2023ssd}, and discarded devices can serve as low-carbon compute \citep{switzer2023junkyard}. Circular-economy decisions---reuse, refurbishment, recycling and leasing---have been optimized with multi-objective fuzzy mathematical programs \citep{poonia2024circular}, building on fuzzy-set theory \citep{zadeh1965fuzzy}. These works evaluate designs or strategies without the age-dependent failure behaviour of reused parts and without the sequential procurement and retirement of a growing fleet. Our model embeds reuse-based SKUs in exactly that setting.
+
+\paragraph{Field reliability of memory, storage and accelerators.}
+Large field studies characterize DRAM errors and their dependence on age and platform \citep{schroeder2009dram,sridharan2012dram,sridharan2015memory,meza2015dram,zivanovic2019dram,dramicdcs2024}, SSD and flash failures \citep{meza2015flash,schroeder2016flash,ssdsystor2016,ssdnas2024}, and disk failure trends \citep{pinheiro2007disk}. Silent data corruption has emerged as a fleet-scale concern for processors \citep{hochschild2021cores,dixit2021sdc,sdctaco2024}, and large machine-learning clusters report frequent GPU and memory failures that interrupt jobs \citep{llama3,kokolis2025reliability}. These studies provide failure statistics but do not translate them into the carbon consequences of reusing aged parts. We calibrate age-dependent Weibull hazards from such statistics and propagate them into carbon through spares, repair drains and SLO headroom.
+
+\paragraph{Carbon-aware scheduling and operation.}
+A large body of work shifts \emph{when} and \emph{where} computation runs to follow grid carbon intensity: temporal shifting of deferrable work \citep{wiesner2021letswait}, carbon-aware capacity management in production datacenters \citep{radovanovic2023cics}, elastic scaling for carbon efficiency \citep{hanafy2024carbonscaler}, and virtual energy systems that expose carbon to applications \citep{souza2023ecovisor}; recent analysis also delineates the limits of temporal and spatial shifting \citep{sukprasert2024limitations}, and carbon-aware LLM inference adapts generation to grid conditions \citep{li2024sprout}. These approaches take the hardware fleet as given. We instead optimize the fleet itself over its lifecycle, which is complementary: geographic cascading moves \emph{hardware}, rather than work, to cleaner grids.
+
+\paragraph{LLM serving, heterogeneous GPUs and tiered memory.}
+LLM serving systems manage the key-value (KV) cache in paged memory \citep{kwon2023vllm}, split or disaggregate prefill and decode phases across machines \citep{patel2024splitwise,zhong2024distserve}, and exploit GPU heterogeneity for cost \citep{griggs2024melange}; power and energy management for LLM inference has been characterized and optimized \citep{patel2024power,stojkovic2024greener,stojkovic2025dynamollm}. These works optimize throughput, latency, cost or energy of a given fleet, not the lifecycle carbon of buying, reusing and cascading it. CXL enables memory pooling and tiering in cloud platforms \citep{li2023pond,berger2023cxlpooling,maruf2023tpp}, with measured characteristics on real devices \citep{sun2023demystifying} and debated benefits \citep{caseagainstcxl2023}; concurrent work tiers the KV cache across CXL memory \citep{rwcache2026}. On reliability, fault-injection studies show how bit errors propagate through DNN accelerators \citep{li2017dnnerrors}, and concurrent work examines bit-flip vulnerability of shared KV-cache blocks \citep{bitflipkv2026}. None of these considers aged, reused DIMMs as the home of the KV cache, or the carbon value of cascading old GPUs; we quantify the latter and provide a measurement methodology for the former. Our optimization is solved with a high-performance dual simplex solver \citep{huangfu2018highs}.
+
+\section{Lifecycle Model}
+TODO: Lifecycle Model.
+
+\section{Evaluation Methodology}
+TODO: Evaluation Methodology.
+
+\section{Results}
+TODO: Results.
+
+\section{Discussion and Limitations}
+TODO: Discussion and Limitations.
+
+\section{Conclusion}
+TODO: Conclusion.
+
+\bibliography{refs}
+
+\end{document}
