@@ -10,6 +10,11 @@ Mapping of GenerateContentConfig fields:
   system_instruction -> system message      temperature / max_output_tokens -> same
   tools=[google_search] -> OpenRouter web plugin with the provider's native search (Google Search for Gemini)
   response_modalities=[IMAGE] + image_config.aspect_ratio -> OpenRouter image output
+Backend ``PO_BACKEND=bridge`` (no API credit needed): instead of calling OpenRouter, each request is written
+to ``$PO_BRIDGE_DIR/<id>/`` (request.json, request.md, attached images) and the call blocks until
+``response.txt`` appears there. The responses are produced by Claude (the Claude Code session that runs this
+pipeline), acting as the model; requests flagged ``web_search`` are answered with live web search.
+
 Semantic Scholar: requests from utils.scholar_utils are spaced (~1.1 s) and retried on HTTP 429, since the
 public endpoint otherwise drops verifications silently. Every LLM call is logged (model, tokens) to
 ``$PO_CALL_LOG`` for auditing. No file of the Google repository is modified.
@@ -64,6 +69,55 @@ def _system_text(si) -> str | None:
     return getattr(si, "text", None) or str(si)
 
 
+_bridge_lock = threading.Lock()
+_bridge_counter = [0]
+
+
+def _bridge_call(body: dict) -> dict:
+    """File-queue backend: write the request, wait for response.txt, return an OpenAI-style payload."""
+    root = os.environ["PO_BRIDGE_DIR"]
+    with _bridge_lock:
+        _bridge_counter[0] += 1
+        rid = f"{time.strftime('%H%M%S')}_{_bridge_counter[0]:03d}"
+    d = os.path.join(root, rid)
+    os.makedirs(d, exist_ok=True)
+    md, images = [], []
+    for m in body["messages"]:
+        md.append(f"## {m['role'].upper()} MESSAGE\n")
+        content = m["content"] if isinstance(m["content"], list) else [{"type": "text", "text": m["content"]}]
+        for c in content:
+            if c["type"] == "text":
+                md.append(c["text"])
+            else:
+                url = c["image_url"]["url"]
+                fn = f"image_{len(images) + 1:02d}.png"
+                with open(os.path.join(d, fn), "wb") as f:
+                    f.write(base64.b64decode(url.split(",", 1)[1]))
+                images.append(fn)
+                md.append(f"[attached image: {fn}]")
+        md.append("")
+    meta = dict(id=rid, model=body["model"], web_search="plugins" in body, image_output="modalities" in body,
+                temperature=body.get("temperature"), max_tokens=body.get("max_tokens"), images=images)
+    with open(os.path.join(d, "request.md"), "w") as f:
+        f.write("\n".join(md))
+    with open(os.path.join(d, "request.json"), "w") as f:
+        json.dump(meta, f, indent=1)
+    os.replace(os.path.join(d, "request.json"), os.path.join(d, "request.json"))
+    with open(os.path.join(root, "queue.log"), "a") as f:  # one line per new request (watched by the session)
+        f.write(f"NEW {rid} model={body['model']} web_search={meta['web_search']} images={len(images)} "
+                f"chars={sum(len(x) for x in md)}\n")
+    resp = os.path.join(d, "response.txt")
+    deadline = time.time() + float(os.environ.get("PO_BRIDGE_TIMEOUT", 6 * 3600))
+    while not os.path.exists(resp) or os.path.exists(resp + ".partial"):
+        if time.time() > deadline:
+            raise TimeoutError(f"bridge request {rid} not answered")
+        time.sleep(3)
+    time.sleep(1)
+    with open(resp) as f:
+        text = f.read()
+    return {"choices": [{"message": {"content": text}}], "usage": {}}
+
+
 class _Models:
     def generate_content(self, model, contents, config=None):
         cfg = config
@@ -87,11 +141,14 @@ class _Models:
                 if ic is not None and getattr(ic, "aspect_ratio", None):
                     body["image_config"] = {"aspect_ratio": ic.aspect_ratio}
         t0 = time.time()
-        r = requests.post(OPENROUTER_URL, json=body, timeout=900,
-                          headers={"Authorization": "Bearer proxy-injected", "Content-Type": "application/json"})
-        if r.status_code != 200:
-            raise RuntimeError(f"{r.status_code} OpenRouter error: {r.text[:500]}")
-        data = r.json()
+        if os.environ.get("PO_BACKEND") == "bridge":
+            data = _bridge_call(body)
+        else:
+            r = requests.post(OPENROUTER_URL, json=body, timeout=900,
+                              headers={"Authorization": "Bearer proxy-injected", "Content-Type": "application/json"})
+            if r.status_code != 200:
+                raise RuntimeError(f"{r.status_code} OpenRouter error: {r.text[:500]}")
+            data = r.json()
         msg = data["choices"][0]["message"]
         text = msg.get("content") or ""
         parts = [SimpleNamespace(text=text, inline_data=None)] if text else []
