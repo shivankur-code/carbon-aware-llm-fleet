@@ -22,7 +22,7 @@ python paper/build_bundle.py
 1. Quote numbers only from `numbers.json` or `claims.md`. Keep each claim's status visible. Anything PROVISIONAL must be described as model-based with placeholder GPU parameters until `configs/measured.yaml` exists.
 2. State the carbon-accounting convention (cut-off, amortized) and show the sensitivity table (claim C9).
 3. This is a modelling study using public parameters. Say so, and say that no proprietary fleet data was used.
-4. Every `VERIFY` entry in `refs.bib` and every `assumption` parameter cited as a fact must be checked first.
+4. Every `assumption` parameter cited as a fact must be checked first.
 
 ## Refresh after the GPU runs
 ```bash

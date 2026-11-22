@@ -1,11 +1,11 @@
 # Related work (draft for paper-orchestra)
 
-Citation keys refer to `paper/refs.bib`. Keys marked VERIFY there must be checked before submission.
+Citation keys refer to `paper/refs.bib` (all 53 entries verified). The polished version of this section is in `paper/orchestra/workspace/drafts/paper.tex`.
 
 ## Low-carbon server design and embodied-carbon accounting
 - **GreenSKU** [wang2024greensku] combines energy-efficient CPUs, reused DRAM over CXL and reused SSDs, evaluating server designs at fleet scale under production constraints. This is the work we extend.
-- **ACT** [gupta2022act] and *Chasing Carbon* [gupta2021chasing] established that embodied carbon dominates for many computing systems.
-- SSD manufacturing carbon [tannu2022ssd] makes storage reuse especially attractive.
+- **ACT** [gupta2022act] and *Chasing Carbon* [gupta2022chasing] established that embodied carbon dominates for many computing systems.
+- SSD manufacturing carbon [tannu2023ssd] makes storage reuse especially attractive.
 - *Junkyard computing* [switzer2023junkyard] shows that second-life hardware can be greener when the workload fits it.
 
 All of these evaluate a design at a point in time. **We add:**
@@ -22,7 +22,7 @@ All of these evaluate a design at a point in time. **We add:**
 We use these studies to calibrate age-dependent hazard models. We then ask what those failure rates mean for the **carbon** case for reuse. That question has not been asked before, as far as we know.
 
 ## Carbon-aware operation
-- Carbon-aware scheduling shifts *when* and *where* work runs [wiesner2021letswait; radovanovic2023cics; hanafy2023carbonscaler; souza2023ecovisor].
+- Carbon-aware scheduling shifts *when* and *where* work runs [wiesner2021letswait; radovanovic2023cics; hanafy2024carbonscaler; souza2023ecovisor].
 - Those systems take the hardware fleet as given. We optimize the **fleet itself over its lifecycle**, including geographic cascading of old hardware to clean grids. The two approaches are complementary.
 
 ## Heterogeneous and tiered LLM serving
