@@ -1,0 +1,57 @@
+Running HiGHS 1.16.0 (git hash: f3f113d): Copyright (c) 2026 under MIT licence terms
+Includes third-party software components, see THIRD_PARTY_NOTICES.md for full details
+{'design': 'bundle (paper)', 'buyable': 'new_gpu+green_gpu', 'Y': 0.7750435057407246, 'saving_E3g': 0.7799489441753349, 'E0_kt': 490.60675619533697, 'E2b_kt': 486.8043403927198, 'bought': 'green_gpu:1900 new_gpu:3329'}
+{'design': 'cpu only', 'buyable': 'new_gpu+green_cpu', 'Y': 0.7210820120774564, 'saving_E3g': 0.8802800930046262, 'E0_kt': 490.60675619533697, 'E2b_kt': 487.06907912637575, 'bought': 'green_cpu:5164'}
+{'design': 'ssd reuse only', 'buyable': 'new_gpu+green_ssd', 'Y': 1.5360205441190211, 'saving_E3g': 1.6145276194523217, 'E0_kt': 490.60675619533697, 'E2b_kt': 483.0709356293407, 'bought': 'green_ssd:1900 new_gpu:3264'}
+{'design': 'dram/CXL reuse only', 'buyable': 'new_gpu+green_dram', 'Y': 0.004691710285575912, 'saving_E3g': 0.004820416873374533, 'E0_kt': 490.60675619533697, 'E2b_kt': 490.58373834769486, 'bought': 'green_dram:726 new_gpu:4453'}
+{'design': 'planner picks', 'buyable': 'new_gpu+green_cpu+green_ssd+green_dram+green_gpu', 'Y': 1.710854176225085, 'saving_E3g': 1.8699458159940119, 'E0_kt': 490.60675619533697, 'E2b_kt': 482.2131900181267, 'bought': 'green_cpu:3264 green_ssd:1900'}
+             design                                          buyable     Y  saving_E3g   E0_kt  E2b_kt                        bought
+     bundle (paper)                                new_gpu+green_gpu 0.775       0.780 490.607 486.804   green_gpu:1900 new_gpu:3329
+           cpu only                                new_gpu+green_cpu 0.721       0.880 490.607 487.069                green_cpu:5164
+     ssd reuse only                                new_gpu+green_ssd 1.536       1.615 490.607 483.071   green_ssd:1900 new_gpu:3264
+dram/CXL reuse only                               new_gpu+green_dram 0.005       0.005 490.607 490.584   green_dram:726 new_gpu:4453
+      planner picks new_gpu+green_cpu+green_ssd+green_dram+green_gpu 1.711       1.870 490.607 482.213 green_cpu:3264 green_ssd:1900
+{'design': 'bundle (paper)', 'buyable': 'new_gpu+green_gpu', 'Y': 0.8830486634234136, 'saving_E3g': 0.8898064180980381, 'E0_kt': 490.60675619533697, 'E2b_kt': 486.2744597920891, 'bought': 'green_gpu:1900 new_gpu:3313'}
+{'design': 'cpu only', 'buyable': 'new_gpu+green_cpu', 'Y': 0.7210820120774564, 'saving_E3g': 0.8802800930046262, 'E0_kt': 490.60675619533697, 'E2b_kt': 487.06907912637575, 'bought': 'green_cpu:5164'}
+{'design': 'ssd reuse only', 'buyable': 'new_gpu+green_ssd', 'Y': 1.5360205441190211, 'saving_E3g': 1.6145276194523217, 'E0_kt': 490.60675619533697, 'E2b_kt': 483.0709356293407, 'bought': 'green_ssd:1900 new_gpu:3264'}
+{'design': 'dram/CXL reuse only', 'buyable': 'new_gpu+green_dram', 'Y': 0.004691710285553707, 'saving_E3g': 0.004820416873352329, 'E0_kt': 490.60675619533697, 'E2b_kt': 490.5837383476949, 'bought': 'green_dram:726 new_gpu:4453'}
+{'design': 'planner picks', 'buyable': 'new_gpu+green_cpu+green_ssd+green_dram+green_gpu', 'Y': 1.710854176225074, 'saving_E3g': 1.8699458159940119, 'E0_kt': 490.60675619533697, 'E2b_kt': 482.21319001812674, 'bought': 'green_cpu:3264 green_ssd:1900'}
+             design                                          buyable     Y  saving_E3g   E0_kt  E2b_kt                        bought
+     bundle (paper)                                new_gpu+green_gpu 0.883       0.890 490.607 486.274   green_gpu:1900 new_gpu:3313
+           cpu only                                new_gpu+green_cpu 0.721       0.880 490.607 487.069                green_cpu:5164
+     ssd reuse only                                new_gpu+green_ssd 1.536       1.615 490.607 483.071   green_ssd:1900 new_gpu:3264
+dram/CXL reuse only                               new_gpu+green_dram 0.005       0.005 490.607 490.584   green_dram:726 new_gpu:4453
+      planner picks new_gpu+green_cpu+green_ssd+green_dram+green_gpu 1.711       1.870 490.607 482.213 green_cpu:3264 green_ssd:1900
+{'design': 'bundle (paper)', 'buyable': 'new_gpu+green_gpu', 'Y': 0.947048027070807, 'saving_E3g': 0.9523201379068147, 'E0_kt': 490.60675619533697, 'E2b_kt': 485.960474590113, 'bought': 'green_gpu:1900 new_gpu:3305'}
+{'design': 'cpu only', 'buyable': 'new_gpu+green_cpu', 'Y': 0.7210820120774564, 'saving_E3g': 0.8802800930046262, 'E0_kt': 490.60675619533697, 'E2b_kt': 487.06907912637575, 'bought': 'green_cpu:5164'}
+{'design': 'ssd reuse only', 'buyable': 'new_gpu+green_ssd', 'Y': 1.5360205441190211, 'saving_E3g': 1.6145276194523217, 'E0_kt': 490.60675619533697, 'E2b_kt': 483.0709356293407, 'bought': 'green_ssd:1900 new_gpu:3264'}
+{'design': 'dram/CXL reuse only', 'buyable': 'new_gpu+green_dram', 'Y': 0.005739175267838181, 'saving_E3g': 0.006001599267491109, 'E0_kt': 490.60675619533697, 'E2b_kt': 490.5785994137231, 'bought': 'green_dram:1133 new_gpu:4055'}
+{'design': 'planner picks', 'buyable': 'new_gpu+green_cpu+green_ssd+green_dram+green_gpu', 'Y': 1.710854176225085, 'saving_E3g': 1.8699458159940119, 'E0_kt': 490.60675619533697, 'E2b_kt': 482.2131900181267, 'bought': 'green_cpu:3264 green_ssd:1900'}
+             design                                          buyable     Y  saving_E3g   E0_kt  E2b_kt                        bought
+     bundle (paper)                                new_gpu+green_gpu 0.947       0.952 490.607 485.960   green_gpu:1900 new_gpu:3305
+           cpu only                                new_gpu+green_cpu 0.721       0.880 490.607 487.069                green_cpu:5164
+     ssd reuse only                                new_gpu+green_ssd 1.536       1.615 490.607 483.071   green_ssd:1900 new_gpu:3264
+dram/CXL reuse only                               new_gpu+green_dram 0.006       0.006 490.607 490.579  green_dram:1133 new_gpu:4055
+      planner picks new_gpu+green_cpu+green_ssd+green_dram+green_gpu 1.711       1.870 490.607 482.213 green_cpu:3264 green_ssd:1900
+{'design': 'bundle (paper)', 'buyable': 'new_gpu+green_gpu', 'Y': 1.0578329698292532, 'saving_E3g': 1.0588742654661476, 'E0_kt': 490.60675619533697, 'E2b_kt': 485.4169561760929, 'bought': 'green_gpu:1900 new_gpu:3287'}
+{'design': 'cpu only', 'buyable': 'new_gpu+green_cpu', 'Y': 0.7210820120774564, 'saving_E3g': 0.8802800930046262, 'E0_kt': 490.60675619533697, 'E2b_kt': 487.06907912637575, 'bought': 'green_cpu:5164'}
+{'design': 'ssd reuse only', 'buyable': 'new_gpu+green_ssd', 'Y': 1.5360205441190211, 'saving_E3g': 1.6145276194523217, 'E0_kt': 490.60675619533697, 'E2b_kt': 483.0709356293407, 'bought': 'green_ssd:1900 new_gpu:3264'}
+{'design': 'dram/CXL reuse only', 'buyable': 'new_gpu+green_dram', 'Y': 0.06828634427218372, 'saving_E3g': 0.0693299860880181, 'E0_kt': 490.60675619533697, 'E2b_kt': 490.2717387767789, 'bought': 'green_dram:1900 new_gpu:3287'}
+{'design': 'planner picks', 'buyable': 'new_gpu+green_cpu+green_ssd+green_dram+green_gpu', 'Y': 1.7196292058014873, 'saving_E3g': 1.8790330466031513, 'E0_kt': 490.60675619533697, 'E2b_kt': 482.1701391301667, 'bought': 'green_cpu:3096 green_dram:178 green_gpu:660 green_ssd:1240'}
+             design                                          buyable     Y  saving_E3g   E0_kt  E2b_kt                                                     bought
+     bundle (paper)                                new_gpu+green_gpu 1.058       1.059 490.607 485.417                                green_gpu:1900 new_gpu:3287
+           cpu only                                new_gpu+green_cpu 0.721       0.880 490.607 487.069                                             green_cpu:5164
+     ssd reuse only                                new_gpu+green_ssd 1.536       1.615 490.607 483.071                                green_ssd:1900 new_gpu:3264
+dram/CXL reuse only                               new_gpu+green_dram 0.068       0.069 490.607 490.272                               green_dram:1900 new_gpu:3287
+      planner picks new_gpu+green_cpu+green_ssd+green_dram+green_gpu 1.720       1.879 490.607 482.170 green_cpu:3096 green_dram:178 green_gpu:660 green_ssd:1240
+{'design': 'bundle (paper)', 'buyable': 'new_gpu+green_gpu', 'Y': 1.6000680920732702, 'saving_E3g': 1.6747651070923242, 'E0_kt': 490.60675619533697, 'E2b_kt': 482.7567140318997, 'bought': 'green_gpu:1900 new_gpu:3268'}
+{'design': 'cpu only', 'buyable': 'new_gpu+green_cpu', 'Y': 0.7210820120774564, 'saving_E3g': 0.8802800930046262, 'E0_kt': 490.60675619533697, 'E2b_kt': 487.06907912637575, 'bought': 'green_cpu:5164'}
+{'design': 'ssd reuse only', 'buyable': 'new_gpu+green_ssd', 'Y': 1.5360205441190211, 'saving_E3g': 1.6145276194523217, 'E0_kt': 490.60675619533697, 'E2b_kt': 483.0709356293407, 'bought': 'green_ssd:1900 new_gpu:3264'}
+{'design': 'dram/CXL reuse only', 'buyable': 'new_gpu+green_dram', 'Y': 0.6146176838801254, 'saving_E3g': 0.6865188252520138, 'E0_kt': 490.60675619533697, 'E2b_kt': 487.5914003134498, 'bought': 'green_dram:1900 new_gpu:3268'}
+{'design': 'planner picks', 'buyable': 'new_gpu+green_cpu+green_ssd+green_dram+green_gpu', 'Y': 1.7893991370906415, 'saving_E3g': 1.9493056879379744, 'E0_kt': 490.60675619533697, 'E2b_kt': 481.82784313346923, 'bought': 'green_cpu:2604 green_dram:664 green_gpu:1236 green_ssd:664'}
+             design                                          buyable     Y  saving_E3g   E0_kt  E2b_kt                                                     bought
+     bundle (paper)                                new_gpu+green_gpu 1.600       1.675 490.607 482.757                                green_gpu:1900 new_gpu:3268
+           cpu only                                new_gpu+green_cpu 0.721       0.880 490.607 487.069                                             green_cpu:5164
+     ssd reuse only                                new_gpu+green_ssd 1.536       1.615 490.607 483.071                                green_ssd:1900 new_gpu:3264
+dram/CXL reuse only                               new_gpu+green_dram 0.615       0.687 490.607 487.591                               green_dram:1900 new_gpu:3268
+      planner picks new_gpu+green_cpu+green_ssd+green_dram+green_gpu 1.789       1.949 490.607 481.828 green_cpu:2604 green_dram:664 green_gpu:1236 green_ssd:664
