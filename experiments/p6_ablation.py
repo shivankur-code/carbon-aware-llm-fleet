@@ -125,7 +125,7 @@ def cmd_cxl():
     """Sweep the LC CXL multiplier: at what slowdown does DRAM reuse over CXL stop paying at fleet scale?"""
     rows = []
     for m in (0.95, 0.97, 0.98, 0.99, 1.0):
-        df = cmd_fleet({"skus.green_gpu.cxl_slowdown.LC": m}, tag=f"_cxl{m}")
+        df = cmd_fleet({"skus.skus.green_gpu.cxl_slowdown.LC": m}, tag=f"_cxl{m}")
         for _, r in df.iterrows():
             rows.append(dict(cxl_LC=m, design=r.design, Y=r.Y, saving_E3g=r.saving_E3g, bought=r.bought))
     pd.DataFrame(rows).to_csv(OUT / "fleet_ablation_cxl_sweep.csv", index=False)
