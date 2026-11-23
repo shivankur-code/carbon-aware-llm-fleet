@@ -1,0 +1,204 @@
+{
+    "v1": {
+        "round": 1,
+        "agent_plan": {
+            "addressed_weaknesses": [
+                "Placeholder-driven conclusions (W1): reframed title, abstract, intro and conclusion so the paper claims conditions rather than point estimates; added a 'Scope and what the evidence supports' paragraph and a Break-Even Map section with Table 1 listing, for each conclusion, the controlling parameter, its baseline and its flip value (CXL multiplier ~0.94, grid ~320 g/kWh, peak-power delta ~+15 W, m ~2.1 and ~8, lease multiplier ~1.39, energy ratio ~0.93-1.0)",
+                "False precision (W2): text now rounds values; tables keep solver output for reproducibility; the 0.05 pp LP-vs-integer gap is stated as the model's resolution, and smaller effects (Z at baseline, SLO-induced change, refurbishment extra) are called unresolved",
+                "Small effects relative to uncertainty (W3): fleet section now leads with the 94% operational / 5% embodied split and the fuzzy and accounting ranges, and stresses robust orderings (Y > Y_naive in every run); the SLO-induced rise is demoted to 'an SLO guarantee does not make reuse more carbon-expensive'",
+                "Strawman failure-blind baseline (W4): added a first-order derivation from the ladder data of Y_naive's dependence on the 1.3x lease multiplier (about 0.21 pp per 0.1, zero at about 1.39, about 0.81% at 1.0), compared it with E2b (about 25x less sensitive), stated that Y >= 0 holds by construction, and framed E2a as a lower bound on what ignoring reliability can cost",
+                "Chance-constraint rigour (W5): defined P(short) as the probability at a uniformly random instant, equal to the expected fraction of the quarter spent short under stationarity; justified the negative binomial as a Gamma-mixed Poisson M/G/inf occupancy; explained why cross-region and temporal correlation do not change per-region-quarter marginal constraints; stated that the reserve loop is a feasibility heuristic whose validated plan gives an upper bound on the minimal SLO carbon",
+                "LP relaxation fidelity (W6): stated that effects below the ~0.05 pp pilot gap are unresolved and listed integrality in the limitations",
+                "Inconsistent EV baseline (W7): added an explicit headroom convention in the setup and showed from the headroom sweep that beta=1 and beta=3 give the same Y at m=1 (0.775%)",
+                "Presentation (W8): rewrote Eq. 1 and Eq. 4 with explicit indices and defined terms, replaced '32+8 reused' with '32 reused DIMM, 8 reused SSD', reduced number strings in prose, moved the cascade figure into the figures appendix, and rewrote the Figure 7 caption to state the correct unit",
+                "Over-crediting framed as a contribution (W9): removed it from the contribution list and kept it as a practical caution in Section 4.8 and Appendix B",
+                "ICLR fit (W10): added a sentence on why LLM deployment hardware and planning under uncertainty are relevant to the ML community"
+            ],
+            "integrated_answers": [
+                "Q1: measurements are not available; added the break-even map with one-at-a-time flip values from the tornado and sweeps, and noted that the CXL and cascading thresholds act on different SKUs and that no joint 2-D map was computed",
+                "Q2: added the lease-multiplier derivation (Section 4.4 and Appendix C) and explained that a failure-blind plan with standard derating and priced spares is E2b, whose Y is insensitive to the amount of derating (0.775-0.806%)",
+                "Q3: added shortfall semantics, the Gamma-mixed Poisson justification and the cross-region correlation argument to Section 3.5",
+                "Q4: the three available seeds (0.800-0.814%) are reported, and the m=3 runs are used as a partial control showing that reuse needs more reserve yet pays a lower price, which points to per-unit reserve carbon rather than reserve size",
+                "Q5: no reference-fleet integer runs exist; stated the 0.05 pp resolution and the 1x/50x scale identity",
+                "Q6: explained that green_gpu has 32 reused DIMMs and 8 reused SSDs (no extra memory) and how CXL enters throughput, power, platform embodied carbon and failure counts",
+                "Q7: justified global BATCH demand as delay-tolerant work, and stated that network and data-locality costs are not modelled beyond shipping and matter only above energy parity",
+                "Q8: explained that the constant GPU hazard comes from rate-only data, that both new_gpu and green_gpu carry identical new GPUs (4.36 failures each), and so GPU shape changes affect both SKUs' drains equally while the age effect that separates them comes from DIMMs and SSDs"
+            ],
+            "actions_taken": [
+                "Changed the title to 'When Does Component Reuse Pay ...' and rewrote the abstract as a single paragraph around break-even conditions",
+                "Condensed the intro findings and related work to make room; rewrote the contributions as three items",
+                "Added Section 4.3 (Break-Even Map) with Table 1",
+                "Rewrote the failure-blind paragraph with the leasing decomposition and derivation; added a derivation paragraph to Appendix C",
+                "Rewrote Section 3.5 (shortfall semantics, NB justification, correlation, heuristic bound)",
+                "Moved the cascade figure to Appendix D; kept all figure filenames, packages and the author placeholder; main text still ends on page 10"
+            ]
+        },
+        "scores_before": {
+            "Originality": 2.0,
+            "Quality": 2.0,
+            "Clarity": 2.0,
+            "Significance": 2.0,
+            "Soundness": 2.0,
+            "Presentation": 2.0,
+            "Contribution": 2.0,
+            "Overall": 3.0,
+            "Confidence": 4.0
+        },
+        "scores_after": {
+            "Originality": 2.0,
+            "Quality": 2.0,
+            "Clarity": 3.0,
+            "Significance": 1.0,
+            "Soundness": 2.0,
+            "Presentation": 3.0,
+            "Contribution": 2.0,
+            "Overall": 3.0,
+            "Confidence": 4.0
+        },
+        "deltas": {
+            "Originality": 0.0,
+            "Quality": 0.0,
+            "Clarity": 1.0,
+            "Significance": -1.0,
+            "Soundness": 0.0,
+            "Presentation": 1.0,
+            "Contribution": 0.0
+        },
+        "total_gain": 2.0,
+        "total_drop": 1.0,
+        "outcome": "ACCEPTED_NEUTRAL_IMPROVEMENT"
+    },
+    "v2": {
+        "round": 2,
+        "agent_plan": {
+            "addressed_weaknesses": [
+                "Imprecise m break-even (W5/Q2): the reliability-aware crossover is now stated as a bracket (5, 8] everywhere (abstract, intro contributions, Table 1 with a new double-dagger note, Figure 3 caption, Section 4.4, conclusion); 8 is called an upper bound, Y=0.209% at m=5 is quoted, and a labelled linear extrapolation of the m=3 and m=5 points (about 6.6) is given as not a swept value",
+                "Negative fleet result not framed as such (W2): abstract, scope paragraph, Section 4.4 and conclusion now state plainly that at fleet scale reuse is not a material carbon lever (below 1%, interval includes 0, zero when charged as new)",
+                "Weak failure-blind baseline (W3): failure-blind E2a is presented as a naive reference, not a strong operator baseline; the text states that simple derating plus priced spares (E2b) recovers about 91% of the failure-free saving (Y/X = 0.775/0.848, labelled derivation) and that Y is insensitive to the amount of derating (0.775-0.806%); Y>=0 is labelled as by construction in the scope paragraph",
+                "SLO null result (W4): reported as 'no detectable carbon penalty' in abstract, contributions, Section 4.6, Figure 6 caption and conclusion, stating that all changes are below the 0.05 pp resolution",
+                "Numerical inconsistencies (W8/Q7): new Appendix C.1 explains that 1,274.4 (reserve requirement, Table 16) and 1,272.6 (added installed capacity, Tables 9/19) are different quantities that coincide for the no-reuse plan and differ by 1.8 (0.14%) for the reuse plan; it shows that the reuse components 3,241+465+97=3,803 vs 3,806 is independent rounding, and that the 214 tCO2e gap = 115 operational + ~110 embodied - 8 spares-and-logistics (+3 rounding), so embodied+operational alone exceeds the gap; captions of the composition, seed and reserve tables now say this",
+                "Entry-age claim without table (W8): the log supports it, so the exact values (0.795/0.775/0.759% at 3/5/7 years) are quoted in the text and a new Table (tab:entry_app) is added",
+                "Figure 7 axis label (W8): the figure cannot be regenerated; the caption now carries a bold unit note and the main-text reference states the axis values are in ktCO2e",
+                "Venue fit (W10): the introduction now says the paper has no learning component and positions it honestly as sequential decision-making under uncertainty and optimization for ML-serving infrastructure",
+                "Modelling choices favour reuse (W6): limitations now state that choices cut both ways (cut-off accounting favours reuse; CXL memory-capacity benefit not credited; controller embodied carbon folded into the +100 kgCO2e platform delta) and add demand uncertainty and leasing supply limits"
+            ],
+            "integrated_answers": [
+                "Q2: no m=6,7 runs exist in the log; the zero is restated as a bracket (5, 8] with a labelled extrapolation only",
+                "Q3: no re-optimized mu sweep exists; the text says so and identifies E2b as the derated failure-blind operator baseline",
+                "Q4: added to Section 4.6 that with independent failures the reuse plan's mean P(short) (0.40% vs 0.20%) and count of region-quarters above 1% (4 vs 5) are similar to no reuse, so the 14.5% worst case is concentrated in very few region-quarters; the per-region-quarter breakdown was not logged",
+                "Q5: limitations note that CXL capacity benefit is not credited and controller embodied carbon is in the platform delta",
+                "Q6: limitations note that all GPU-related interruptions are treated as 72 h failures and that a transient share would lower GPU drains equally for both SKUs",
+                "Q7: reconciliation appendix C.1 added",
+                "Q1: measurements remain not run; placeholders and the break-even map are kept unchanged"
+            ],
+            "actions_taken": [
+                "Rewrote the last third of the abstract (negative fleet result, naive reference, derating recovers ~90%, (5,8] bracket, no detectable SLO penalty)",
+                "Rewrote the ICLR-fit sentence and the scope paragraph in the introduction; adjusted two contribution bullets",
+                "Edited Table 1 (m bracket, refurbishment m in {3,5}) and its caption",
+                "Rewrote the failure-blind paragraph, the break-even reliability paragraph, the SLO paragraph and the reserve-composition sentence",
+                "Added Table tab:entry_app and Appendix C.1 (app:reconcile); updated captions of Tables tab:composition, tab:seeds_app, tab:reserve_app and Figures 3, 6, 7",
+                "Extended limitations; compile-tested: main text still ends on page 10, no undefined references, all figure filenames, packages and author placeholder unchanged, citations only from the citation map"
+            ]
+        },
+        "scores_before": {
+            "Originality": 2.0,
+            "Quality": 2.0,
+            "Clarity": 3.0,
+            "Significance": 1.0,
+            "Soundness": 2.0,
+            "Presentation": 3.0,
+            "Contribution": 2.0,
+            "Overall": 3.0,
+            "Confidence": 4.0
+        },
+        "scores_after": {
+            "Originality": 2.0,
+            "Quality": 2.0,
+            "Clarity": 3.0,
+            "Significance": 2.0,
+            "Soundness": 2.0,
+            "Presentation": 3.0,
+            "Contribution": 2.0,
+            "Overall": 3.0,
+            "Confidence": 4.0
+        },
+        "deltas": {
+            "Originality": 0.0,
+            "Quality": 0.0,
+            "Clarity": 0.0,
+            "Significance": 1.0,
+            "Soundness": 0.0,
+            "Presentation": 0.0,
+            "Contribution": 0.0
+        },
+        "total_gain": 1.0,
+        "total_drop": 0.0,
+        "outcome": "ACCEPTED_NEUTRAL_IMPROVEMENT"
+    },
+    "v3": {
+        "round": 3,
+        "agent_plan": {
+            "addressed_weaknesses": [
+                "Bundled reuse SKU (W1/Q1): added a Section 4.2 paragraph and a Table 1 row with a back-of-envelope decomposition, labelled as a derivation from logged values and not a model run. Reused SSDs give 4,912 of the 5,552 kgCO2e gross embodied reduction (88%). Reused DIMMs give 640, about 540 net of the +100 platform delta. The 5% CXL slowdown costs about 95,511 x (1/0.95-1) = 5.0 tCO2e of operational carbon per node on the mixed grid. The tornado gives 5.88% at multiplier 1.0 versus 0.93% at 0.95. DRAM-over-CXL reuse would pay only below about 10 t of operational carbon per node. A SKU with reused SSDs and new local DRAM might save roughly 5%; this is stated as a hypothesis and future work, since no such SKU was run. Caveats: new-DIMM failures, attribution of the power deltas, and SSD embodied sensitivity (-2.49% at 150 kg). The abstract, conclusion and limitations now say that the results apply to the bundle",
+                "Confounded failure-blind baseline (W2/Q2): the text now states that Y_naive = -0.557% when reused parts are charged as new (X = 0). The failure-blind break-evens (m ~2.1, mu ~1.39) therefore mostly measure the cost of ignoring drains. A failure-blind no-reuse replay was not run; an indicative difference (0.195+0.557 ~0.75 pp, close to Y) is given and marked as indicative only. Abstract, scope paragraph, contributions, Table 1 caption, Figure 3 caption and conclusion reworded to match",
+                "Internal inconsistencies (W4): Figure 6 caption now says the CXL multiplier is the dominant factor and that grid intensity and the peak-power delta also flip the sign (Table 1). Table 7 caption explains the 0.001 pp shortfalls against Table 12 as solver tolerance between separate runs, far below the 0.05 pp resolution. '-0.000' became '0.000'. Point 7 of the epsilon front is now called the carbon-minimal plan, the logged endpoint is marked as dominated at printed precision, and the cost figure is corrected to about 14% cheaper (1-1.437/1.680), with 16% noted as relative to the dominated endpoint. The idle-energy claim is corrected to operational share, and the Figure 7 unit note is kept",
+                "SLO baseline (W5/Q7): Section 4.6 now says explicitly that the SLO study uses beta_LC = 1 while Table 5 and all other results use beta_LC = 3, because the reserve replaces the derating. It also says that the price is therefore not measured against the beta = 3 plan and that the carbon difference between the two plans was not logged. The 14.5% worst case is kept as logged and left unexplained (no per-region-quarter breakdown exists)",
+                "Missing table entries (W6): no cell is blank. Table 4 now gives absolute green_gpu power (2,450/10,100 W) and a host-embodied row (8,312/2,860/0) taken from the log",
+                "Break-even marks (W3): m ~2.1 and the cascading 0.93-1.0 range are now marked with the interpolation symbol; a new section symbol marks the back-of-envelope DRAM-reuse row"
+            ],
+            "integrated_answers": [
+                "Q1: SSD-only SKU not run; derivation and hypothesis added (Section 4.2, Table 1, conclusion)",
+                "Q2: failure-blind no-reuse replay not run; charged-as-new row used as proxy and break-evens reinterpreted",
+                "Q3: Table 7 caption explains the 0.001 pp differences as tolerance between separate runs, within the 0.05 pp resolution",
+                "Q4: Figure 6 caption reconciled with Table 1",
+                "Q5: lexicographic solving is not recorded; point 7 is treated as the carbon-minimal plan and the cost statement corrected to ~14%; the carbon gain is now stated as about two thirds at 2.8% extra cost and over 80% at 5.6% extra cost",
+                "Q6: the idle/dynamic split was not logged; text now reports the 83%/85% operational share and says the split is unmeasured",
+                "Q7: beta = 1 versus beta = 3 stated explicitly with reason; worst region-quarters were not logged",
+                "Q8: GPU embodied assumption (150 kgCO2e per GPU, 1.2 of 8.3 t per host) stated; fuzzy analysis covers at most a doubling of embodied carbon, larger factors were not run",
+                "Q9: Pmax 0.13% now described as exceeding the target by ~2 standard errors, plausible as the maximum over 72 estimates; a conservative stopping rule was not run"
+            ],
+            "actions_taken": [
+                "Edited abstract (CXL dominant factor, bundling hypothesis, failure-blind reinterpretation)",
+                "Added the bundling paragraph to Section 4.2 and a DRAM-over-CXL row to Table 1; added interpolation marks",
+                "Rewrote the failure-blind paragraph in Section 4.4 and added the GPU embodied sentence",
+                "Edited Section 4.6 (beta baseline, operational share, Pmax) and Section 4.7 (Pareto)",
+                "Edited captions of Figures 3, 6 and 7 and Tables 1, 7 and 21; edited Table 4 values",
+                "Moved Figures 2 and 3 to Appendix D to stay within 10 pages. Compile-tested: the main text ends on page 10, there are no undefined references, and all citations come from the citation map. Figure filenames, packages and the author placeholder are unchanged"
+            ]
+        },
+        "scores_before": {
+            "Originality": 2.0,
+            "Quality": 2.0,
+            "Clarity": 3.0,
+            "Significance": 2.0,
+            "Soundness": 2.0,
+            "Presentation": 3.0,
+            "Contribution": 2.0,
+            "Overall": 3.0,
+            "Confidence": 4.0
+        },
+        "scores_after": {
+            "Originality": 2.0,
+            "Quality": 2.0,
+            "Clarity": 3.0,
+            "Significance": 2.0,
+            "Soundness": 2.0,
+            "Presentation": 3.0,
+            "Contribution": 2.0,
+            "Overall": 4.0,
+            "Confidence": 4.0
+        },
+        "deltas": {
+            "Originality": 0.0,
+            "Quality": 0.0,
+            "Clarity": 0.0,
+            "Significance": 0.0,
+            "Soundness": 0.0,
+            "Presentation": 0.0,
+            "Contribution": 0.0
+        },
+        "total_gain": 0.0,
+        "total_drop": 0.0,
+        "outcome": "ACCEPTED_SCORE_INCREASE"
+    }
+}

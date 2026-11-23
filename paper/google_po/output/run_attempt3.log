@@ -1,0 +1,433 @@
+Using S2 API Key: None
+🚀 Starting Paper Generation (WITHOUT PLOTTING), with figures stored in /home/user/carbon-aware-llm-fleet/paper/google_po/raw_materials/figures
+outline.json output written to /home/user/carbon-aware-llm-fleet/paper/google_po/output/outline.json
+🚀 Starting Fast Hybrid Literature Agent (Cutoff: 2026-10, Threads: 3)...
+📚 Phase 1: Analyzing Plan & Executing Search Tasks...
+    -> Identified 40 distinct search tasks.
+   🔎 Phase 1a: Google Candidates Discovery (MaxPool=10)...
+   🔎 Exploration [Introduction]: 'Find highly cited papers and reports quantifying the energy consumption and carbon footprint of LLM inference and AI datacenters, and the growing share of embodied carbon in datacenter hardware'
+   🔎 Exploration [Introduction]: 'Search for survey or review papers on sustainable / carbon-aware computing and datacenter carbon accounting (embodied vs operational carbon, lifecycle assessment of servers)'
+   🔎 Exploration [Introduction]: 'Identify foundational papers establishing embodied-carbon modeling of computing hardware and the argument that embodied carbon matters as grids decarbonize'
+   🔎 Exploration [Introduction]: 'Identify foundational large-scale field studies of datacenter hardware reliability (DRAM errors in the field, SSD failures in production, GPU failures in large clusters) that motivate age-dependent failure modeling'
+   🔎 Exploration [Introduction]: 'Find foundational work on memory disaggregation and CXL-attached memory in datacenters, and on server lifetime extension / hardware reuse as a datacenter sustainability strategy'
+   🔎 Exploration [Related Work: 2.1 Carbon-Aware Server Design and Component Reuse]: 'reused DRAM CXL server embodied carbon evaluation'
+   🔎 Exploration [Related Work: 2.1 Carbon-Aware Server Design and Component Reuse]: 'embodied carbon accounting methodology reused hardware allocation cut-off'
+   🔎 Exploration [Related Work: 2.2 Carbon-Aware LLM Inference and Older-GPU Reuse]: 'carbon-aware LLM inference serving older GPU generations'
+   🔎 Exploration [Related Work: 2.1 Carbon-Aware Server Design and Component Reuse]: 'carbon footprint GPU server embodied versus operational lifecycle'
+   🔎 Exploration [Related Work: 2.1 Carbon-Aware Server Design and Component Reuse]: 'server lifetime extension embodied carbon datacenter analysis'
+   🔎 Exploration [Related Work: 2.2 Carbon-Aware LLM Inference and Older-GPU Reuse]: 'embodied carbon LLM serving hardware selection'
+   🔎 Exploration [Related Work: 2.2 Carbon-Aware LLM Inference and Older-GPU Reuse]: 'geographic load shifting batch inference carbon intensity'
+   🔎 Exploration [Related Work: 2.2 Carbon-Aware LLM Inference and Older-GPU Reuse]: 'energy efficiency tokens per joule GPU generations LLM inference'
+   🔎 Exploration [Related Work: 2.3 Datacenter Fleet Capacity Planning and Lifecycle Optimization]: 'datacenter server refresh retirement optimization linear programming'
+   🔎 Exploration [Related Work: 2.3 Datacenter Fleet Capacity Planning and Lifecycle Optimization]: 'multi-period capacity planning cloud fleet carbon cost tradeoff'
+   🔎 Exploration [Related Work: 2.3 Datacenter Fleet Capacity Planning and Lifecycle Optimization]: 'server lifecycle optimization hardware failures spare parts'
+   🔎 Exploration [Related Work: 2.3 Datacenter Fleet Capacity Planning and Lifecycle Optimization]: 'carbon-aware datacenter procurement planning multi-region'
+   🔎 Exploration [Related Work: 2.4 Reliability Modeling and SLO-Guaranteed Capacity Provisioning]: 'DRAM failure rate increase with age field study datacenter'
+   🔎 Exploration [Related Work: 2.4 Reliability Modeling and SLO-Guaranteed Capacity Provisioning]: 'SSD failure age dependence production field study'
+   🔎 Exploration [Related Work: 2.4 Reliability Modeling and SLO-Guaranteed Capacity Provisioning]: 'correlated failures datacenter capacity headroom provisioning'
+   🔎 Exploration [Related Work: 2.4 Reliability Modeling and SLO-Guaranteed Capacity Provisioning]: 'chance-constrained capacity planning cloud availability SLO'
+   🎯 Targeted Search [3. Methodology - 3.1 Fleet State, SKUs and Service Tiers]: 'research paper or technical report introducing 'Compute Express Link (CXL)''
+   🎯 Targeted Search [3. Methodology - 3.3 Age-Dependent Reliability as Precomputed Parameters]: 'Weibull (A Statistical Distribution Function of Wide Applicability)'
+   🎯 Targeted Search [3. Methodology - 3.3 Age-Dependent Reliability as Precomputed Parameters]: 'Cox (Regression Models and Life-Tables)'
+   🎯 Targeted Search [3. Methodology - 3.3 Age-Dependent Reliability as Precomputed Parameters]: 'research paper or technical report introducing 'renewal theory / delayed renewal processes''
+   🎯 Targeted Search [3. Methodology - 3.5 Lifecycle-Carbon Objective and Multi-Objective Planning]: 'research paper or technical report introducing 'Power Usage Effectiveness (PUE) metric''
+   🎯 Targeted Search [3. Methodology - 3.5 Lifecycle-Carbon Objective and Multi-Objective Planning]: 'Haimes, Lasdon and Wismer (On a Bicriterion Formulation of the Problems of Integrated System Identification and System Optimization)'
+   🎯 Targeted Search [3. Methodology - 3.5 Lifecycle-Carbon Objective and Multi-Objective Planning]: 'research paper or technical report introducing 'GHG Protocol Product Life Cycle Accounting and Reporting Standard''
+   🎯 Targeted Search [3. Methodology - 3.7 Chance-Constrained SLO Headroom]: 'Charnes and Cooper (Chance-Constrained Programming)'
+   🎯 Targeted Search [3. Methodology - 3.7 Chance-Constrained SLO Headroom]: 'research paper or technical report introducing 'the M/G/infinity queue occupancy distribution''
+   🎯 Targeted Search [3. Methodology - 3.7 Chance-Constrained SLO Headroom]: 'research paper or technical report introducing 'the negative binomial distribution for overdispersed counts''
+   🎯 Targeted Search [3. Methodology - 3.7 Chance-Constrained SLO Headroom]: 'Metropolis and Ulam (The Monte Carlo Method)'
+   🎯 Targeted Search [3. Methodology - 3.8 Uncertainty Quantification]: 'Zadeh (Fuzzy Sets)'
+   🎯 Targeted Search [3. Methodology - 3.8 Uncertainty Quantification]: 'Dong and Shah (Vertex Method for Computing Functions of Fuzzy Variables)'
+   🎯 Targeted Search [4. Experiments - 4.1 Experimental Setup]: 'Huangfu and Hall (Parallelizing the Dual Revised Simplex Method)'
+   🎯 Targeted Search [4. Experiments - 4.1 Experimental Setup]: 'research paper or technical report reporting interruptions of a 54-day LLM pretraining run on about 16,384 GPUs (148 faulty-GPU and 72 GPU-memory interruptions)'
+   🎯 Targeted Search [4. Experiments - 4.1 Experimental Setup]: 'research paper or technical report introducing 'annualized failure rate (AFR) metric for hardware reliability''
+   🎯 Targeted Search [5. Conclusion - Conclusion Content]: 'Kwon et al. (Efficient Memory Management for Large Language Model Serving with PagedAttention)'
+   🎯 Targeted Search [5. Conclusion - Conclusion Content]: 'Hamming (Error Detecting and Error Correcting Codes)'
+   🎯 Targeted Search [Appendix - D. Prepared Measurement Methodology]: 'research paper or technical report introducing 'time-to-first-token (TTFT) and time-per-output-token (TPOT) LLM serving SLO metrics''
+   📊 Phase 1b: Semantic Scholar Enrichment (Rate-limited, sequential)...
+      -> 📚 Added enriched paper: Recalibrating global data center energy-use estimates
+      -> 📚 Added enriched paper: Carbon Dependencies in Datacenter Design and Management
+      -> 📚 Added enriched paper: Let's wait awhile: how temporal workload shifting can reduce carbon emissions in the cloud
+      -> 📚 Added enriched paper: Demystifying CXL Memory with Genuine CXL-Ready Systems and Devices
+      -> 📚 Added enriched paper: Peeling Back the Carbon Curtain: Carbon Optimization Challenges in Cloud Computing
+      -> 📚 Added enriched paper: GreenLLM: Disaggregating Large Language Model Serving on Heterogeneous GPUs for Lower Carbon Emissions
+      -> 📚 Added enriched paper: DRAM errors in the wild
+      -> 📚 Added enriched paper: Memory Errors in Modern Systems
+      -> 📚 Added enriched paper: A Large-Scale Study of Flash Memory Failures in the Field
+      -> 📚 Added enriched paper: Characterization of Large Language Model Development in the Datacenter
+      -> 📚 Added enriched paper: Toward Optimal Carbon-Aware Scheduling of Server Replacement
+      -> 📚 Added enriched paper: The case for accurate lifetime accounting in carbon metrics
+      -> 📚 Added enriched paper: Towards Sustainable Large Language Model Serving
+      -> 📚 Added enriched paper: Sprout: Green Generative AI with Carbon-Efficient LLM Inference
+      -> 📚 Added enriched paper: TokenPowerBench: Benchmarking the Power Consumption of LLM Inference
+      -> 📚 Added enriched paper: Splitwise: Efficient Generative LLM Inference Using Phase Splitting
+      -> 📚 Added enriched paper: Learning-Augmented Competitive Algorithms for Spatiotemporal Online Allocation with Deadline Constraints
+      -> 📚 Added enriched paper: Overcommitment in Cloud Services Bin packing with Chance Constraints
+      -> 📚 Added enriched paper: A Statistical Distribution Function of Wide Applicability
+      -> 📚 Added enriched paper: An Introduction to the Compute Express Link (CXL) Interconnect
+      -> 📚 Added enriched paper: The Physics of the Mt/G/∞ Queue
+
+✨ Final Count: 21 unique enriched papers retrieved.
+🔄 Injecting citations back into Outline...
+✍️  Phase 3: Writing Introduction & Related Work...
+✅ Done! Literature Review Outputs saved to /home/user/carbon-aware-llm-fleet/paper/google_po/output/literature_agent_output/
+ > Agent SectionWritingAgent starting...
+ > Generating paper content with Multimodal Images...
+ > Paper saved to /home/user/carbon-aware-llm-fleet/paper/google_po/output/latex_writeup/raw_draft_paper.tex
+ >> Work directory: /home/user/carbon-aware-llm-fleet/paper/google_po/output/content_refinement_workdir
+
+=== Initial Baseline Review ===
+
+❌ PDF Generation Failed (No PDF file produced)
+
+---> Ran: pdflatex -interaction=nonstopmode initial_draft.tex
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) 
+(preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./initial_draft.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo))
+(./iclr2025_conference.sty
+(/usr/share/texlive/texmf-dist/tex/latex/eso-pic/eso-pic.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx)))
+(./fancyhdr.sty) (./natbib.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/times.sty) (./math_commands.tex
+ (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/bm.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)))
+(/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty)
+
+! LaTeX Error: File `algorithm.sty' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: sty)
+
+Enter file name: 
+! Emergency stop.
+<read *> 
+         
+l.13 \usepackage
+                {algorithmic}^^M
+!  ==> Fatal error occurred, no output PDF file produced!
+Transcript written on initial_draft.log.
+
+---> Ran: bibtex initial_draft
+I couldn't open file name `initial_draft.aux'
+
+---> Ran: pdflatex -interaction=nonstopmode initial_draft.tex
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) 
+(preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./initial_draft.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo))
+(./iclr2025_conference.sty
+(/usr/share/texlive/texmf-dist/tex/latex/eso-pic/eso-pic.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx)))
+(./fancyhdr.sty) (./natbib.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/times.sty) (./math_commands.tex
+ (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/bm.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)))
+(/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty)
+
+! LaTeX Error: File `algorithm.sty' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: sty)
+
+Enter file name: 
+! Emergency stop.
+<read *> 
+         
+l.13 \usepackage
+                {algorithmic}^^M
+!  ==> Fatal error occurred, no output PDF file produced!
+Transcript written on initial_draft.log.
+
+---> Ran: pdflatex -interaction=nonstopmode initial_draft.tex
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) 
+(preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./initial_draft.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo))
+(./iclr2025_conference.sty
+(/usr/share/texlive/texmf-dist/tex/latex/eso-pic/eso-pic.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx)))
+(./fancyhdr.sty) (./natbib.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/times.sty) (./math_commands.tex
+ (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/bm.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)))
+(/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty)
+
+! LaTeX Error: File `algorithm.sty' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: sty)
+
+Enter file name: 
+! Emergency stop.
+<read *> 
+         
+l.13 \usepackage
+                {algorithmic}^^M
+!  ==> Fatal error occurred, no output PDF file produced!
+Transcript written on initial_draft.log.
+ >> Initial PDF saved to /home/user/carbon-aware-llm-fleet/paper/google_po/output/content_refinement_workdir/initial_draft.pdf
+ >> Error: Initial PDF failed to compile. Cannot review.
+[Try 1/3] EXCEPTION in perform_writeup:
+Traceback (most recent call last):
+  File "/tmp/work/ext/paper-orchestra/methods/paper_writer.py", line 178, in write_single_paper
+    assert osp.exists(
+           ~~~~~~~~~~^
+        content_refinment_agent_output_pdf_path
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ), f"Content Refinement Agent failed to produce final PDF at {content_refinment_agent_output_pdf_path}!"
+    ^
+AssertionError: Content Refinement Agent failed to produce final PDF at  >> Error: Initial PDF '/home/user/carbon-aware-llm-fleet/paper/google_po/output/content_refinement_workdir/initial_draft.pdf' failed to compile. Cannot review.!
+
+Try again now...
+outline.json output written to /home/user/carbon-aware-llm-fleet/paper/google_po/output/outline.json
+🚀 Starting Fast Hybrid Literature Agent (Cutoff: 2026-10, Threads: 3)...
+📚 Phase 1: Analyzing Plan & Executing Search Tasks...
+    -> Identified 40 distinct search tasks.
+   🔎 Phase 1a: Google Candidates Discovery (MaxPool=10)...
+   🔎 Exploration [Introduction]: 'Find highly cited papers and reports quantifying the energy consumption and carbon footprint of LLM inference and AI datacenters, and the growing share of embodied carbon in datacenter hardware'
+   🔎 Exploration [Introduction]: 'Search for survey or review papers on sustainable / carbon-aware computing and datacenter carbon accounting (embodied vs operational carbon, lifecycle assessment of servers)'
+   🔎 Exploration [Introduction]: 'Identify foundational papers establishing embodied-carbon modeling of computing hardware and the argument that embodied carbon matters as grids decarbonize'
+   🔎 Exploration [Introduction]: 'Identify foundational large-scale field studies of datacenter hardware reliability (DRAM errors in the field, SSD failures in production, GPU failures in large clusters) that motivate age-dependent failure modeling'
+   🔎 Exploration [Introduction]: 'Find foundational work on memory disaggregation and CXL-attached memory in datacenters, and on server lifetime extension / hardware reuse as a datacenter sustainability strategy'
+   🔎 Exploration [Related Work: 2.1 Carbon-Aware Server Design and Component Reuse]: 'reused DRAM CXL server embodied carbon evaluation'
+   🔎 Exploration [Related Work: 2.1 Carbon-Aware Server Design and Component Reuse]: 'server lifetime extension embodied carbon datacenter analysis'
+   🔎 Exploration [Related Work: 2.1 Carbon-Aware Server Design and Component Reuse]: 'embodied carbon accounting methodology reused hardware allocation cut-off'
+   🔎 Exploration [Related Work: 2.1 Carbon-Aware Server Design and Component Reuse]: 'carbon footprint GPU server embodied versus operational lifecycle'
+   🔎 Exploration [Related Work: 2.2 Carbon-Aware LLM Inference and Older-GPU Reuse]: 'carbon-aware LLM inference serving older GPU generations'
+   🔎 Exploration [Related Work: 2.2 Carbon-Aware LLM Inference and Older-GPU Reuse]: 'embodied carbon LLM serving hardware selection'
+   🔎 Exploration [Related Work: 2.2 Carbon-Aware LLM Inference and Older-GPU Reuse]: 'geographic load shifting batch inference carbon intensity'
+   🔎 Exploration [Related Work: 2.2 Carbon-Aware LLM Inference and Older-GPU Reuse]: 'energy efficiency tokens per joule GPU generations LLM inference'
+   🔎 Exploration [Related Work: 2.3 Datacenter Fleet Capacity Planning and Lifecycle Optimization]: 'datacenter server refresh retirement optimization linear programming'
+   🔎 Exploration [Related Work: 2.3 Datacenter Fleet Capacity Planning and Lifecycle Optimization]: 'multi-period capacity planning cloud fleet carbon cost tradeoff'
+   🔎 Exploration [Related Work: 2.3 Datacenter Fleet Capacity Planning and Lifecycle Optimization]: 'server lifecycle optimization hardware failures spare parts'
+   🔎 Exploration [Related Work: 2.3 Datacenter Fleet Capacity Planning and Lifecycle Optimization]: 'carbon-aware datacenter procurement planning multi-region'
+   🔎 Exploration [Related Work: 2.4 Reliability Modeling and SLO-Guaranteed Capacity Provisioning]: 'DRAM failure rate increase with age field study datacenter'
+   🔎 Exploration [Related Work: 2.4 Reliability Modeling and SLO-Guaranteed Capacity Provisioning]: 'SSD failure age dependence production field study'
+   🔎 Exploration [Related Work: 2.4 Reliability Modeling and SLO-Guaranteed Capacity Provisioning]: 'correlated failures datacenter capacity headroom provisioning'
+   🔎 Exploration [Related Work: 2.4 Reliability Modeling and SLO-Guaranteed Capacity Provisioning]: 'chance-constrained capacity planning cloud availability SLO'
+   🎯 Targeted Search [3. Methodology - 3.1 Fleet State, SKUs and Service Tiers]: 'research paper or technical report introducing 'Compute Express Link (CXL)''
+   🎯 Targeted Search [3. Methodology - 3.3 Age-Dependent Reliability as Precomputed Parameters]: 'Weibull (A Statistical Distribution Function of Wide Applicability)'
+   🎯 Targeted Search [3. Methodology - 3.3 Age-Dependent Reliability as Precomputed Parameters]: 'Cox (Regression Models and Life-Tables)'
+   🎯 Targeted Search [3. Methodology - 3.3 Age-Dependent Reliability as Precomputed Parameters]: 'research paper or technical report introducing 'renewal theory / delayed renewal processes''
+   🎯 Targeted Search [3. Methodology - 3.5 Lifecycle-Carbon Objective and Multi-Objective Planning]: 'research paper or technical report introducing 'Power Usage Effectiveness (PUE) metric''
+   🎯 Targeted Search [3. Methodology - 3.5 Lifecycle-Carbon Objective and Multi-Objective Planning]: 'Haimes, Lasdon and Wismer (On a Bicriterion Formulation of the Problems of Integrated System Identification and System Optimization)'
+   🎯 Targeted Search [3. Methodology - 3.5 Lifecycle-Carbon Objective and Multi-Objective Planning]: 'research paper or technical report introducing 'GHG Protocol Product Life Cycle Accounting and Reporting Standard''
+   🎯 Targeted Search [3. Methodology - 3.7 Chance-Constrained SLO Headroom]: 'Charnes and Cooper (Chance-Constrained Programming)'
+   🎯 Targeted Search [3. Methodology - 3.7 Chance-Constrained SLO Headroom]: 'research paper or technical report introducing 'the M/G/infinity queue occupancy distribution''
+   🎯 Targeted Search [3. Methodology - 3.7 Chance-Constrained SLO Headroom]: 'research paper or technical report introducing 'the negative binomial distribution for overdispersed counts''
+   🎯 Targeted Search [3. Methodology - 3.7 Chance-Constrained SLO Headroom]: 'Metropolis and Ulam (The Monte Carlo Method)'
+   🎯 Targeted Search [3. Methodology - 3.8 Uncertainty Quantification]: 'Zadeh (Fuzzy Sets)'
+   🎯 Targeted Search [3. Methodology - 3.8 Uncertainty Quantification]: 'Dong and Shah (Vertex Method for Computing Functions of Fuzzy Variables)'
+   🎯 Targeted Search [4. Experiments - 4.1 Experimental Setup]: 'Huangfu and Hall (Parallelizing the Dual Revised Simplex Method)'
+   🎯 Targeted Search [4. Experiments - 4.1 Experimental Setup]: 'research paper or technical report reporting interruptions of a 54-day LLM pretraining run on about 16,384 GPUs (148 faulty-GPU and 72 GPU-memory interruptions)'
+   🎯 Targeted Search [4. Experiments - 4.1 Experimental Setup]: 'research paper or technical report introducing 'annualized failure rate (AFR) metric for hardware reliability''
+   🎯 Targeted Search [5. Conclusion - Conclusion Content]: 'Kwon et al. (Efficient Memory Management for Large Language Model Serving with PagedAttention)'
+   🎯 Targeted Search [5. Conclusion - Conclusion Content]: 'Hamming (Error Detecting and Error Correcting Codes)'
+   🎯 Targeted Search [Appendix - D. Prepared Measurement Methodology]: 'research paper or technical report introducing 'time-to-first-token (TTFT) and time-per-output-token (TPOT) LLM serving SLO metrics''
+   📊 Phase 1b: Semantic Scholar Enrichment (Rate-limited, sequential)...
+      -> 📚 Added enriched paper: Recalibrating global data center energy-use estimates
+      -> 📚 Added enriched paper: Carbon Dependencies in Datacenter Design and Management
+      -> 📚 Added enriched paper: Let's wait awhile: how temporal workload shifting can reduce carbon emissions in the cloud
+      -> 📚 Added enriched paper: Demystifying CXL Memory with Genuine CXL-Ready Systems and Devices
+      -> 📚 Added enriched paper: Peeling Back the Carbon Curtain: Carbon Optimization Challenges in Cloud Computing
+      -> 📚 Added enriched paper: The case for accurate lifetime accounting in carbon metrics
+      -> 📚 Added enriched paper: DRAM errors in the wild
+      -> 📚 Added enriched paper: Memory Errors in Modern Systems
+      -> 📚 Added enriched paper: A Large-Scale Study of Flash Memory Failures in the Field
+      -> 📚 Added enriched paper: Characterization of Large Language Model Development in the Datacenter
+      -> 📚 Added enriched paper: Toward Optimal Carbon-Aware Scheduling of Server Replacement
+      -> 📚 Added enriched paper: GreenLLM: Disaggregating Large Language Model Serving on Heterogeneous GPUs for Lower Carbon Emissions
+      -> 📚 Added enriched paper: Towards Sustainable Large Language Model Serving
+      -> 📚 Added enriched paper: Sprout: Green Generative AI with Carbon-Efficient LLM Inference
+      -> 📚 Added enriched paper: Learning-Augmented Competitive Algorithms for Spatiotemporal Online Allocation with Deadline Constraints
+      -> 📚 Added enriched paper: TokenPowerBench: Benchmarking the Power Consumption of LLM Inference
+      -> 📚 Added enriched paper: Splitwise: Efficient Generative LLM Inference Using Phase Splitting
+      -> 📚 Added enriched paper: Overcommitment in Cloud Services Bin packing with Chance Constraints
+      -> 📚 Added enriched paper: An Introduction to the Compute Express Link (CXL) Interconnect
+      -> 📚 Added enriched paper: A Statistical Distribution Function of Wide Applicability
+      -> 📚 Added enriched paper: The Physics of the Mt/G/∞ Queue
+
+✨ Final Count: 21 unique enriched papers retrieved.
+🔄 Injecting citations back into Outline...
+✍️  Phase 3: Writing Introduction & Related Work...
+✅ Done! Literature Review Outputs saved to /home/user/carbon-aware-llm-fleet/paper/google_po/output/literature_agent_output/
+ > Agent SectionWritingAgent starting...
+ > Generating paper content with Multimodal Images...
+ > Paper saved to /home/user/carbon-aware-llm-fleet/paper/google_po/output/latex_writeup/raw_draft_paper.tex
+ >> Work directory: /home/user/carbon-aware-llm-fleet/paper/google_po/output/content_refinement_workdir
+
+=== Initial Baseline Review ===
+ >> Initial PDF saved to /home/user/carbon-aware-llm-fleet/paper/google_po/output/content_refinement_workdir/initial_draft.pdf
+ >> Generating snapshots for V0...
+ >> [AgentReview] Generating feedback for initial paper...
+Start paper reviewing using model: `gemini-3.1-pro-preview`
+Generating ensemble review 1/3...
+Generating ensemble review 2/3...
+Generating ensemble review 3/3...
+ >> [Reviewer] Score for initial: 3/10
+
+=== Refinement Iteration 1/3 ===
+ >> calling Refinement Agent...
+ >> Compiling new draft...
+ >> New PDF saved to /home/user/carbon-aware-llm-fleet/paper/google_po/output/content_refinement_workdir/refined_paper_v1.pdf
+ >> Generating snapshots for v1...
+ >> [AgentReview] Generating feedback for v1 paper...
+Start paper reviewing using model: `gemini-3.1-pro-preview`
+Generating ensemble review 1/3...
+Generating ensemble review 2/3...
+Generating ensemble review 3/3...
+ >> [Reviewer] Score for v1: 3/10
+ >> Score Analysis v1:
+    Overall: 3.0 -> 3.0
+    Sub-axes Gain: +2.0 | Drop: -1.0
+    Sub-axes Deltas: {'Originality': 0.0, 'Quality': 0.0, 'Clarity': 1.0, 'Significance': -1.0, 'Soundness': 0.0, 'Presentation': 1.0, 'Contribution': 0.0}
+ >> ACCEPT & CONTINUE: Overall same, internal metrics stable/improved. Progressing to next iteration...
+
+=== Refinement Iteration 2/3 ===
+ >> calling Refinement Agent...
+ >> Compiling new draft...
+ >> New PDF saved to /home/user/carbon-aware-llm-fleet/paper/google_po/output/content_refinement_workdir/refined_paper_v2.pdf
+ >> Generating snapshots for v2...
+ >> [AgentReview] Generating feedback for v2 paper...
+Start paper reviewing using model: `gemini-3.1-pro-preview`
+Generating ensemble review 1/3...

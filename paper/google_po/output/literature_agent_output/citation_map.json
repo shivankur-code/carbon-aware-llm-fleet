@@ -1,0 +1,302 @@
+{
+    "Acun2023CarbonDependencies": {
+        "citation_key": "Acun2023CarbonDependencies",
+        "title": "Carbon Dependencies in Datacenter Design and Management",
+        "authors": [
+            "Bilge Acun",
+            "Benjamin Lee",
+            "Fiodar Kazhamiaka",
+            "Aditya Sundarrajan",
+            "Kiwan Maeng",
+            "Manoj Chakkaravarthy",
+            "David Brooks",
+            "Carole-Jean Wu"
+        ],
+        "venue": "ACM SIGEnergy Energy Informatics Review",
+        "year": 2023,
+        "abstract": "Building a sustainable datacenter requires coordinated decisions in its design and system management. Existing research work on datacenter sustainability often considers the design space in isolation and misses opportunities to minimize carbon footprint through coordinated design and management where sustainability is a first-class objective. Design decisions such as datacenter site selection, renewable energy investment portfolios, and the provisioning of energy storage are intertwined with complementary solutions for operation, including various forms of demand response and carbon-aware workload management. In this paper, we advocate for holistic frameworks that take into account both\n             operational and embodied carbon \n            to coordinate between datacenter design and system management decisions."
+    },
+    "Wiesner2021LetsWait": {
+        "citation_key": "Wiesner2021LetsWait",
+        "title": "Let's wait awhile: how temporal workload shifting can reduce carbon emissions in the cloud",
+        "authors": [
+            "Philipp Wiesner",
+            "Ilja Behnke",
+            "Dominik Scheinert",
+            "Kordian Gontarska",
+            "L. Thamsen"
+        ],
+        "venue": "International Middleware Conference",
+        "year": 2021,
+        "abstract": "Depending on energy sources and demand, the carbon intensity of the public power grid fluctuates over time. Exploiting this variability is an important factor in reducing the emissions caused by data centers. However, regional differences in the availability of low-carbon energy sources make it hard to provide general best practices for when to consume electricity. Moreover, existing research in this domain focuses mostly on carbon-aware workload migration across geo-distributed data centers, or addresses demand response purely from the perspective of power grid stability and costs. In this paper, we examine the potential impact of shifting computational workloads towards times where the energy supply is expected to be less carbon-intensive. To this end, we identify characteristics of delay-tolerant workloads and analyze the potential for temporal workload shifting in Germany, Great Britain, France, and California over the year 2020. Furthermore, we experimentally evaluate two workload shifting scenarios in a simulation to investigate the influence of time constraints, scheduling strategies, and the accuracy of carbon intensity forecasts. To accelerate research in the domain of carbon-aware computing and to support the evaluation of novel scheduling algorithms, our simulation framework and datasets are publicly available."
+    },
+    "Shi2024GreenllmDisaggregating": {
+        "citation_key": "Shi2024GreenllmDisaggregating",
+        "title": "GreenLLM: Disaggregating Large Language Model Serving on Heterogeneous GPUs for Lower Carbon Emissions",
+        "authors": [
+            "Tian-Yao Shi",
+            "Yan-Ran Wu",
+            "Si-Hang Liu",
+            "Yi Ding"
+        ],
+        "venue": "arXiv.org",
+        "year": 2024,
+        "abstract": "LLMs have been widely adopted across many real-world applications. However, their widespread use comes with significant environmental costs due to their high computational intensity and resource demands. Specifically, this has driven the development of new generations of high-performing GPUs, exacerbating the problem of electronic waste and accelerating the premature disposal of devices. To address this problem, this paper focuses on reducing the carbon emissions of LLM serving by reusing older, low-performing GPUs. We present GreenLLM, an SLO-aware LLM serving framework designed to minimize carbon emissions by reusing older GPUs. GreenLLM builds on two identified use cases that disaggregate specific computations onto older GPUs, reducing carbon emissions while meeting performance goals. To deepen our understanding of the potential carbon savings from disaggregation, we also provide a theoretical analysis of its relationship with carbon intensity and GPU lifetime. Our evaluations show that GreenLLM reduces carbon emissions by up to 40.6% compared to running standard LLM serving on new GPU only, meeting latency SLOs for over 90% of requests across various applications, latency requirements, carbon intensities, and GPU lifetimes."
+    },
+    "Schroeder2009DramErrors": {
+        "citation_key": "Schroeder2009DramErrors",
+        "title": "DRAM errors in the wild",
+        "authors": [
+            "Bianca Schroeder",
+            "Eduardo Pinheiro",
+            "Wolf-Dietrich Weber"
+        ],
+        "venue": "ACM SIGMETRICS Performance Evaluation Review",
+        "year": 2009,
+        "abstract": "Errors in dynamic random access memory (DRAM) are a common form of hardware failure in modern compute clusters. Failures are costly both in terms of hardware replacement costs and service disruption. While a large body of work exists on DRAM in laboratory conditions, little has been reported on real DRAM failures in large production clusters. In this paper, we analyze measurements of memory errors in a large fleet of commodity servers over a period of 2.5 years. The collected data covers multiple vendors, DRAM capacities and technologies, and comprises many millions of DIMM days. \n                   The goal of this paper is to answer questions such as the following: How common are memory errors in practice? What are their statistical properties? How are they affected by external factors, such as temperature and utilization, and by chip-specific factors, such as chip density, memory technology and DIMM age? \n                   We find that DRAM error behavior in the field differs in many key aspects from commonly held assumptions. For example, we observe DRAM error rates that are orders of magnitude higher than previously reported, with 25,000 to 70,000 errors per billion device hours per Mbit and more than 8% of DIMMs affected by errors per year. We provide strong evidence that memory errors are dominated by hard errors, rather than soft errors, which previous work suspects to be the dominant error mode. We find that temperature, known to strongly impact DIMM error rates in ... [Truncated]"
+    },
+    "Sridharan2015MemoryErrors": {
+        "citation_key": "Sridharan2015MemoryErrors",
+        "title": "Memory Errors in Modern Systems",
+        "authors": [
+            "Vilas Sridharan",
+            "Nathan DeBardeleben",
+            "Sean Blanchard",
+            "Kurt B. Ferreira",
+            "Jon Stearley",
+            "John Shalf",
+            "Sudhanva Gurumurthi"
+        ],
+        "venue": "ACM SIGPLAN Notices",
+        "year": 2015,
+        "abstract": "Several recent publications have shown that hardware faults in the memory subsystem are commonplace. These faults are predicted to become more frequent in future systems that contain orders of magnitude more DRAM and SRAM than found in current memory subsystems. These memory subsystems will need to provide resilience techniques to tolerate these faults when deployed in high-performance computing systems and data centers containing tens of thousands of nodes. Therefore, it is critical to understand the efficacy of current hardware resilience techniques to determine whether they will be suitable for future systems. In this paper, we present a study of DRAM and SRAM faults and errors from the field. We use data from two leadership-class high-performance computer systems to analyze the reliability impact of hardware resilience schemes that are deployed in current systems. Our study has several key findings about the efficacy of many currently deployed reliability techniques such as DRAM ECC, DDR address/command parity, and SRAM ECC and parity. We also perform a methodological study, and find that counting errors instead of faults, a common practice among researchers and data center operators, can lead to incorrect conclusions about system reliability. Finally, we use our data to project the needs of future large-scale systems. We find that SRAM faults are unlikely to pose a significantly larger reliability threat in the future, while DRAM faults will be a major concern and strong... [Truncated]"
+    },
+    "Meza2015LargescaleFlash": {
+        "citation_key": "Meza2015LargescaleFlash",
+        "title": "A Large-Scale Study of Flash Memory Failures in the Field",
+        "authors": [
+            "Justin Meza",
+            "Qiang Wu",
+            "Sanjev Kumar",
+            "Onur Mutlu"
+        ],
+        "venue": "ACM SIGMETRICS Performance Evaluation Review",
+        "year": 2015,
+        "abstract": "Servers use flash memory based solid state drives (SSDs) as a high-performance alternative to hard disk drives to store persistent data. Unfortunately, recent increases in flash density have also brought about decreases in chip-level reliability. In a data center environment, flash-based SSD failures can lead to downtime and, in the worst case, data loss. As a result, it is important to understand flash memory reliability characteristics over flash lifetime in a realistic production data center environment running modern applications and system software. \n                   This paper presents the first large-scale study of flash-based SSD reliability in the field. We analyze data collected across a majority of flash-based solid state drives at Facebook data centers over nearly four years and many millions of operational hours in order to understand failure properties and trends of flash-based SSDs. Our study considers a variety of SSD characteristics, including: the amount of data written to and read from flash chips; how data is mapped within the SSD address space; the amount of data copied, erased, and discarded by the flash controller; and flash board temperature and bus power. \n                   Based on our field analysis of how flash memory errors manifest when running modern workloads on modern SSDs, this paper is the first to make several major observations: (1) SSD failure rates do not increase monotonically with flash chip wear; instead they go through several dis... [Truncated]"
+    },
+    "Hu2024CharacterizationLarge": {
+        "citation_key": "Hu2024CharacterizationLarge",
+        "title": "Characterization of Large Language Model Development in the Datacenter",
+        "authors": [
+            "Qing-Hao Hu",
+            "Zhisheng Ye",
+            "Zerui Wang",
+            "Guo-Teng Wang",
+            "Meng Zhang",
+            "Qiao-Ling Chen",
+            "Peng Sun",
+            "Dahua Lin",
+            "Xiao-Lin Wang",
+            "Ying-Wei Luo",
+            "Yong-Gang Wen",
+            "Tian-Wei Zhang"
+        ],
+        "venue": "Symposium on Networked Systems Design and Implementation",
+        "year": 2024,
+        "abstract": "Large Language Models (LLMs) have presented impressive performance across several transformative tasks. However, it is non-trivial to efficiently utilize large-scale cluster resources to develop LLMs, often riddled with numerous challenges such as frequent hardware failures, intricate parallelization strategies, and imbalanced resource utilization. In this paper, we present an in-depth characterization study of a six-month LLM development workload trace collected from our GPU datacenter Acme. Specifically, we investigate discrepancies between LLMs and prior task-specific Deep Learning (DL) workloads, explore resource utilization patterns, and identify the impact of various job failures. Our analysis summarizes hurdles we encountered and uncovers potential opportunities to optimize systems tailored for LLMs. Furthermore, we introduce our system efforts: (1) fault-tolerant pretraining, which enhances fault tolerance through LLM-involved failure diagnosis and automatic recovery. (2) decoupled scheduling for evaluation, which achieves timely performance feedback via trial decomposition and scheduling optimization."
+    },
+    "Sun2023DemystifyingCxl": {
+        "citation_key": "Sun2023DemystifyingCxl",
+        "title": "Demystifying CXL Memory with Genuine CXL-Ready Systems and Devices",
+        "authors": [
+            "Y. Sun",
+            "Yifan Yuan",
+            "Ze-Duo Yu",
+            "Reese Kuper",
+            "Chihun Song",
+            "Jinghan Huang",
+            "Hou-Xiang Ji",
+            "Siddharth Agarwal",
+            "Jiaqi Lou",
+            "Ipoom Jeong",
+            "Wang Ren",
+            "Jung Ho Ahn",
+            "Tian-Yi Xu",
+            "N. Kim"
+        ],
+        "venue": "Micro",
+        "year": 2023,
+        "abstract": "The ever-growing demands for memory with larger capacity and higher bandwidth have driven recent innovations on memory expansion and disaggregation technologies based on Compute eXpress Link (CXL). Especially, CXL-based memory expansion technology has recently gained notable attention for its ability not only to economically expand memory capacity and bandwidth but also to decouple memory technologies from a specific memory interface of the CPU. However, since CXL memory devices have not been widely available, they have been emulated using DDR memory in a remote NUMA node. In this paper, for the first time, we comprehensively evaluate a true CXL-ready system based on the latest 4th-generation Intel Xeon CPU with three CXL memory devices from different manufacturers. Specifically, we run a set of microbenchmarks not only to compare the performance of true CXL memory with that of emulated CXL memory but also to analyze the complex interplay between the CPU and CXL memory in depth. This reveals important differences between emulated CXL memory and true CXL memory, some of which will compel researchers to revisit the analyses and proposals from recent work. Next, we identify opportunities for memory-bandwidth-intensive applications to benefit from the use of CXL memory. Lastly, we propose a CXL-memory-aware dynamic page allocation policy, Caption to more efficiently use CXL memory as a bandwidth expander. We demonstrate that Caption can automatically converge to an empirically fa... [Truncated]"
+    },
+    "Wang2023PeelingBack": {
+        "citation_key": "Wang2023PeelingBack",
+        "title": "Peeling Back the Carbon Curtain: Carbon Optimization Challenges in Cloud Computing",
+        "authors": [
+            "Jaylen Wang",
+            "Udit Gupta",
+            "Akshitha Sriraman"
+        ],
+        "venue": "HotCarbon",
+        "year": 2023,
+        "abstract": "The increasing carbon emissions from cloud computing requires new methods to reduce its environmental impact. We explore extending data center server lifetimes to reduce embodied carbon emissions (from hardware manufacturing), rather than operational (from running hardware). Our experiments are the first to analyze a data center application's end-to-end performance on different server generations, to reveal that older hardware can preserve performance in certain conditions (e.g., low load). Our observations show the need for a carbon-aware data center scheduler that schedules on older hardware when suitable. However, quantifying such a scheduler's carbon savings is challenging today due to the lack of practical carbon measurement metrics/tools. We identify gaps in current methods for measuring operational and embodied carbon and call upon the broader systems research community to take action and conduct research that can pave the way for future carbon footprint analysis in systems."
+    },
+    "Sharma2025TowardOptimal": {
+        "citation_key": "Sharma2025TowardOptimal",
+        "title": "Toward Optimal Carbon-Aware Scheduling of Server Replacement",
+        "authors": [
+            "Ankur Sharma",
+            "Rishabh Tamhane",
+            "Anshul Gandhi"
+        ],
+        "venue": "ACM SIGMETRICS Performance Evaluation Review",
+        "year": 2025,
+        "abstract": "Server replacement scheduling decisions can significantly impact carbon emissions in data centers. However, commonly used periodic strategies are often sub-optimal in terms of total carbon emissions. In this article, we formulate the carbon-aware server replacements problem mathematically and investigate the structure of the optimal replacement policy. Based on our theoretical analysis, we then propose a simple adaptive online policy that yields significantly lower carbon emissions than periodic strategies and achieves near-optimal results across a variety of simulated scenarios."
+    },
+    "Masanet2020RecalibratingGlobal": {
+        "citation_key": "Masanet2020RecalibratingGlobal",
+        "title": "Recalibrating global data center energy-use estimates",
+        "authors": [
+            "Eric Masanet",
+            "Arman Shehabi",
+            "Nuoa Lei",
+            "Sarah Smith",
+            "Jonathan Koomey"
+        ],
+        "venue": "Science",
+        "year": 2020,
+        "abstract": "Growth in energy use has slowed owing to efficiency gains that smart policies can help maintain in the near term"
+    },
+    "Huang2025CaseAccurate": {
+        "citation_key": "Huang2025CaseAccurate",
+        "title": "The case for accurate lifetime accounting in carbon metrics",
+        "authors": [
+            "Yujin Huang",
+            "Timothy Zhu",
+            "Anshul Gandhi"
+        ],
+        "venue": "ACM SIGMETRICS Performance Evaluation Review",
+        "year": 2025,
+        "abstract": "To represent the entire carbon footprint of computing devices, carbon metrics often include both an embodied cost (i.e., carbon cost to produce the device) and an operational cost (i.e., carbon cost to run the device). The embodied carbon cost is typically high, but it is amortized over the lifetime of the device. In this vision statement, we argue that for carbon metrics to be useful, we need (i) accurate metrics for lifetime, which are challenging for SSDs, and (ii) correct reasoning about carbon costs when using such metrics."
+    },
+    "Nguyen2024TowardsSustainable": {
+        "citation_key": "Nguyen2024TowardsSustainable",
+        "title": "Towards Sustainable Large Language Model Serving",
+        "authors": [
+            "Sophia Nguyen",
+            "Beihao Zhou",
+            "Yi Ding",
+            "Sihang Liu"
+        ],
+        "venue": "ACM SIGEnergy Energy Informatics Review",
+        "year": 2024,
+        "abstract": "In this work, we study LLMs from a carbon emission perspective, addressing both operational and embodied emissions, and paving the way for sustainable LLM serving. We characterize the performance and energy of LLaMA with 1B, 3B, and 7B parameters using two Nvidia GPU types, a latest-generation RTX6000 Ada and an older-generation T4. We analytically model operational carbon emissions based on energy consumption and carbon intensities from three grid regions --- each representing a different energy source mix, and embodied carbon emissions based on chip area and memory size. Our characterization and modeling provide us with an in-depth understanding of the performance, energy, and carbon emissions of LLM serving. Our findings highlight the potential for optimizing sustainable LLM serving systems by considering both operational and embodied carbon emissions."
+    },
+    "Li2024SproutGreen": {
+        "citation_key": "Li2024SproutGreen",
+        "title": "Sprout: Green Generative AI with Carbon-Efficient LLM Inference",
+        "authors": [
+            "Baolin Li",
+            "Yan-Kai Jiang",
+            "V. Gadepally",
+            "Devesh Tiwari"
+        ],
+        "venue": "Conference on Empirical Methods in Natural Language Processing",
+        "year": 2024,
+        "abstract": "The rapid advancement of generative AI has heightened environmental concerns, particularly regarding carbon emissions. Our framework, Sprout, addresses these challenges by reducing the carbon footprint of inference in large language models (LLMs). Sprout introduces \u201cgeneration directives\u201d to guide the autoregressive generation process, achieving a balance between ecological sustainability and high-quality outputs. By employing a strategic optimizer for directive assignment and a novel offline quality evaluator, Sprout reduces the carbon footprint of generative LLM inference by over 40% in real-world evaluations, using the Llama model and global electricity grid data. This work is crucial as the rising interest in inference time compute scaling laws amplifies environmental concerns, emphasizing the need for eco-friendly AI solutions."
+    },
+    "Niu2026TokenpowerbenchBenchmarking": {
+        "citation_key": "Niu2026TokenpowerbenchBenchmarking",
+        "title": "TokenPowerBench: Benchmarking the Power Consumption of LLM Inference",
+        "authors": [
+            "Chenxu Niu",
+            "Wei Zhang",
+            "Jie Li",
+            "Yongjian Zhao",
+            "Tongyang Wang",
+            "Xi Wang",
+            "Yong Chen"
+        ],
+        "venue": "Proceedings of the AAAI Conference on Artificial Intelligence",
+        "year": 2026,
+        "abstract": "Large language model (LLM) services now answer billions of queries per day, and industry reports show that inference, not training, accounts for more than 90% of total power consumption. However, existing benchmarks focus on either training/fine-tuning or performance of inference and provide little support for power consumption measurement and analysis of inference. We introduce TokenPowerBench, the first lightweight and extensible benchmark designed for LLM-inference power consumption studies. The benchmark combines a declarative configuration interface covering model choice, prompt set, and inference engine, a measurement layer that captures GPU-, node-, and system-level power without specialized power meters, and a phase-aligned metrics pipeline that attributes energy to the prefill and decode stages of every request. These elements make it straightforward to explore the power consumed by an LLM inference run;  furthermore, by varying batch size, context length, parallelism strategy and quantization, users can quickly assess how each setting affects joules per token and other energy-efficiency metrics. We evaluate TokenPowerBench on four of the most widely used model series (Llama, Falcon, Qwen, and Mistral). Our experiments cover from 1 billion parameters up to the frontier-scale Llama3-405B model. Furthermore, we release TokenPowerBench as open source to help users to measure power consumption, forecast operating expenses, and meet sustainability targets when deploying L... [Truncated]"
+    },
+    "Patel2023SplitwiseEfficient": {
+        "citation_key": "Patel2023SplitwiseEfficient",
+        "title": "Splitwise: Efficient Generative LLM Inference Using Phase Splitting",
+        "authors": [
+            "P. Patel",
+            "Esha Choukse",
+            "Chao-Jie Zhang",
+            "Aashaka Shah",
+            "\u00cd\u00f1igo Goiri",
+            "Saeed Maleki",
+            "R. Bianchini"
+        ],
+        "venue": "International Symposium on Computer Architecture",
+        "year": 2023,
+        "abstract": "Generative large language model (LLM) applications are growing rapidly, leading to large-scale deployments of expensive and power-hungry GPUs. Our characterization of LLM inference shows that each inference request undergoes two phases: a compute-intensive prompt computation phase and a memory intensive token generation phase, each with distinct latency, throughput, memory, and power characteristics. Despite state-of-the-art batching and scheduling, the token generation phase underutilizes compute resources. Unlike prompt computation, token generation does not need the compute capability of the latest GPUs and can be run with lower power and cost. Based on these insights, we propose Splitwise, a model deployment and scheduling technique that splits the two phases of LLM inference requests on to separate machines. Splitwise enables phase-specific resource management using hardware that is well suited for each phase. Request state is transferred efficiently between machines using optimized network libraries on the fast back-plane interconnects available in today\u2019s GPU clusters. Using Splitwise, we design homogeneous and heterogeneous LLM inference clusters optimized for throughput, cost, and power Compared to current designs, Splitwise clusters achieve up to $1.4 \\times$ higher throughput at $\\mathbf{2 0 \\%}$ lower cost. Alternatively, they can deliver $2.35 \\times$ more throughput under the same power and cost budgets."
+    },
+    "Lechowicz2025LearningaugmentedCompetitive": {
+        "citation_key": "Lechowicz2025LearningaugmentedCompetitive",
+        "title": "Learning-Augmented Competitive Algorithms for Spatiotemporal Online Allocation with Deadline Constraints",
+        "authors": [
+            "Adam Lechowicz",
+            "Nicolas Christianson",
+            "Bo Sun",
+            "Noman Bashir",
+            "Mohammad Hajiesmaili",
+            "Adam Wierman",
+            "Prashant Shenoy"
+        ],
+        "venue": "ACM SIGMETRICS Performance Evaluation Review",
+        "year": 2025,
+        "abstract": "We introduce and study spatiotemporal online allocation with deadline constraints (SOAD), a new online problem motivated by emerging challenges in sustainability and energy. In SOAD, an online player completes a workload by allocating and scheduling it on the points of a metric space (\n             X \n            ,\n             d \n            ) while subject to a deadline\n             T \n            . At each time step, a service cost function is revealed that represents the cost of servicing the workload at each point, and the player must irrevocably decide the current allocation of work to points. Whenever the player moves this allocation, they incur a movement cost defined by the distance metric\n             d \n            (\u2022, \u2022) that captures, e.g., an overhead cost. SOAD formalizes the open problem of combining general metrics and deadline constraints in the online algorithms literature, unifying problems such as metrical task systems and online search. We propose a competitive algorithm for SOAD along with a matching lower bound establishing its optimality. Our main algorithm, ST-CLIP, is a learning-augmented algorithm that takes advantage of predictions (e.g., forecasts of relevant costs) and achieves an optimal consistency-robustness trade-off. We evaluate our proposed algorithms in a simulated case study of carbon-aware spatiotemporal workload management, an application in sustainable computing that schedules a delay-tolerant batch compute job on a distributed networ... [Truncated]"
+    },
+    "Cohen2017OvercommitmentCloud": {
+        "citation_key": "Cohen2017OvercommitmentCloud",
+        "title": "Overcommitment in Cloud Services Bin packing with Chance Constraints",
+        "authors": [
+            "Maxime C. Cohen",
+            "Philipp Keller",
+            "Vahab Mirrokni",
+            "Morteza Zadimoghadddam"
+        ],
+        "venue": "ACM SIGMETRICS Performance Evaluation Review",
+        "year": 2017,
+        "abstract": "This paper considers a traditional problem of resource allocation, scheduling jobs on machines. One such recent application is cloud computing, where jobs arrive in an online fashion with capacity requirements and need to be immediately scheduled on physical machines in data centers. It is often observed that the requested capacities are not fully utilized, hence offering an opportunity to employ an\n             overcommitment policy \n            , i.e., selling resources beyond capacity. Setting the right overcommitment level can induce a significant cost reduction for the cloud provider, while only inducing a very low risk of violating capacity constraints. We introduce and study a model that quantifies the value of overcommitment by modeling the problem as a bin packing with chance constraints. We then propose an alternative formulation that transforms each chance constraint into a submodular function. We show that our model captures the risk pooling effect and can guide scheduling and overcommitment decisions. We also develop a family of online algorithms that are intuitive, easy to implement and provide a constant factor guarantee from optimal. Finally, we calibrate our model using realistic workload data, and test our approach in a practical setting. Our analysis and experiments illustrate the benefit of overcommitment in cloud services, and suggest a cost reduction of 1.5% to 17% depending on the provider's risk tolerance."
+    },
+    "Weibull1951StatisticalDistribution": {
+        "citation_key": "Weibull1951StatisticalDistribution",
+        "title": "A Statistical Distribution Function of Wide Applicability",
+        "authors": [
+            "Waloddi Weibull"
+        ],
+        "venue": "Journal of Applied Mechanics",
+        "year": 1951,
+        "abstract": "Abstract \n                   This paper discusses the applicability of statistics to a wide field of problems. Examples of simple and complex distributions are given."
+    },
+    "Sharma2024IntroductionCompute": {
+        "citation_key": "Sharma2024IntroductionCompute",
+        "title": "An Introduction to the Compute Express Link (CXL) Interconnect",
+        "authors": [
+            "Debendra Das Sharma",
+            "Robert Blankenship",
+            "Daniel Berger"
+        ],
+        "venue": "ACM Computing Surveys",
+        "year": 2024,
+        "abstract": "The Compute Express Link (CXL) is an open industry-standard interconnect between processors and devices such as accelerators, memory buffers, smart network interfaces, persistent memory, and solid-state drives. CXL offers coherency and memory semantics with bandwidth that scales with PCIe bandwidth while achieving significantly lower latency than PCIe. All major CPU vendors, device vendors, and datacenter operators have adopted CXL as a common standard. This enables an inter-operable ecosystem that supports key computing use cases including highly efficient accelerators, server memory bandwidth and capacity expansion, multi-server resource pooling and sharing, and efficient peer-to-peer communication. This survey provides an introduction to CXL covering the standards CXL 1.0, CXL 2.0, and CXL 3.0. We further survey CXL implementations, discuss CXL's impact on the datacenter landscape, and future directions."
+    },
+    "Eick1993PhysicsMtg": {
+        "citation_key": "Eick1993PhysicsMtg",
+        "title": "The Physics of the Mt/G/\u221e Queue",
+        "authors": [
+            "Stephen G. Eick",
+            "William A. Massey",
+            "Ward Whitt"
+        ],
+        "venue": "Operations Research",
+        "year": 1993,
+        "abstract": "We establish some general structural results and derive some simple formulas describing the time-dependent performance of the M\n                     t \n                    /G/\u221e queue (with a nonhomogeneous Poisson arrival process). We know that, for appropriate initial conditions, the number of busy servers at time t has a Poisson distribution for each t. Our results show how the time-dependent mean function m depends on the time-dependent arrival-rate function \u03bb and the service-time distribution. For example, when \u03bb is quadratic, the mean m(t) coincides with the pointwise stationary approximation \u03bb(t)E[S], where S is a service time, except for a time lag and a space shift. It is significant that the well known insensitivity property of the stationary M/G/\u221e model does not hold for the nonstationary M\n                     t \n                    /G/\u221e model; the time-dependent mean function m depends on the service-time distribution beyond its mean. The service-time stationary-excess distribution plays an important role. When \u03bb is decreasing before time t, m(t) is increasing in the service-time variability, but when \u03bb is increasing before time t, m(t) is decreasing in service-time variability. We suggest using these infinite-server results to approximately describe the time-dependent behavior of multiserver systems in which some arrivals are lost or delayed."
+    }
+}
