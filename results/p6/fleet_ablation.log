@@ -1,0 +1,13 @@
+Running HiGHS 1.16.0 (git hash: f3f113d): Copyright (c) 2026 under MIT licence terms
+Includes third-party software components, see THIRD_PARTY_NOTICES.md for full details
+{'design': 'bundle (paper)', 'buyable': 'new_gpu+green_gpu', 'Y': 0.7750435057407246, 'saving_E3g': 0.7799489441753349, 'E0_kt': 490.60675619533697, 'E2b_kt': 486.8043403927198, 'bought': 'green_gpu:1900 new_gpu:3329'}
+{'design': 'cpu only', 'buyable': 'new_gpu+green_cpu', 'Y': 0.7210820120774564, 'saving_E3g': 0.8802800930046262, 'E0_kt': 490.60675619533697, 'E2b_kt': 487.06907912637575, 'bought': 'green_cpu:5164'}
+{'design': 'ssd reuse only', 'buyable': 'new_gpu+green_ssd', 'Y': 1.5360205441190211, 'saving_E3g': 1.6145276194523217, 'E0_kt': 490.60675619533697, 'E2b_kt': 483.0709356293407, 'bought': 'green_ssd:1900 new_gpu:3264'}
+{'design': 'dram/CXL reuse only', 'buyable': 'new_gpu+green_dram', 'Y': 0.004691710285575912, 'saving_E3g': 0.004820416873374533, 'E0_kt': 490.60675619533697, 'E2b_kt': 490.58373834769486, 'bought': 'green_dram:726 new_gpu:4453'}
+{'design': 'planner picks', 'buyable': 'new_gpu+green_cpu+green_ssd+green_dram+green_gpu', 'Y': 1.710854176225085, 'saving_E3g': 1.8699458159940119, 'E0_kt': 490.60675619533697, 'E2b_kt': 482.2131900181267, 'bought': 'green_cpu:3264 green_ssd:1900'}
+             design                                          buyable     Y  saving_E3g   E0_kt  E2b_kt                        bought
+     bundle (paper)                                new_gpu+green_gpu 0.775       0.780 490.607 486.804   green_gpu:1900 new_gpu:3329
+           cpu only                                new_gpu+green_cpu 0.721       0.880 490.607 487.069                green_cpu:5164
+     ssd reuse only                                new_gpu+green_ssd 1.536       1.615 490.607 483.071   green_ssd:1900 new_gpu:3264
+dram/CXL reuse only                               new_gpu+green_dram 0.005       0.005 490.607 490.584   green_dram:726 new_gpu:4453
+      planner picks new_gpu+green_cpu+green_ssd+green_dram+green_gpu 1.711       1.870 490.607 482.213 green_cpu:3264 green_ssd:1900
