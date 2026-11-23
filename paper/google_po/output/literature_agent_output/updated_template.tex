@@ -1,0 +1,99 @@
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2025_conference,times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage{hyperref}
+\usepackage{url}
+
+%%%%%%%%% TITLE - PLEASE UPDATE TITLE HERE
+\title{My Title}
+
+\author{Ambitious AI Researcher\\
+AI Research Institute\\
+123 AI Avenue, ML City\\
+\texttt{researcher@institute.ai}
+}
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+%%%%%%%%% ABSTRACT %%%%%%%%%
+Abstract here.
+%%%%%%%%% ABSTRACT %%%%%%%%%
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+%%%%%%%%% INTRODUCTION %%%%%%%%%
+Datacenter energy use has long been a subject of careful accounting~\citep{Masanet2020RecalibratingGlobal}, and the rapid adoption of generative large language models (LLMs) has added a new class of large-scale deployments built on expensive and power-hungry GPUs~\citep{Patel2023SplitwiseEfficient}. LLM services now answer very large numbers of queries per day, and industry reports cited in recent benchmarking work indicate that inference, rather than training, accounts for the bulk of their power consumption~\citep{Niu2026TokenpowerbenchBenchmarking}. The lifecycle carbon of such fleets has two parts: \emph{operational} carbon from the electricity that servers draw, and \emph{embodied} carbon from manufacturing the hardware. Holistic sustainability requires reasoning about both and coordinating datacenter design with its management~\citep{Acun2023CarbonDependencies}. One lever that targets embodied carbon directly is to keep hardware in service longer or to reuse its components: older server generations can preserve application performance under suitable conditions such as low load~\citep{Wang2023PeelingBack}, and memory expansion over the Compute Express Link (CXL) decouples memory technology from a specific CPU memory interface~\citep{Sun2023DemystifyingCxl,Sharma2024IntroductionCompute}, which makes it possible to attach DRAM harvested from retired servers to new hosts. Cloud operators can therefore build new server SKUs that combine energy-efficient CPUs with reused DRAM attached over CXL and reused SSDs.
+
+Whether such reuse actually pays for LLM-inference fleets, however, depends on factors that point-in-time evaluations do not capture. First, operators do not choose a server design once; they make \emph{sequential} decisions over a multi-year horizon, each quarter deciding whether to buy new hardware, build reuse-based hosts, keep or retire servers, cascade older servers to a lighter service tier (possibly in another region), refurbish worn components, or lease capacity. Second, these decisions play out across regions whose grid carbon intensity differs widely and changes over time~\citep{Wiesner2021LetsWait}, while the share of operational carbon in the lifecycle of an 8-GPU inference host is much larger than for a CPU server. Third, reused parts are by construction already aged. Field studies show that DRAM errors in production fleets are far more common than laboratory assumptions suggest and are affected by factors including DIMM age~\citep{Schroeder2009DramErrors}, that DRAM faults are expected to remain a major reliability concern~\citep{Sridharan2015MemoryErrors}, that SSD failure rates evolve non-monotonically over a drive's lifetime~\citep{Meza2015LargescaleFlash}, and that hardware failures are frequent in GPU datacenters running LLM workloads~\citep{Hu2024CharacterizationLarge}. Every failure consumes a spare part with its own embodied carbon, incurs repair logistics, and drains node capacity for hours to days; covering drained capacity requires headroom, which itself carries embodied and idle operational carbon. Finally, embodied-carbon accounting is itself delicate: the assumed device lifetime used for amortization can distort carbon metrics and replacement decisions~\citep{Huang2025CaseAccurate}, and periodic replacement strategies are often suboptimal in total emissions~\citep{Sharma2025TowardOptimal}.
+
+In this paper we ask three questions about a modelled LLM-inference fleet that spans grids of different and declining carbon intensity: (a) how much of the lifecycle-carbon saving of component reuse survives once age-dependent failures, spare parts, repair drains and service-level-objective (SLO) headroom are counted; (b) when does cascading older GPU servers to a batch-inference tier save carbon; and (c) what does guaranteeing a latency-critical (LC) SLO under correlated failures cost in carbon, with and without reuse? To answer them, we formulate a multi-period, cohort-by-age lifecycle optimization over quarters, SKUs, service tiers (LC and BATCH), regions and node ages. Component reliability follows Weibull hazards~\citep{Weibull1951StatisticalDistribution}, with reused parts entering at a positive age and each component slot treated as a delayed renewal process; because age is a cohort index, the expected failures, drained hours, spares and logistics per node-quarter are precomputed and the program remains linear. The model also includes reused-part harvest pools, in-place and geographic cascading with shipping carbon, and an exact treatment of refurbishment with one derived SKU per refurbishment age. For SLO guarantees, we model the number of simultaneously drained LC nodes as the occupancy of an M/G/$\infty$ queue~\citep{Eick1993PhysicsMtg}, Poisson for independent and negative binomial for correlated failures, and iterate a Monte Carlo-in-the-loop reserve until every region-quarter meets a chance constraint on capacity shortfall, in the spirit of chance-constrained cloud provisioning~\citep{Cohen2017OvercommitmentCloud}.
+
+We evaluate the model in a node-level study on three grids, a 36-node single-region pilot, and a reference fleet of about 1,750 8-GPU hosts in three regions over six years, comparing against a no-reuse fleet, a failure-blind reuse plan, and expected-value headroom. Our main findings are as follows. \textbf{(i) Reuse savings are strongly grid-dependent.} For a new 8-GPU host on the mixed grid, operational carbon is about 91\% of six-year lifecycle carbon; reusing DRAM and SSDs cuts the node's embodied carbon by about two thirds but its total carbon by only about 6\%. Per unit of LC work with failures counted, the reuse-based host saves 16.04\% on the clean grid, 0.93\% on the mixed grid, and loses 2.15\% on the dirty grid. \textbf{(ii) Failures erode reuse savings mainly through planning.} In the reference fleet, reuse saves 0.848\% when failures are ignored; replaying the failure-blind plan with failures leaves 0.195\%, largely because drained nodes must be covered by leased capacity, whereas a reliability-aware plan retains 0.775\% (5.03\% versus 5.77\% for a clean-grid-only fleet). As reused parts become less reliable, the failure-blind plan becomes carbon-negative at a failure-rate multiplier of about 2.1, while the reliability-aware plan degrades gracefully and stops reusing at about 8. \textbf{(iii) Cascading pays only near energy parity.} At the placeholder old-GPU efficiency (old/new batch work per joule of 0.70) cascading adds essentially nothing; it begins to pay only at a ratio of about 0.93 to 1.0, and above parity geographic cascading to the clean-grid batch tier adds roughly 50 to 70\% on top of in-place cascading. \textbf{(iv) Reuse remains beneficial under guaranteed SLOs.} Expected-value headroom meets the SLO on average but leaves individual region-quarters of reuse plans with up to 14.5\% (independent) and 15.5\% (correlated) probability of LC shortfall. Our chance-constrained loop converges in 4 to 15 iterations and, under a guaranteed SLO, the reuse plan pays a slightly lower carbon price than the no-reuse plan, so the reuse saving increases (from 0.775\% to 0.812\% at a 0.1\% target under strongly correlated failures); reuse-based hosts are a cheap way to hold idle reserve because they carry the lowest embodied carbon. \textbf{(v) Refurbishment is a niche repair, and easy to over-credit.} With baseline parameters the planner never refurbishes; it does so only for reuse-based hosts whose recycled DIMMs fail heavily, for at most 0.015 percentage points of extra saving. We also identify three accounting mechanisms by which lifecycle models can over-credit refurbishment, one of which produced an apparent doubling of the clean-grid reuse saving before it was removed.
+
+Our contributions are:
+\begin{itemize}
+    \item A reliability-aware, multi-period lifecycle optimization of reuse-based servers for LLM-inference fleets that couples age-dependent component failures, spares and repair drains, reused-part supply, in-place and geographic cascading, refurbishment, and regional grid decarbonization, while remaining a linear program that solves the full experiment ladder on the reference fleet in seconds.
+    \item Quantitative break-even conditions: the reused-part failure-rate multiplier at which reuse stops paying for failure-blind versus reliability-aware planning, and the old-GPU batch energy efficiency at which cascading starts to pay.
+    \item A chance-constrained headroom method with Monte Carlo in the loop that guarantees per-region-quarter LC SLOs under correlated failures, validated by independent replay, together with the finding that reuse remains beneficial under such guarantees.
+    \item An exact treatment of refurbishment, three identified over-crediting mechanisms, and results under six embodied-carbon accounting conventions, yielding design guidance for reliability-aware reuse-based AI servers.
+\end{itemize}
+
+We scope our claims carefully. All results come from a model of an LLM-inference fleet; apart from the GPU failure rate, which is derived from published interruption data, the parameters are engineering assumptions with ranges that we sweep, and GPU throughput, power and the CXL slowdown are placeholders pending measurements that we have prepared but not yet executed. Our conclusions about cascading and about the sign of reuse savings on mixed grids depend on those measurements, and we do not claim that the results generalize to training fleets.
+%%%%%%%%% INTRODUCTION %%%%%%%%%
+
+\section{Related Work}
+\label{sec:related_work}
+%%%%%%%%% RELATED WORK %%%%%%%%%
+\paragraph{Carbon-aware server design and component reuse.}
+A growing line of work treats embodied carbon as a first-class concern in datacenter design. \citet{Acun2023CarbonDependencies} argue that design decisions such as site selection, renewable investment and energy storage are intertwined with operational management, and advocate holistic frameworks that account for both operational and embodied carbon. \citet{Wang2023PeelingBack} study extending server lifetimes to reduce embodied emissions, showing that older hardware can preserve end-to-end application performance under conditions such as low load, and point out the lack of practical metrics and tools for quantifying the resulting carbon savings. Hardware reuse at the component level is enabled by memory interconnects: CXL provides coherent memory semantics for memory expansion and pooling~\citep{Sharma2024IntroductionCompute}, and characterizations of real CXL devices reveal performance behavior that differs from NUMA-based emulation~\citep{Sun2023DemystifyingCxl}, which matters for the throughput penalty of hosts that attach reused DRAM over CXL. On the accounting side, \citet{Huang2025CaseAccurate} argue that carbon metrics require accurate device lifetimes, which are challenging to obtain for SSDs, and correct reasoning about amortized embodied costs, while \citet{Sharma2025TowardOptimal} formulate carbon-aware server replacement and show that periodic replacement is often suboptimal compared with an adaptive policy. These works establish why reuse and lifetime extension matter and how fragile embodied-carbon accounting can be, but they typically assess a design or policy without jointly modelling the elevated failure rates of already-aged reused parts, the spares and headroom those failures consume, and grids whose carbon intensity differs by region and declines over time. Our cohort model evaluates reuse over a six-year horizon on three declining grids, prices age-dependent failures, spares, logistics and drain headroom, and reports results under six embodied-carbon accounting conventions.
+
+\paragraph{Carbon-aware LLM inference and older-GPU reuse.}
+Several works reduce the carbon footprint of LLM serving. Splitwise~\citep{Patel2023SplitwiseEfficient} observes that the memory-intensive token-generation phase does not need the compute capability of the latest GPUs and splits inference phases across machines, enabling heterogeneous clusters optimized for throughput, cost and power. Building on the idea of disaggregation, GreenLLM~\citep{Shi2024GreenllmDisaggregating} reuses older, lower-performing GPUs for specific computations in an SLO-aware serving framework and analyzes how its savings depend on grid carbon intensity and GPU lifetime. \citet{Nguyen2024TowardsSustainable} characterize the performance, energy, operational and embodied carbon of LLM serving on a latest-generation and an older-generation GPU across three grid regions. Other work targets operational carbon at the request or workload level: Sprout~\citep{Li2024SproutGreen} uses generation directives guided by grid carbon intensity, temporal shifting moves delay-tolerant workloads to times of cleaner electricity~\citep{Wiesner2021LetsWait}, and learning-augmented online algorithms allocate deadline-constrained batch work across space and time on a distributed network of datacenters~\citep{Lechowicz2025LearningaugmentedCompetitive}. Measuring the inputs to such analyses is itself an active area; TokenPowerBench~\citep{Niu2026TokenpowerbenchBenchmarking} attributes inference energy to prefill and decode and reports joules per token. These approaches operate at the level of request scheduling, serving configuration or single-time-point hardware choice. They are complementary to ours: we do not schedule requests, but decide over years whether whole previous-generation 8-GPU hosts should be cascaded to a batch tier, in place or across regions with shipping carbon, accounting for the embodied carbon avoided, the operational carbon added and the failures of aged hardware, and we derive the old/new batch work-per-joule ratio at which cascading starts to pay.
+
+\paragraph{Datacenter fleet capacity planning and lifecycle optimization.}
+Fleet-level decisions about procurement, refresh and retirement determine how much embodied carbon a datacenter commits to. The carbon-aware replacement problem of \citet{Sharma2025TowardOptimal} is closest in spirit to our sequential view of procurement and retirement, and \citet{Acun2023CarbonDependencies} motivate coordinating design and management decisions under both carbon components. The accounting concerns raised by \citet{Huang2025CaseAccurate} apply directly to multi-period planning, where the lifetime assumed for amortization interacts with retirement and refurbishment decisions. Our formulation differs in scope: it is a multi-period linear program over cohorts indexed by SKU, tier, region and age that keeps reliability linear by precomputing per-node-quarter failures, drains, spares and logistics, constrains reuse-based builds by harvested-part supply, and represents refurbishment exactly with one derived SKU per refurbishment age. In building it we identify three mechanisms by which lifecycle models can over-credit refurbishment: re-spreading carried amortization past the planning horizon, double-counting harvested parts, and approximate refurbishment ages that the optimizer can exploit.
+
+\paragraph{Reliability modeling and SLO-guaranteed capacity provisioning.}
+Large field studies characterize the hardware failures that a reuse-based fleet must absorb. \citet{Schroeder2009DramErrors} find that DRAM errors in a large production fleet are far more frequent than previously reported, are dominated by hard errors, and are affected by factors including DIMM age. \citet{Sridharan2015MemoryErrors} study DRAM and SRAM faults on leadership-class systems, showing that counting errors rather than faults can lead to incorrect reliability conclusions and projecting DRAM faults to remain a major concern. \citet{Meza2015LargescaleFlash} report that SSD failure rates in production do not increase monotonically with wear but pass through distinct lifecycle phases, and \citet{Hu2024CharacterizationLarge} document frequent hardware failures and their impact in a GPU datacenter used for LLM development. Such non-constant, age-dependent behavior is naturally captured by the Weibull family~\citep{Weibull1951StatisticalDistribution}, which we use as the hazard for each component class, with reused parts entering partway along their curves. For provisioning under uncertainty, \citet{Cohen2017OvercommitmentCloud} formulate cloud overcommitment as bin packing with chance constraints, capturing risk pooling while bounding the probability of violating capacity; their uncertainty is on the demand side, whereas ours arises from hardware drains. Infinite-server queueing results~\citep{Eick1993PhysicsMtg} give the distribution of the number of busy servers, which we use to model simultaneously drained nodes. Common practice sizes headroom by expected values, derating capacity by the expected drain; we show that this meets SLOs on average but leaves individual region-quarters exposed, especially under correlated failures. Our Monte Carlo-in-the-loop reserve enforces a per-region-quarter chance constraint, is validated by independent replay, and lets us quantify how hardware reuse changes the carbon cost of an SLO guarantee, a question that, to our knowledge, prior work has not studied.
+%%%%%%%%% RELATED WORK %%%%%%%%%
+
+\section{Methodology}
+\label{sec:method}
+%%%%%%%%% METHOD %%%%%%%%%
+Methodology here.
+%%%%%%%%% METHOD %%%%%%%%%
+
+\section{Experiments}
+\label{sec:experiments}
+%%%%%%%%% EXPERIMENTS %%%%%%%%%
+Experimental setup, results, and analysis here.
+%%%%%%%%% EXPERIMENTS %%%%%%%%%
+
+\section{Conclusion}
+\label{sec:conclusion}
+%%%%%%%%% CONCLUSION %%%%%%%%%
+Conclusion here.
+%%%%%%%%% CONCLUSION %%%%%%%%%
+
+%%%%%%%%% REFERENCES %%%%%%%%%
+\bibliography{references}
+\bibliographystyle{iclr2025_conference}
+%%%%%%%%% REFERENCES %%%%%%%%%
+
+%%%%%%%%% Appendix %%%%%%%%%
+% If you want to add appendix, uncomment the following lines:
+% \appendix
+% \section{xxx}
+%%%%%%%%% Appendix %%%%%%%%%
+
+\end{document}

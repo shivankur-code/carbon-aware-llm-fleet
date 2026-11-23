@@ -1,0 +1,81 @@
+Using S2 API Key: None
+🚀 Starting Paper Generation (WITHOUT PLOTTING), with figures stored in /home/user/carbon-aware-llm-fleet/paper/google_po/raw_materials/figures
+outline.json output written to /home/user/carbon-aware-llm-fleet/paper/google_po/output/outline.json
+🚀 Starting Fast Hybrid Literature Agent (Cutoff: 2026-10, Threads: 3)...
+📚 Phase 1: Analyzing Plan & Executing Search Tasks...
+    -> Identified 40 distinct search tasks.
+   🔎 Phase 1a: Google Candidates Discovery (MaxPool=10)...
+   🔎 Exploration [Introduction]: 'Find highly cited papers and reports quantifying the energy consumption and carbon footprint of LLM inference and AI datacenters, and the growing share of embodied carbon in datacenter hardware'
+   🔎 Exploration [Introduction]: 'Search for survey or review papers on sustainable / carbon-aware computing and datacenter carbon accounting (embodied vs operational carbon, lifecycle assessment of servers)'
+   🔎 Exploration [Introduction]: 'Identify foundational papers establishing embodied-carbon modeling of computing hardware and the argument that embodied carbon matters as grids decarbonize'
+   🔎 Exploration [Introduction]: 'Identify foundational large-scale field studies of datacenter hardware reliability (DRAM errors in the field, SSD failures in production, GPU failures in large clusters) that motivate age-dependent failure modeling'
+   🔎 Exploration [Introduction]: 'Find foundational work on memory disaggregation and CXL-attached memory in datacenters, and on server lifetime extension / hardware reuse as a datacenter sustainability strategy'
+   🔎 Exploration [Related Work: 2.1 Carbon-Aware Server Design and Component Reuse]: 'reused DRAM CXL server embodied carbon evaluation'
+   🔎 Exploration [Related Work: 2.1 Carbon-Aware Server Design and Component Reuse]: 'embodied carbon accounting methodology reused hardware allocation cut-off'
+   🔎 Exploration [Related Work: 2.1 Carbon-Aware Server Design and Component Reuse]: 'server lifetime extension embodied carbon datacenter analysis'
+   🔎 Exploration [Related Work: 2.1 Carbon-Aware Server Design and Component Reuse]: 'carbon footprint GPU server embodied versus operational lifecycle'
+   🔎 Exploration [Related Work: 2.2 Carbon-Aware LLM Inference and Older-GPU Reuse]: 'carbon-aware LLM inference serving older GPU generations'
+   🔎 Exploration [Related Work: 2.2 Carbon-Aware LLM Inference and Older-GPU Reuse]: 'embodied carbon LLM serving hardware selection'
+   🔎 Exploration [Related Work: 2.2 Carbon-Aware LLM Inference and Older-GPU Reuse]: 'geographic load shifting batch inference carbon intensity'
+   🔎 Exploration [Related Work: 2.2 Carbon-Aware LLM Inference and Older-GPU Reuse]: 'energy efficiency tokens per joule GPU generations LLM inference'
+   🔎 Exploration [Related Work: 2.3 Datacenter Fleet Capacity Planning and Lifecycle Optimization]: 'datacenter server refresh retirement optimization linear programming'
+   🔎 Exploration [Related Work: 2.3 Datacenter Fleet Capacity Planning and Lifecycle Optimization]: 'multi-period capacity planning cloud fleet carbon cost tradeoff'
+   🔎 Exploration [Related Work: 2.3 Datacenter Fleet Capacity Planning and Lifecycle Optimization]: 'server lifecycle optimization hardware failures spare parts'
+   🔎 Exploration [Related Work: 2.3 Datacenter Fleet Capacity Planning and Lifecycle Optimization]: 'carbon-aware datacenter procurement planning multi-region'
+   🔎 Exploration [Related Work: 2.4 Reliability Modeling and SLO-Guaranteed Capacity Provisioning]: 'DRAM failure rate increase with age field study datacenter'
+   🔎 Exploration [Related Work: 2.4 Reliability Modeling and SLO-Guaranteed Capacity Provisioning]: 'SSD failure age dependence production field study'
+   🔎 Exploration [Related Work: 2.4 Reliability Modeling and SLO-Guaranteed Capacity Provisioning]: 'correlated failures datacenter capacity headroom provisioning'
+   🔎 Exploration [Related Work: 2.4 Reliability Modeling and SLO-Guaranteed Capacity Provisioning]: 'chance-constrained capacity planning cloud availability SLO'
+   🎯 Targeted Search [3. Methodology - 3.1 Fleet State, SKUs and Service Tiers]: 'research paper or technical report introducing 'Compute Express Link (CXL)''
+   🎯 Targeted Search [3. Methodology - 3.3 Age-Dependent Reliability as Precomputed Parameters]: 'Weibull (A Statistical Distribution Function of Wide Applicability)'
+   🎯 Targeted Search [3. Methodology - 3.3 Age-Dependent Reliability as Precomputed Parameters]: 'Cox (Regression Models and Life-Tables)'
+   🎯 Targeted Search [3. Methodology - 3.3 Age-Dependent Reliability as Precomputed Parameters]: 'research paper or technical report introducing 'renewal theory / delayed renewal processes''
+   🎯 Targeted Search [3. Methodology - 3.5 Lifecycle-Carbon Objective and Multi-Objective Planning]: 'research paper or technical report introducing 'Power Usage Effectiveness (PUE) metric''
+   🎯 Targeted Search [3. Methodology - 3.5 Lifecycle-Carbon Objective and Multi-Objective Planning]: 'Haimes, Lasdon and Wismer (On a Bicriterion Formulation of the Problems of Integrated System Identification and System Optimization)'
+   🎯 Targeted Search [3. Methodology - 3.5 Lifecycle-Carbon Objective and Multi-Objective Planning]: 'research paper or technical report introducing 'GHG Protocol Product Life Cycle Accounting and Reporting Standard''
+   🎯 Targeted Search [3. Methodology - 3.7 Chance-Constrained SLO Headroom]: 'Charnes and Cooper (Chance-Constrained Programming)'
+   🎯 Targeted Search [3. Methodology - 3.7 Chance-Constrained SLO Headroom]: 'research paper or technical report introducing 'the M/G/infinity queue occupancy distribution''
+   🎯 Targeted Search [3. Methodology - 3.7 Chance-Constrained SLO Headroom]: 'research paper or technical report introducing 'the negative binomial distribution for overdispersed counts''
+   🎯 Targeted Search [3. Methodology - 3.7 Chance-Constrained SLO Headroom]: 'Metropolis and Ulam (The Monte Carlo Method)'
+   🎯 Targeted Search [3. Methodology - 3.8 Uncertainty Quantification]: 'Zadeh (Fuzzy Sets)'
+   🎯 Targeted Search [3. Methodology - 3.8 Uncertainty Quantification]: 'Dong and Shah (Vertex Method for Computing Functions of Fuzzy Variables)'
+   🎯 Targeted Search [4. Experiments - 4.1 Experimental Setup]: 'Huangfu and Hall (Parallelizing the Dual Revised Simplex Method)'
+   🎯 Targeted Search [4. Experiments - 4.1 Experimental Setup]: 'research paper or technical report reporting interruptions of a 54-day LLM pretraining run on about 16,384 GPUs (148 faulty-GPU and 72 GPU-memory interruptions)'
+   🎯 Targeted Search [4. Experiments - 4.1 Experimental Setup]: 'research paper or technical report introducing 'annualized failure rate (AFR) metric for hardware reliability''
+   🎯 Targeted Search [5. Conclusion - Conclusion Content]: 'Kwon et al. (Efficient Memory Management for Large Language Model Serving with PagedAttention)'
+   🎯 Targeted Search [5. Conclusion - Conclusion Content]: 'Hamming (Error Detecting and Error Correcting Codes)'
+   🎯 Targeted Search [Appendix - D. Prepared Measurement Methodology]: 'research paper or technical report introducing 'time-to-first-token (TTFT) and time-per-output-token (TPOT) LLM serving SLO metrics''
+   📊 Phase 1b: Semantic Scholar Enrichment (Rate-limited, sequential)...
+      -> 📚 Added enriched paper: Recalibrating global data center energy-use estimates
+      -> 📚 Added enriched paper: Carbon Dependencies in Datacenter Design and Management
+      -> 📚 Added enriched paper: DRAM errors in the wild
+      -> 📚 Added enriched paper: Memory Errors in Modern Systems
+      -> 📚 Added enriched paper: A Large-Scale Study of Flash Memory Failures in the Field
+      -> 📚 Added enriched paper: The Dirty Secret of SSDs: Embodied Carbon
+      -> 📚 Added enriched paper: Toward Optimal Carbon-Aware Scheduling of Server Replacement
+      -> 📚 Added enriched paper: Junkyard Computing: Repurposing Discarded Smartphones to Minimize Carbon
+      -> 📚 Added enriched paper: Towards Sustainable Large Language Model Serving
+      -> 📚 Added enriched paper: GreenLLM: Disaggregating Large Language Model Serving on Heterogeneous GPUs for Lower Carbon Emissions
+      -> 📚 Added enriched paper: EcoServe: Designing Carbon-Aware AI Inference Systems
+      -> 📚 Added enriched paper: Sprout: Green Generative AI with Carbon-Efficient LLM Inference
+      -> 📚 Added enriched paper: Clover: Toward Sustainable AI with Carbon-Aware Machine Learning Inference Service
+      -> 📚 Added enriched paper: The case for accurate lifetime accounting in carbon metrics
+      -> 📚 Added enriched paper: ACT: designing sustainable computer systems with an architectural carbon modeling tool
+      -> 📚 Added enriched paper: Chasing Carbon: The Elusive Environmental Footprint of Computing
+      -> 📚 Added enriched paper: Learning-Augmented Competitive Algorithms for Spatiotemporal Online Allocation with Deadline Constraints
+      -> 📚 Added enriched paper: An opportunity to improve Data Center Efficiency: Optimizing the Server's Upgrade Cycle
+      -> 📚 Added enriched paper: TokenPowerBench: Benchmarking the Power Consumption of LLM Inference
+      -> 📚 Added enriched paper: Characterizing Power Management Opportunities for LLMs in the Cloud
+      -> 📚 Added enriched paper: M\'elange: Cost Efficient Large Language Model Serving by Exploiting GPU Heterogeneity
+      -> 📚 Added enriched paper: CEO-DC: Driving Decarbonization in HPC Data Centers with Actionable Insights
+      -> 📚 Added enriched paper: Capelin: Data-Driven Capacity Procurement for Cloud Datacenters using Portfolios of Scenarios - Extended Technical Report
+      -> 📚 Added enriched paper: Designing Cloud Servers for Lower Carbon
+      -> 📚 Added enriched paper: Carbon and Reliability-Aware Computing for Heterogeneous Data Centers
+      -> 📚 Added enriched paper: Overcommitment in Cloud Services Bin packing with Chance Constraints
+      -> 📚 Added enriched paper: An Introduction to the Compute Express Link (CXL) Interconnect
+      -> 📚 Added enriched paper: A Statistical Distribution Function of Wide Applicability
+      -> 📚 Added enriched paper: The Physics of the Mt/G/∞ Queue
+
+✨ Final Count: 29 unique enriched papers retrieved.
+🔄 Injecting citations back into Outline...
+✍️  Phase 3: Writing Introduction & Related Work...

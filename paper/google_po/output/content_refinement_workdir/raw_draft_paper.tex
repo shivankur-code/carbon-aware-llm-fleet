@@ -1,0 +1,754 @@
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2025_conference,times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+%%%%%%%%% TITLE - PLEASE UPDATE TITLE HERE
+\title{Does Component Reuse Pay for LLM-Inference Fleets? \\ Reliability-Aware Multi-Period Lifecycle Carbon Planning}
+
+\author{Ambitious AI Researcher\\
+AI Research Institute\\
+123 AI Avenue, ML City\\
+\texttt{researcher@institute.ai}
+}
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+%%%%%%%%% ABSTRACT %%%%%%%%%
+Reuse-based servers, which combine energy-efficient CPUs with DRAM attached over CXL and SSDs harvested from retired servers, have so far been evaluated at a single point in time and under an average grid carbon intensity. Operators, however, make sequential multi-year decisions across regions whose grids decarbonize at different rates, and reused parts are already aged and fail more often. We present a reliability-aware, multi-period, cohort-by-age lifecycle-carbon linear program for LLM-inference fleets of 8-GPU hosts. It prices Weibull-based spares and repair drains as precomputed per-node-quarter parameters, tracks reused-part harvest pools, supports in-place and geographic cascading and an exact treatment of refurbishment, and adds a chance-constrained latency-critical (LC) headroom loop with Monte Carlo validation. In this model, the node-level reuse saving per unit of work is 16.04--18.61\% on a clean grid but only 0.93\% (LC) on a mixed grid and $-2.15\%$ (LC) on a dirty grid. On a three-region reference fleet of about 1,750 hosts over six years, a failure-blind reuse plan keeps only 0.195\% of the 0.848\% failure-free saving, while a reliability-aware plan keeps 0.775\%. The failure-blind plan becomes carbon-negative at a reused-part failure-rate multiplier of about 2.1, whereas the reliability-aware plan decays gracefully and stops reusing at about 8. Cascading old GPUs to batch inference pays only near old/new batch energy parity. Under a guaranteed 0.1\% per-region-quarter shortfall target with strongly correlated failures, the reuse saving rises to 0.812\%, because reuse-based hosts are the cheapest idle reserve. GPU throughput, power and CXL slowdown are placeholders pending prepared but not yet executed measurements.
+%%%%%%%%% ABSTRACT %%%%%%%%%
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+%%%%%%%%% INTRODUCTION %%%%%%%%%
+Datacenter energy use has long been a subject of careful accounting~\citep{Masanet2020RecalibratingGlobal}, and the rapid adoption of generative large language models (LLMs) has added a new class of large-scale deployments built on expensive and power-hungry GPUs~\citep{Patel2023SplitwiseEfficient}. LLM services now answer very large numbers of queries per day, and industry reports cited in recent benchmarking work indicate that inference, rather than training, accounts for the bulk of their power consumption~\citep{Niu2026TokenpowerbenchBenchmarking}. The lifecycle carbon of such fleets has two parts: \emph{operational} carbon from the electricity that servers draw, and \emph{embodied} carbon from manufacturing the hardware. Holistic sustainability requires reasoning about both and coordinating datacenter design with its management~\citep{Acun2023CarbonDependencies}. One lever that targets embodied carbon directly is to keep hardware in service longer or to reuse its components: older server generations can preserve application performance under suitable conditions such as low load~\citep{Wang2023PeelingBack}, and memory expansion over the Compute Express Link (CXL) decouples memory technology from a specific CPU memory interface~\citep{Sun2023DemystifyingCxl,Sharma2024IntroductionCompute}, which makes it possible to attach DRAM harvested from retired servers to new hosts. Cloud operators can therefore build new server SKUs that combine energy-efficient CPUs with reused DRAM attached over CXL and reused SSDs.
+
+Whether such reuse actually pays for LLM-inference fleets, however, depends on factors that point-in-time evaluations do not capture. First, operators do not choose a server design once; they make \emph{sequential} decisions over a multi-year horizon, each quarter deciding whether to buy new hardware, build reuse-based hosts, keep or retire servers, cascade older servers to a lighter service tier (possibly in another region), refurbish worn components, or lease capacity. Second, these decisions play out across regions whose grid carbon intensity differs widely and changes over time~\citep{Wiesner2021LetsWait}, while the share of operational carbon in the lifecycle of an 8-GPU inference host is much larger than for a CPU server. Third, reused parts are by construction already aged. Field studies show that DRAM errors in production fleets are far more common than laboratory assumptions suggest and are affected by factors including DIMM age~\citep{Schroeder2009DramErrors}, that DRAM faults are expected to remain a major reliability concern~\citep{Sridharan2015MemoryErrors}, that SSD failure rates evolve non-monotonically over a drive's lifetime~\citep{Meza2015LargescaleFlash}, and that hardware failures are frequent in GPU datacenters running LLM workloads~\citep{Hu2024CharacterizationLarge}. Every failure consumes a spare part with its own embodied carbon, incurs repair logistics, and drains node capacity for hours to days; covering drained capacity requires headroom, which itself carries embodied and idle operational carbon. Finally, embodied-carbon accounting is itself delicate: the assumed device lifetime used for amortization can distort carbon metrics and replacement decisions~\citep{Huang2025CaseAccurate}, and periodic replacement strategies are often suboptimal in total emissions~\citep{Sharma2025TowardOptimal}.
+
+In this paper we ask three questions about a modelled LLM-inference fleet that spans grids of different and declining carbon intensity: (a) how much of the lifecycle-carbon saving of component reuse survives once age-dependent failures, spare parts, repair drains and service-level-objective (SLO) headroom are counted; (b) when does cascading older GPU servers to a batch-inference tier save carbon; and (c) what does guaranteeing a latency-critical (LC) SLO under correlated failures cost in carbon, with and without reuse? To answer them, we formulate a multi-period, cohort-by-age lifecycle optimization over quarters, SKUs, service tiers (LC and BATCH), regions and node ages. Component reliability follows Weibull hazards~\citep{Weibull1951StatisticalDistribution}, with reused parts entering at a positive age and each component slot treated as a delayed renewal process; because age is a cohort index, the expected failures, drained hours, spares and logistics per node-quarter are precomputed and the program remains linear. The model also includes reused-part harvest pools, in-place and geographic cascading with shipping carbon, and an exact treatment of refurbishment with one derived SKU per refurbishment age. For SLO guarantees, we model the number of simultaneously drained LC nodes as the occupancy of an M/G/$\infty$ queue~\citep{Eick1993PhysicsMtg}, Poisson for independent and negative binomial for correlated failures, and iterate a Monte Carlo-in-the-loop reserve until every region-quarter meets a chance constraint on capacity shortfall, in the spirit of chance-constrained cloud provisioning~\citep{Cohen2017OvercommitmentCloud}.
+
+We evaluate the model in a node-level study on three grids, a 36-node single-region pilot, and a reference fleet of about 1,750 8-GPU hosts in three regions over six years, comparing against a no-reuse fleet, a failure-blind reuse plan, and expected-value headroom. Our main findings are as follows. \textbf{(i) Reuse savings are strongly grid-dependent.} For a new 8-GPU host on the mixed grid, operational carbon is about 91\% of six-year lifecycle carbon; reusing DRAM and SSDs cuts the node's embodied carbon by about two thirds but its total carbon by only about 6\%. Per unit of LC work with failures counted, the reuse-based host saves 16.04\% on the clean grid, 0.93\% on the mixed grid, and loses 2.15\% on the dirty grid. \textbf{(ii) Failures erode reuse savings mainly through planning.} In the reference fleet, reuse saves 0.848\% when failures are ignored; replaying the failure-blind plan with failures leaves 0.195\%, largely because drained nodes must be covered by leased capacity, whereas a reliability-aware plan retains 0.775\% (5.03\% versus 5.77\% for a clean-grid-only fleet). As reused parts become less reliable, the failure-blind plan becomes carbon-negative at a failure-rate multiplier of about 2.1, while the reliability-aware plan degrades gracefully and stops reusing at about 8. \textbf{(iii) Cascading pays only near energy parity.} At the placeholder old-GPU efficiency (old/new batch work per joule of 0.70) cascading adds essentially nothing; it begins to pay only at a ratio of about 0.93 to 1.0, and above parity geographic cascading to the clean-grid batch tier adds roughly 50 to 70\% on top of in-place cascading. \textbf{(iv) Reuse remains beneficial under guaranteed SLOs.} Expected-value headroom meets the SLO on average but leaves individual region-quarters of reuse plans with up to 14.5\% (independent) and 15.5\% (correlated) probability of LC shortfall. Our chance-constrained loop converges in 4 to 15 iterations and, under a guaranteed SLO, the reuse plan pays a slightly lower carbon price than the no-reuse plan, so the reuse saving increases (from 0.775\% to 0.812\% at a 0.1\% target under strongly correlated failures); reuse-based hosts are a cheap way to hold idle reserve because they carry the lowest embodied carbon. \textbf{(v) Refurbishment is a niche repair, and easy to over-credit.} With baseline parameters the planner never refurbishes; it does so only for reuse-based hosts whose recycled DIMMs fail heavily, for at most 0.015 percentage points of extra saving. We also identify three accounting mechanisms by which lifecycle models can over-credit refurbishment, one of which produced an apparent doubling of the clean-grid reuse saving before it was removed.
+
+Our contributions are:
+\begin{itemize}
+    \item A reliability-aware, multi-period lifecycle optimization of reuse-based servers for LLM-inference fleets that couples age-dependent component failures, spares and repair drains, reused-part supply, in-place and geographic cascading, refurbishment, and regional grid decarbonization, while remaining a linear program that solves the full experiment ladder on the reference fleet in seconds.
+    \item Quantitative break-even conditions: the reused-part failure-rate multiplier at which reuse stops paying for failure-blind versus reliability-aware planning, and the old-GPU batch energy efficiency at which cascading starts to pay.
+    \item A chance-constrained headroom method with Monte Carlo in the loop that guarantees per-region-quarter LC SLOs under correlated failures, validated by independent replay, together with the finding that reuse remains beneficial under such guarantees.
+    \item An exact treatment of refurbishment, three identified over-crediting mechanisms, and results under six embodied-carbon accounting conventions, yielding design guidance for reliability-aware reuse-based AI servers.
+\end{itemize}
+
+We scope our claims carefully. All results come from a model of an LLM-inference fleet; apart from the GPU failure rate, which is derived from published interruption data, the parameters are engineering assumptions with ranges that we sweep, and GPU throughput, power and the CXL slowdown are placeholders pending measurements that we have prepared but not yet executed. Our conclusions about cascading and about the sign of reuse savings on mixed grids depend on those measurements, and we do not claim that the results generalize to training fleets.
+%%%%%%%%% INTRODUCTION %%%%%%%%%
+
+\section{Related Work}
+\label{sec:related_work}
+%%%%%%%%% RELATED WORK %%%%%%%%%
+\paragraph{Carbon-aware server design and component reuse.}
+A growing line of work treats embodied carbon as a first-class concern in datacenter design. \citet{Acun2023CarbonDependencies} argue that design decisions such as site selection, renewable investment and energy storage are intertwined with operational management, and advocate holistic frameworks that account for both operational and embodied carbon. \citet{Wang2023PeelingBack} study extending server lifetimes to reduce embodied emissions, showing that older hardware can preserve end-to-end application performance under conditions such as low load, and point out the lack of practical metrics and tools for quantifying the resulting carbon savings. Hardware reuse at the component level is enabled by memory interconnects: CXL provides coherent memory semantics for memory expansion and pooling~\citep{Sharma2024IntroductionCompute}, and characterizations of real CXL devices reveal performance behavior that differs from NUMA-based emulation~\citep{Sun2023DemystifyingCxl}, which matters for the throughput penalty of hosts that attach reused DRAM over CXL. On the accounting side, \citet{Huang2025CaseAccurate} argue that carbon metrics require accurate device lifetimes, which are challenging to obtain for SSDs, and correct reasoning about amortized embodied costs, while \citet{Sharma2025TowardOptimal} formulate carbon-aware server replacement and show that periodic replacement is often suboptimal compared with an adaptive policy. These works establish why reuse and lifetime extension matter and how fragile embodied-carbon accounting can be, but they typically assess a design or policy without jointly modelling the elevated failure rates of already-aged reused parts, the spares and headroom those failures consume, and grids whose carbon intensity differs by region and declines over time. Our cohort model evaluates reuse over a six-year horizon on three declining grids, prices age-dependent failures, spares, logistics and drain headroom, and reports results under six embodied-carbon accounting conventions.
+
+\paragraph{Carbon-aware LLM inference and older-GPU reuse.}
+Several works reduce the carbon footprint of LLM serving. Splitwise~\citep{Patel2023SplitwiseEfficient} observes that the memory-intensive token-generation phase does not need the compute capability of the latest GPUs and splits inference phases across machines, enabling heterogeneous clusters optimized for throughput, cost and power. Building on the idea of disaggregation, GreenLLM~\citep{Shi2024GreenllmDisaggregating} reuses older, lower-performing GPUs for specific computations in an SLO-aware serving framework and analyzes how its savings depend on grid carbon intensity and GPU lifetime. \citet{Nguyen2024TowardsSustainable} characterize the performance, energy, operational and embodied carbon of LLM serving on a latest-generation and an older-generation GPU across three grid regions. Other work targets operational carbon at the request or workload level: Sprout~\citep{Li2024SproutGreen} uses generation directives guided by grid carbon intensity, temporal shifting moves delay-tolerant workloads to times of cleaner electricity~\citep{Wiesner2021LetsWait}, and learning-augmented online algorithms allocate deadline-constrained batch work across space and time on a distributed network of datacenters~\citep{Lechowicz2025LearningaugmentedCompetitive}. Measuring the inputs to such analyses is itself an active area; TokenPowerBench~\citep{Niu2026TokenpowerbenchBenchmarking} attributes inference energy to prefill and decode and reports joules per token. These approaches operate at the level of request scheduling, serving configuration or single-time-point hardware choice. They are complementary to ours: we do not schedule requests, but decide over years whether whole previous-generation 8-GPU hosts should be cascaded to a batch tier, in place or across regions with shipping carbon, accounting for the embodied carbon avoided, the operational carbon added and the failures of aged hardware, and we derive the old/new batch work-per-joule ratio at which cascading starts to pay.
+
+\paragraph{Datacenter fleet capacity planning and lifecycle optimization.}
+Fleet-level decisions about procurement, refresh and retirement determine how much embodied carbon a datacenter commits to. The carbon-aware replacement problem of \citet{Sharma2025TowardOptimal} is closest in spirit to our sequential view of procurement and retirement, and \citet{Acun2023CarbonDependencies} motivate coordinating design and management decisions under both carbon components. The accounting concerns raised by \citet{Huang2025CaseAccurate} apply directly to multi-period planning, where the lifetime assumed for amortization interacts with retirement and refurbishment decisions. Our formulation differs in scope: it is a multi-period linear program over cohorts indexed by SKU, tier, region and age that keeps reliability linear by precomputing per-node-quarter failures, drains, spares and logistics, constrains reuse-based builds by harvested-part supply, and represents refurbishment exactly with one derived SKU per refurbishment age. In building it we identify three mechanisms by which lifecycle models can over-credit refurbishment: re-spreading carried amortization past the planning horizon, double-counting harvested parts, and approximate refurbishment ages that the optimizer can exploit.
+
+\paragraph{Reliability modeling and SLO-guaranteed capacity provisioning.}
+Large field studies characterize the hardware failures that a reuse-based fleet must absorb. \citet{Schroeder2009DramErrors} find that DRAM errors in a large production fleet are far more frequent than previously reported, are dominated by hard errors, and are affected by factors including DIMM age. \citet{Sridharan2015MemoryErrors} study DRAM and SRAM faults on leadership-class systems, showing that counting errors rather than faults can lead to incorrect reliability conclusions and projecting DRAM faults to remain a major concern. \citet{Meza2015LargescaleFlash} report that SSD failure rates in production do not increase monotonically with wear but pass through distinct lifecycle phases, and \citet{Hu2024CharacterizationLarge} document frequent hardware failures and their impact in a GPU datacenter used for LLM development. Such non-constant, age-dependent behavior is naturally captured by the Weibull family~\citep{Weibull1951StatisticalDistribution}, which we use as the hazard for each component class, with reused parts entering partway along their curves. For provisioning under uncertainty, \citet{Cohen2017OvercommitmentCloud} formulate cloud overcommitment as bin packing with chance constraints, capturing risk pooling while bounding the probability of violating capacity; their uncertainty is on the demand side, whereas ours arises from hardware drains. Infinite-server queueing results~\citep{Eick1993PhysicsMtg} give the distribution of the number of busy servers, which we use to model simultaneously drained nodes. Common practice sizes headroom by expected values, derating capacity by the expected drain; we show that this meets SLOs on average but leaves individual region-quarters exposed, especially under correlated failures. Our Monte Carlo-in-the-loop reserve enforces a per-region-quarter chance constraint, is validated by independent replay, and lets us quantify how hardware reuse changes the carbon cost of an SLO guarantee, a question that, to our knowledge, prior work has not studied.
+%%%%%%%%% RELATED WORK %%%%%%%%%
+
+\section{Methodology}
+\label{sec:method}
+%%%%%%%%% METHOD %%%%%%%%%
+We formulate fleet planning as a multi-period linear program (LP) over cohorts of identical nodes (Figure~\ref{fig:overview}). Reliability, availability and spare-part carbon are precomputed per SKU and cohort age, so the program stays linear; an outer Monte Carlo loop turns the expected-value LC capacity constraint into a per-region-quarter chance constraint.
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.7\linewidth]{figures/fig_lifecycle_model_overview.png}
+\end{center}
+\caption{Overview of the reliability-aware lifecycle model. Server SKUs, component reliability (Weibull hazards, delayed renewal), regional grids and demand, and reused-part pools feed a multi-period LP over cohorts that each quarter decides to buy, keep, retire, cascade LC$\rightarrow$BATCH (in place or to a clean-grid region) or lease. An outer Monte Carlo loop models drained nodes as M/G/$\infty$ occupancy and adds reserve until $P(\text{short})\le\varepsilon$ in every region-quarter. Outputs are the E0--E3g ladder, break-even analyses and guaranteed-SLO results.}
+\label{fig:overview}
+\end{figure}
+
+\subsection{Fleet State, Flow Conservation and Refurbishment}
+\label{sec:method_state}
+\label{sec:method_flow}
+Time is discretized into quarters $t = 0,\dots,T-1$ with $T = 24$ (six years). Cohorts are indexed by SKU $s$, service tier $\tau \in \{\text{LC}, \text{BATCH}\}$, region $r$ and node age $a$ (quarters within the node's current life); $n_{s\tau r a t} \ge 0$ counts nodes. Three SKUs are modeled: \texttt{new\_gpu}, a current-generation 8-GPU host built from new components; \texttt{green\_gpu}, a reuse-based host with new GPUs, energy-efficient CPUs, reused DRAM attached over CXL~\citep{Sharma2024IntroductionCompute} and reused SSDs whose parts enter at age $a_0>0$; and \texttt{old\_gpu}, a previous-generation 8-GPU host cascaded as a whole from its first life. Node counts evolve as
+\begin{equation}
+n_{s\tau r a t} = n_{s\tau r,a-1,t-1} - x^{\text{ret}}_{s\tau r a t} - \sum_{r'} x^{\text{casc}}_{s r r' a t}\,[\tau=\text{LC}] + \sum_{r''} x^{\text{casc}}_{s r'' r a t}\,[\tau=\text{BATCH}] + x^{\text{buy}}_{s\tau r t}\,[a=0],
+\label{eq:flow}
+\end{equation}
+with Iverson brackets $[\cdot]$, retirements $x^{\text{ret}}$, cascades $x^{\text{casc}}$ and purchases or builds $x^{\text{buy}}$, a fixed initial fleet at $t=0$ and forced retirement at a maximum age. A cascade moves a node from the LC tier of region $r$ to the BATCH tier of region $r'$ and keeps its age; if $r'\neq r$ it is geographic and incurs shipping carbon and cost.
+
+Refurbishment moves a node whose age lies in a window into a derived SKU at age 0 of a second life, replacing DIMMs (or DIMMs and SSDs) with new parts while carried parts keep their exact age and amortization schedule; one derived SKU exists per refurbishment age (details in Appendix~\ref{app:rel}).
+
+\subsection{Age-Dependent Reliability as Precomputed Parameters}
+\label{sec:method_rel}
+Each component class $c \in \{\text{GPU}, \text{CPU}, \text{DIMM}, \text{SSD}\}$ has a Weibull hazard~\citep{Weibull1951StatisticalDistribution} over part age $a$ in years,
+\begin{equation}
+h_c(a) = \frac{k_c}{\eta_c}\left(\frac{a}{\eta_c}\right)^{k_c-1}, \qquad H_c(a) = \left(\frac{a}{\eta_c}\right)^{k_c},
+\label{eq:weibull}
+\end{equation}
+with scale $\eta_c$ calibrated so that the annual failure probability at a reference age equals the annualized failure rate (AFR). A reused part enters at age $a_0>0$, so its first lifetime follows $F_{a_0}(x) = 1 - \exp(-[H_c(a_0+x) - H_c(a_0)])$, and every failed part is replaced by a new spare. Each component slot is thus a delayed renewal process with renewal function $M_{a_0}(x) = F_{a_0}(x) + \int_0^x M_0(x-y)\,dF_{a_0}(y)$, and expected failures per quarter, $M_{a_0}(x+0.25) - M_{a_0}(x)$, are computed numerically. Because node age is a cohort index, the expected failures $\lambda_{sa}$, drained hours $d_{sa} = \sum_c N_{sc}\lambda_{c,a}\delta_c$ (with $N_{sc}$ parts and drain time $\delta_c$ per failure), availability loss $\ell_{sa} = d_{sa}/H$ ($H$ hours per quarter), spare-part embodied carbon $q^{\text{spare}}_{sa}$ and logistics carbon $q^{\text{log}}_{sa}$ per node-quarter are precomputed and enter the LP as coefficients. For break-even analysis, a proportional-hazards multiplier $m$ scales the hazard of reused parts beyond what their age predicts.
+
+\subsection{Capacity, Reused-Part Pools and Objective}
+\label{sec:method_cap}
+\label{sec:method_obj}
+Served work, in node-equivalents of a fully busy new host, satisfies
+\begin{equation}
+w_{s\tau r a t} \le n_{s\tau r a t}\,\theta_{s\tau}\, u \,\big(1 - \beta_\tau\, \ell_{s a}\big),
+\label{eq:capacity}
+\end{equation}
+where $\theta_{s\tau}$ is relative throughput (including the CXL slowdown of \texttt{green\_gpu}), $u$ the utilization cap and $\beta_\tau$ an expected-value LC headroom multiplier. LC demand $D_{rt}$ is per region, BATCH demand is global, and unserved demand is leased at a premium or counted as shortfall. Building a \texttt{green\_gpu} draws DIMMs and SSDs from harvest pools fed by pre-screened external supply plus a screening yield $\gamma$ times the first-life parts of hosts retired in the fleet (Eq.~\ref{eq:pool}, Appendix~\ref{app:rel}). The lifecycle-carbon objective is
+\begin{equation}
+\begin{split}
+C = {} & \sum \big(e^{\text{emb}}_{s a} n + e^{\text{strand}}_{s a} x^{\text{ret}}\big) + \sum \big(P^{\text{idle}}_s (1-\ell_{sa}) H\, n + \kappa_{s\tau}\, w\big)\,\text{PUE}\cdot\text{CI}_{r t} \\
+& + \sum (q^{\text{spare}}_{sa} + q^{\text{log}}_{sa})\, n + C^{\text{lease}} + C^{\text{ship}},
+\end{split}
+\label{eq:objective}
+\end{equation}
+summed over cohort indices: amortized embodied carbon (unamortized remainder charged on early retirement), operational carbon from an idle-plus-dynamic power model scaled by PUE and the regional, declining grid intensity $\text{CI}_{rt}$, spares and logistics, leasing and shipping. Reused parts carry zero embodied carbon by default (cut-off accounting). Cost and shortfall are alternative objectives ($\varepsilon$-constraint Pareto fronts). At fleet scale we solve the LP relaxation.
+
+\subsection{Experiment Ladder and Saving Metrics}
+\label{sec:method_ladder}
+\label{sec:method_uq}
+E0 allows no reuse (only new hardware, no cascading) and is evaluated with failures ignored ($C^{\text{nf}}$) and counted ($C^{\text{f}}$). E1 allows reuse but ignores failures; E2a replays E1's plan with failures; E2b plans reuse with reliability priced in; E3/E3g add in-place/geographic cascading to E2b; E0r, E4 and E5 add refurbishment (without reuse, with reuse, and with all levers). The savings are
+\begin{equation}
+X = 1-\frac{C^{\text{nf}}_{\text{E1}}}{C^{\text{nf}}_{\text{E0}}}, \quad
+Y_{\text{naive}} = 1-\frac{C^{\text{f}}_{\text{E2a}}}{C^{\text{f}}_{\text{E0}}}, \quad
+Y = 1-\frac{C^{\text{f}}_{\text{E2b}}}{C^{\text{f}}_{\text{E0}}}, \quad
+Z = \frac{C^{\text{f}}_{\text{E2b}} - C^{\text{f}}_{\text{E3}}}{C^{\text{f}}_{\text{E0}}},
+\label{eq:savings}
+\end{equation}
+in percent, with $Z_g$ defined like $Z$ using E3g and both reported in percentage points (pp). Because the no-reuse plan is feasible for the reliability-aware planner, $Y \ge 0$ by construction; the informative quantity is how fast $Y$ decays. No such guarantee holds for $Y_{\text{naive}}$. Uncertainty is assessed by one-at-a-time (tornado) sensitivity, triangular fuzzy factors on failure rates ($\times[0.5,1,3]$), embodied carbon ($\times[0.5,1,2]$) and the CXL multiplier ($[0.85,0.95,1.0]$) propagated to $Y$ by $\alpha$-cuts with the vertex method, and parameter sweeps.
+
+\subsection{Chance-Constrained SLO Headroom}
+\label{sec:method_cc}
+Expected-value headroom derates capacity by a multiple of the expected drain (Eq.~\ref{eq:capacity}), which meets the SLO on average but not necessarily in each region-quarter. We model the number of simultaneously drained LC nodes in a region-quarter as the occupancy of an M/G/$\infty$ queue~\citep{Eick1993PhysicsMtg}: Poisson with mean $\mu_{rt} = \sum_i N_i d_i / H$ over LC cohorts $i$ for independent failures, or negative binomial with the same mean and variance $\mu_{rt} + \mu_{rt}^2/k$ for correlated failures (smaller $k$ means stronger correlation). A per-region-quarter reserve $R_{rt}$ enters through
+\begin{equation}
+\textstyle\sum_{s,a} n_{s,\text{LC},r a t}\,\theta_{s,\text{LC}}\,u + L_{rt} \ge D_{rt} + R_{rt},
+\label{eq:reserve}
+\end{equation}
+with leased LC capacity $L_{rt}$, and we require $P(\text{capacity}_{rt} < D_{rt}) \le \varepsilon$ for every region-quarter, in the spirit of chance-constrained provisioning~\citep{Cohen2017OvercommitmentCloud}. Algorithm~\ref{alg:cc} (Appendix~\ref{app:results}) solves the plan, samples instantaneous LC capacity per region-quarter, adds the gap between demand and the $\varepsilon$-quantile of capacity to $R_{rt}$, and re-solves until all gaps are within 0.05\% of demand; reserves only grow. Final plans are validated by an independent replay with 50,000 samples. The \emph{SLO carbon price} is the relative carbon increase of the chance-constrained plan over its expected-value plan; computing it with and without reuse shows how reuse changes the cost of a guarantee.
+
+%%%%%%%%% METHOD %%%%%%%%%
+
+\section{Experiments}
+\label{sec:experiments}
+%%%%%%%%% EXPERIMENTS %%%%%%%%%
+\subsection{Experimental Setup}
+\label{sec:setup}
+\paragraph{Scenarios.} \emph{Node-level study:} one 8-GPU node per SKU over six years at 60\% utilization on a clean, mixed and dirty grid (base-year 40, 250 and 650~gCO$_2$e/kWh, declining 2, 5 and 3\%/yr; PUE 1.2). \emph{Pilot fleet:} 3 years, one region, 24 previous- and 12 current-generation hosts. \emph{Reference fleet:} 24 quarters, three regions (clean, mixed, dirty), about 1,750 initial hosts, LC demand per region growing 25--30\% and global BATCH demand growing 35\% per year, and reused-part pools fed by 2,400 DIMMs and 600 SSDs per quarter; full details are in Appendix~\ref{app:params}.
+
+\paragraph{Parameters and provenance.} SKU, component and cost parameters are listed in Tables~\ref{tab:params} and~\ref{tab:costs} (Appendix~\ref{app:params}). The GPU AFR of 0.0868 is derived from a published interruption report (Appendix~\ref{app:params}); all other parameters are engineering assumptions with ranges that we sweep. \textbf{GPU throughput, power and the CXL slowdown (multipliers 0.95 LC, 0.98 BATCH) are placeholders: the prepared GPU measurements (Appendix~\ref{app:measure}) have not been executed, and no measured GPU results are reported.} The negative-binomial dispersions $k=2$ and $k=0.5$ are illustrative, not fitted.
+
+\paragraph{Baselines and implementation.} We compare against the no-reuse fleet, the failure-blind reuse plan (E1/E2a), and expected-value headroom (capacity derated by 3$\times$ the expected drain). The model is solved with HiGHS through a Python modeling layer ($\beta_{\text{LC}}=3$, $u=0.8$ unless stated). On the pilot, the LP relaxation solved in under 1~s and matched the mixed-integer model (which hit a 300~s limit) within about 0.05~pp on $X$ and $Y$; a full E0--E3g ladder on the reference fleet solves in about 4~s.
+
+\subsection{Node-Level Lifecycle Carbon and Grid Dependence}
+\label{sec:node}
+For \texttt{new\_gpu} on the mixed grid (LC, failures counted), operational carbon is about 91\% of the six-year total (96,662 of 106,265~kgCO$_2$e; Table~\ref{tab:node}, Appendix~\ref{app:results}). Reusing DRAM and SSDs cuts embodied carbon by about two thirds (8,312 to 2,860~kgCO$_2$e) but total carbon by only about 6\% (to 99,945~kgCO$_2$e). The per-unit-of-work saving is therefore strongly grid-dependent (Table~\ref{tab:node_saving}): with failures counted, 16.04\% (LC) and 18.61\% (BATCH) on the clean grid, 0.93\% and 3.96\% on the mixed grid, and $-2.15\%$ and 0.98\% on the dirty grid, where the 5\% LC throughput loss of the CXL multiplier costs more operational carbon than reuse saves. Counting failures, spares, logistics and drains erodes the node-level saving by only 0.1--2.2~pp: aged DIMMs nearly double DIMM failures (9.67 versus 5.43 per node over six years), but GPU failures (4.36 per node for both SKUs, 72~h drains) dominate drained hours (394 versus 359~h).
+
+\subsection{Fleet-Level Savings: Failure-Blind vs.\ Reliability-Aware Planning}
+\label{sec:fleet}
+Table~\ref{tab:fleet_savings} reports fleet savings. On the reference fleet, $X = 0.848\%$, $Y_{\text{naive}} = 0.195\%$ and $Y = 0.775\%$: failure-blind planning loses 77\% of the failure-free saving, reliability-aware planning about 9\%. The ordering $X > Y > Y_{\text{naive}}$ holds on the pilot and on every single-grid fleet, the grid dependence carries over (clean-only $Y = 5.028\%$, dirty-only $0.087\%$), and on the dirty grid the failure-blind plan increases carbon (pilot $-0.33\%$, reference $-0.443\%$). Fleet savings are smaller than node savings, consistent with the fleet also containing previous-generation and existing hosts whose carbon reuse does not change.
+
+\begin{table}[t]
+\caption{Fleet savings relative to the no-reuse fleet (\%; $Z$ in pp), LP relaxation.}
+\label{tab:fleet_savings}
+\begin{center}
+\small
+\begin{tabular}{llrrrr}
+\toprule
+Scenario & Fleet & $X$ & $Y_{\text{naive}}$ & $Y$ & $Z$ (pp) \\
+\midrule
+Pilot & clean & 8.65 & 7.07 & 7.49 & 0.00 \\
+Pilot & mixed & 0.97 & 0.33 & 0.85 & 0.00 \\
+Pilot & dirty & 0.18 & $-0.33$ & 0.15 & 0.00 \\
+\midrule
+Reference & three-grid fleet & 0.848 & 0.195 & 0.775 & 0.005 \\
+Reference & clean grid only & 5.766 & 4.584 & 5.028 & 0.005 \\
+Reference & mixed grid only & 0.675 & 0.039 & 0.568 & 0.000 \\
+Reference & dirty grid only & 0.103 & $-0.443$ & 0.087 & 0.000 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.82\linewidth]{figures/fig_fleet_carbon_ladder_by_grid.png}
+\end{center}
+\caption{Left: change in 6-year lifecycle carbon of the reference fleet relative to the no-reuse fleet (failures counted), by component, for the failure-blind reuse plan, the reliability-aware reuse plan, and the latter with in-place or geographic cascading; dots mark the net change. Right: reuse savings $X$ (failures ignored), failure-blind and $Y$ (reliability-aware) for single-grid fleets on clean, mixed and dirty grids. GPU throughput, power and CXL slowdown are placeholder values.}
+\label{fig:ladder}
+\end{figure}
+
+\paragraph{Why failure-blind planning loses.} Figure~\ref{fig:ladder} (left; values in Table~\ref{tab:ladder}) exposes the mechanism. The failure-blind plan has the largest embodied reduction (about $-5{,}700$~tCO$_2$e) and less operational carbon because it installs too little capacity for the drains that occur; its replay must lease capacity (13,104 versus 530~tCO$_2$e for the reliability-aware plan), netting only about $-1{,}000$~tCO$_2$e. The reliability-aware plan gives up some embodied saving (about $-4{,}900$~tCO$_2$e) and nets about $-3{,}800$~tCO$_2$e; cascading leaves the net change essentially unchanged.
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.46\linewidth]{figures/fig_reliability_breakeven_reused_parts.png}
+\end{center}
+\caption{Reference-fleet saving of reuse versus a multiplier $m$ on reused-part failure rates beyond the age effect (log scale). $X$ is flat at 0.848\%; the reliability-aware plan degrades gracefully and stops reusing at $m \approx 8$, never doing worse than no reuse; the failure-blind plan crosses zero near $m \approx 2$ and becomes increasingly carbon-negative ($-2.251\%$ at $m=20$).}
+\label{fig:breakeven}
+\end{figure}
+
+\paragraph{Break-even reliability of reused parts.} Figure~\ref{fig:breakeven} (Table~\ref{tab:mult_app}) shows that failures erode reuse savings mainly through planning. The failure-blind saving falls from 0.289\% at $m=0.5$ to 0.015\% at $m=2$, crosses zero at $m\approx 2.1$ and reaches $-2.251\%$ at $m=20$. The reliability-aware planner progressively buys fewer reuse-based hosts, so $Y$ declines gradually (0.863\%, 0.621\%, 0.475\%, 0.209\% at $m = 0.5, 2, 3, 5$) and reaches 0 at $m=8$. $Y$ is only weakly sensitive to the reused-part entry age (0.795\%, 0.775\%, 0.759\% for 3, 5, 7 years) and to LC headroom and utilization (0.775--0.806\%, Table~\ref{tab:headroom_app}).
+
+\subsection{When Does Cascading Pay?}
+\label{sec:cascade}
+At the placeholder old-GPU BATCH throughput of 0.45 (old/new BATCH work per joule 0.701), cascading adds essentially nothing: $Z = Z_g = 0.005$~pp, and E3 and E3g have identical carbon (Table~\ref{tab:ladder}). Figure~\ref{fig:cascade} (values in Table~\ref{tab:cascade_app}) shows that the benefit stays near zero below parity (0.027/0.029~pp at 0.935), begins near parity, and grows roughly linearly above it to $Z = 0.346$~pp and $Z_g = 0.521$~pp at 1.869. Above parity, geographic cascading to the clean-grid BATCH tier adds roughly 50--70\% on top of in-place cascading (0.109 versus 0.184~pp at 1.168; 0.189 versus 0.321~pp at 1.402). The reason is that cascading only avoids the embodied carbon of new hosts, which is small relative to a GPU host's operational carbon. Whether real previous-generation GPUs lie above or below parity depends on the pending measurements.
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.46\linewidth]{figures/fig_cascade_breakeven_energy_efficiency.png}
+\end{center}
+\caption{Additional saving (pp) from cascading previous-generation GPU hosts to the batch tier versus their batch work per joule relative to current-generation hosts (dotted line: energy parity). $Z$: in-place; $Z_g$: geographic cascading to the clean-grid region. Cascading pays only near energy parity; geographic cascading adds further savings once cascading pays.}
+\label{fig:cascade}
+\end{figure}
+
+\subsection{Guaranteeing LC SLOs Under Correlated Failures}
+\label{sec:slo}
+\paragraph{Expected-value headroom is not enough.} Replaying the expected-value plans (headroom multiplier 3) over the 72 region-quarters (Table~\ref{tab:ev_risk}, Appendix~\ref{app:results}) gives low mean shortfall risk (0.0020--0.0257), but the worst region-quarter of the reuse plan has $P(\text{short}) = 0.1447$ with independent and 0.1546--0.1548 with correlated failures. Correlated failures raise the number of region-quarters above 1\% from 5 to 48 (no reuse) and from 4 to 44 (reuse).
+
+\paragraph{Chance-constrained plans.} Figure~\ref{fig:slo} and Tables~\ref{tab:cc} and~\ref{tab:cc_app} (Appendix~\ref{app:results}) report the results for $m=1$ and $m=3$. The loop converged in 4 to 15 iterations, most for the strictest, most correlated setting. At the 0.1\% target, $k=0.5$ needs 1,274.4 (reuse) and 1,320.3 (no reuse) node-equivalent-quarters of reserve versus 512.1 and 516.3 for independent failures (2.49$\times$ and 2.56$\times$; Table~\ref{tab:reserve_app}). In every setting at $m=1$ the reuse plan pays a slightly lower SLO carbon price than the no-reuse plan (e.g., 0.785\% versus 0.823\% at $k=0.5$, 0.1\%), so the reuse saving under a guaranteed SLO \emph{exceeds} its expected-value counterpart, rising from 0.775\% to up to 0.812\%; with 3$\times$ worse reused parts it rises from 0.480\% to up to 0.499\%. Figure~\ref{fig:slo} shows the saving nearly flat across correlation levels, rising slightly toward strong correlation, while the SLO carbon price roughly doubles to triples from independent to strongly correlated failures and is higher at the 0.1\% target. (The expected-value baseline here uses headroom multiplier 1, versus 3 in the multiplier sweep, which explains $Y=0.480\%$ here versus 0.475\% at $m=3$ there.)
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=0.78\linewidth]{figures/fig_chance_constrained_slo.png}
+\end{center}
+\caption{Left: reuse saving under a guaranteed LC SLO (per-region-quarter shortfall probability at most 1\% or 0.1\%) for independent, correlated ($k=2$) and strongly correlated ($k=0.5$) failures, with reused parts failing as their age predicts ($m=1$) or three times more ($m=3$). Right: carbon price of the SLO for the reuse plan relative to its expected-value plan.}
+\label{fig:slo}
+\end{figure}
+
+\paragraph{Why reuse gets cheaper under a guarantee.} At 0.1\%, $k=0.5$, $m=1$ (Table~\ref{tab:composition}), the reserve's added carbon is mostly idle operational energy (83\% without and 85\% with reuse; embodied 14\% and 12\%). The reuse plan places 21.7\% of its added capacity on reuse-based hosts and its reserve carries 214~tCO$_2$e (5.3\%) less added carbon (111 less embodied, 115 less operational); across three seeds it needs 2.6--3.6\% less added capacity (Table~\ref{tab:seeds_app}). This is consistent with reserve being idle by design and reuse-based hosts carrying the least embodied carbon, although the cause of the smaller reserve requirement was not isolated. Validated worst-case probabilities (0.96--1.07\% at the 1\% target, 0.10--0.13\% at 0.1\%) exceed the targets only within sampling error (about 0.014~pp at 0.1\% with 50,000 samples) and the 0.05\% stopping tolerance.
+
+\subsection{Refurbishment and Over-Crediting Pitfalls}
+\label{sec:refurb}
+With baseline parameters the planner never refurbishes (E2b, E4: 0.775\%; E0r: 0.000\%; E5 with all levers: 0.780\%): new DIMMs' embodied carbon and the 24~h downtime outweigh the failures avoided. Refurbishment is chosen only for reuse-based hosts whose recycled DIMMs fail heavily (new-DIMM AFR $\ge$ 3\% and $m\ge 3$), replacing memory only, for at most 0.015~pp extra saving (Table~\ref{tab:refurb}). While building it, three over-crediting mechanisms appeared and were removed by exact accounting (Appendix~\ref{app:rel}); one of them, counting harvested parts every quarter instead of once, apparently doubled the clean-grid reuse saving (5.0\% to 10.5\%).
+
+\subsection{Robustness and Carbon-Cost Trade-off}
+\label{sec:robustness}
+\paragraph{Sensitivity and accounting.} In the tornado analysis (Figure~\ref{fig:tornado}, Appendix~\ref{app:figures}) the CXL LC multiplier dominates: over 0.85--1.0 the mixed-grid node saving moves from $-10.72\%$ to 5.88\%, a 16.61~pp swing, about three times the next parameter (reuse-host peak-power delta, 5.65~pp), so the sign of the mixed-grid saving hinges on an unmeasured placeholder. Across six embodied-carbon conventions (Table~\ref{tab:accounting}), $Y$ ranges from 0.000\% (reused parts charged as new) to 1.423\% (cut-off, upfront), whereas $Y_{\text{naive}}$ turns negative when reused parts are charged as new. Fuzzy $\alpha$-cuts give $Y\in[0.000, 2.638]\%$ at $\alpha=0$, never negative.
+
+\paragraph{Carbon-cost trade-off.} On the $\varepsilon$-constraint front (Figure~\ref{fig:pareto}, Appendix~\ref{app:figures}), the cost-minimal plan (USD 1.437 billion) emits 2.6\% more carbon than the carbon-minimal plan (499.5 versus 486.8~ktCO$_2$e) while costing 16\% less; most of the carbon gain is available within about 5\% extra cost.
+%%%%%%%%% EXPERIMENTS %%%%%%%%%
+
+\section{Conclusion}
+\label{sec:conclusion}
+%%%%%%%%% CONCLUSION %%%%%%%%%
+We presented a reliability-aware, multi-period lifecycle-carbon LP for LLM-inference fleets with a chance-constrained LC headroom loop. Within this model: (1) reuse savings are strongly grid-dependent (16.04--18.61\% per unit of work on a clean grid, 0.93\% and $-2.15\%$ for LC on mixed and dirty grids); (2) failures erode reuse savings mainly through planning (0.775\% versus 0.195\% retained of a 0.848\% failure-free fleet saving, with the failure-blind plan carbon-negative beyond $m\approx 2.1$); (3) cascading pays only near old/new batch energy parity; and (4) reuse remains beneficial, slightly more so, under a guaranteed SLO (0.775\% to 0.812\%). Reuse-based hosts thus suit reserve and lightly loaded capacity on clean grids, planned with reliability priced in.
+
+\paragraph{Limitations and future work.} All results are model results. GPU throughput, power and the CXL slowdown are placeholders, so the sign of the mixed-grid saving and the cascading conclusions depend on measurements we have prepared but not executed (Appendix~\ref{app:measure}); other parameters except the GPU AFR are engineering assumptions, and we make no claims about training fleets.
+
+\section*{Reproducibility Statement}
+The model is a cohort-by-age LP (Section~\ref{sec:method}) solved with the HiGHS solver through a Python modeling layer; all parameters, scenario definitions and sweep ranges are listed in Section~\ref{sec:setup} and Appendices~\ref{app:params}--\ref{app:results}. A test suite of 48 tests, including a hand-calculated single-SKU case, conservation of embodied carbon at every refurbishment age and reused-part pool balance, accompanies the model. Chance-constrained plans are validated by independent Monte Carlo replay with 50,000 samples per region-quarter, and the seed study uses seeds 0, 101 and 202.
+%%%%%%%%% CONCLUSION %%%%%%%%%
+
+%%%%%%%%% REFERENCES %%%%%%%%%
+\bibliography{references}
+\bibliographystyle{iclr2025_conference}
+%%%%%%%%% REFERENCES %%%%%%%%%
+
+%%%%%%%%% Appendix %%%%%%%%%
+\clearpage
+\appendix
+
+\section{Full Parameter Tables and Provenance}
+\label{app:params}
+Table~\ref{tab:params} lists SKU and component parameters. Table~\ref{tab:costs} lists cost and logistics parameters used for the carbon-cost front; electricity is priced at the meter times PUE. Sensitivity ranges for the ten most influential parameters are given in Table~\ref{tab:tornado_app}.
+
+\begin{table}[h]
+\caption{Cost and logistics parameters (engineering assumptions).}
+\label{tab:costs}
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lr}
+\toprule
+Parameter & Value \\
+\midrule
+Capital cost \texttt{new\_gpu} / \texttt{green\_gpu} & USD 300,000 / 280,000 \\
+\texttt{old\_gpu} refurbishment/move & USD 15,000 \\
+Electricity & USD 0.08/kWh (times PUE) \\
+Leased capacity & USD 60,000 per node-equivalent-quarter; 1.3$\times$ new-host carbon per unit work \\
+Cascading & USD 3,000 per node, plus USD 5,000 and 300~kgCO$_2$e shipping between regions \\
+Repair cost per failure & USD 2,500 (current GPU), 4,000 (prev.\ GPU), 800 (CPU), 300 (DIMM), 400 (SSD) \\
+Logistics carbon per repair & 5 (GPU), 2 (CPU), 1 (DIMM, SSD) kgCO$_2$e \\
+Refurbishment & USD 15,000 (memory) or 25,000 (memory + storage), 24~h downtime \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+\end{table}
+
+\paragraph{Scenarios in full.} \emph{Node-level study:} one 8-GPU node per SKU over a 6-year life at 60\% utilization on three grids with base-year carbon intensity 40 (clean, declining 2\%/yr, floor 10), 250 (mixed, 5\%/yr, floor 20) and 650~gCO$_2$e/kWh (dirty, 3\%/yr, floor 50), PUE 1.2. \emph{Pilot fleet:} 3 years, one region, 24 previous- and 12 current-generation hosts, linearly growing LC and BATCH demand. \emph{Reference fleet:} 24 quarters, three regions (clean, mixed, dirty); LC demand starts at 180, 450 and 330 node-equivalents and grows 25\%, 25\% and 30\% per year; global BATCH demand starts at 150 and grows 35\% per year; the initial fleet holds 150/500/400 previous-generation hosts (parts 4 years old) and 100/350/250 current-generation hosts (ages 6/8/4 quarters), about 1,750 hosts in total. Reused-part pools start at 3,200 DIMMs and 800 SSDs and receive 2,400 DIMMs and 600 SSDs per quarter externally, with screening yield $\gamma = 0.9$ on locally harvested parts. One node-equivalent is one fully busy current-generation host.
+
+\paragraph{Further implementation details.} Leased capacity carries 1.3$\times$ the carbon of a new host per unit of work, and shipping a cascaded node between regions costs 300~kgCO$_2$e. The LP relaxation gave identical $X$, $Y$ and $Z$ at 1$\times$ and 50$\times$ fleet scale, so all fleet results use it. A test suite of 48 tests, including a hand-calculated single-SKU case and refurbishment conservation tests, passes. Metrics are the lifecycle-carbon components (embodied, operational, spares plus logistics, leased, shipping), $X$, $Y_{\text{naive}}$, $Y$, $Z$, $Z_g$, the per-region-quarter $P(\text{short})$ and the SLO carbon price.
+
+\paragraph{GPU AFR.} The interruption report covers a 54-day run on about 16,384 GPUs with $148 + 72 = 220$ GPU-related interruptions, i.e., $220 / (16{,}384 \times 54/365) \approx 0.0908$ events per GPU-year. Treating events as a Poisson process gives the annual failure probability $1 - e^{-0.0908} \approx 0.0868$, which is used as the AFR with Weibull shape 1.0 (constant hazard). This is consistent with the 4.36 GPU failures per 8-GPU node over 6 years in Section~\ref{sec:node} ($8 \times 0.0908 \times 6 \approx 4.36$).
+
+\paragraph{Ages.} Node ages are counted in quarters within the current life, whereas the hazard (Eq.~\ref{eq:weibull}) is defined over part age in years. A part in a node of age $a$ quarters has age $a_0 + 0.25\,a$ years, with $a_0 = 0$ for new parts, 5 years for the reused DIMMs and SSDs of \texttt{green\_gpu}, and 4 years for all \texttt{old\_gpu} parts.
+
+\begin{table}[h]
+\caption{SKU and component parameters. Power, throughput and CXL multipliers are placeholders; the GPU AFR is derived from published data; all other values are engineering assumptions.}
+\label{tab:params}
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lccc}
+\toprule
+SKU parameter & \texttt{new\_gpu} & \texttt{green\_gpu} & \texttt{old\_gpu} \\
+\midrule
+Components & 8 GPU, 2 CPU, 32 DIMM, 8 SSD & new GPUs, 2 eff.\ CPU, 32+8 reused & prev.-gen., whole host \\
+Idle / peak power (W) & 2,500 / 10,200 & $-50$ / $-100$ vs.\ \texttt{new\_gpu} & 1,800 / 6,500 \\
+Relative throughput (LC / BATCH) & 1 / 1 & CXL mult.\ 0.95 / 0.98 & 0.30 / 0.45 \\
+Platform embodied (kgCO$_2$e) & 1,500 & 1,600 & 1,500 \\
+Part age at entry (years) & 0 & 5 (DIMMs, SSDs) & 4 (all parts) \\
+Design life / maximum age & 6 yr / 32 q & 6 yr / 32 q & 6 yr / 16 q (2nd life) \\
+\midrule
+Component parameter & Embodied (kgCO$_2$e) & Weibull shape / AFR & Drain (h) / logistics (kgCO$_2$e) \\
+\midrule
+GPU (current) & 150 & 1.0 / 0.0868 & 72 / 5 \\
+GPU (previous) & 120 & 1.3 / 0.0868 & 72 / 5 \\
+CPU & 30 & 1.0 / 0.002 & 24 / 2 \\
+DIMM & 20 & 1.6 / 0.01 & 8 / 1 \\
+SSD & 614 & 1.3 / 0.01 & 2 / 1 \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+\end{table}
+
+\section{Reliability Precomputation and Refurbishment Accounting}
+\label{app:rel}
+\paragraph{Expected failures.} For each class $c$ and entry age $a_0$, the delayed renewal function $M_{a_0}$ (Section~\ref{sec:method_rel}) is evaluated numerically on a quarterly grid; expected failures in node-quarter $a$ are $\lambda_{c,a} = M_{a_0}(0.25(a+1)) - M_{a_0}(0.25a)$, and the proportional-hazards multiplier $m$ is applied to the hazard of reused parts before integration. Drained hours are $d_{sa} = \sum_c N_{sc}\lambda_{c,a}\delta_c$ and the availability loss is $\ell_{sa} = d_{sa}/H$. As a consistency check, the node-level failure counts and drain times of Section~\ref{sec:node} reproduce the reported drained hours: $4.36\cdot 72 + 5.43\cdot 8 + 0.81\cdot 2 + 0.02\cdot 24 \approx 359$~h for the new host and $4.36\cdot 72 + 9.67\cdot 8 + 1.13\cdot 2 + 0.02\cdot 24 \approx 394$~h for the reuse-based host.
+
+\paragraph{Reused-part pools.} For part class $c\in\{\text{DIMM}, \text{SSD}\}$ the pool evolves as
+\begin{equation}
+P^c_{t+1} = P^c_t + S^c_t + \gamma\, V^c_t - N_{\texttt{green},c}\sum_{\tau, r} x^{\text{buy}}_{\texttt{green},\tau r t}, \qquad P^c_t \ge 0,
+\label{eq:pool}
+\end{equation}
+where $S^c_t$ is pre-screened external supply, $V^c_t$ the number of first-life parts in hosts retired from the modelled fleet in quarter $t$ (including parts discarded by refurbishment, counted once in that quarter), and $\gamma$ the screening yield.
+
+\paragraph{Refurbishment accounting.} (i) Discarded parts are charged their unamortized share as stranded carbon; (ii) carried parts continue on the parent's original amortization schedule; (iii) new parts are amortized over the second life; and (iv) discarded first-life parts feed the reused-part pools.
+
+\paragraph{Refurbishment paths.} Memory-only refurbishment (replace 32 DIMMs) is available for current-generation, reuse-based and previous-generation hosts; memory-plus-storage refurbishment (32 DIMMs and 8 SSDs) for current-generation hosts. Refurbishment windows are 14--18 quarters (2--6 for previous-generation hosts), second lives last up to 20 quarters (12), and refurbishment costs USD 15,000 (memory) or 25,000 (memory plus storage) with 24~h of downtime; all are assumptions. One derived SKU is created per parent SKU, path and refurbishment age, so that every carried part has an exact age and amortization schedule. Tests verify that, at every refurbishment age, the embodied carbon charged over the first life, the stranded share of discarded parts, the continuing schedule of carried parts and the amortization of new parts sum to the total embodied carbon, and that the reused-part pool balance (Eq.~\ref{eq:pool}) counts each discarded part exactly once. Memory-plus-storage refurbishment is never chosen, because each new SSD carries 614~kgCO$_2$e.
+
+\paragraph{Over-crediting mechanisms in detail.} While building refurbishment into the model, three over-crediting mechanisms appeared and were removed: (1) re-spreading carried parts' remaining amortization over the longer second life pushed embodied carbon past the horizon's terminal credit, an apparent fleet gain of 0.366~pp of which about 80\% was artefact; (2) a harvest term counting parts discarded during refurbishment in every quarter instead of once inflated reused-DIMM supply about 24-fold and apparently doubled the clean-grid saving (5.0\% to 10.5\%); (3) modelling carried parts at the midpoint of the refurbishment window let the optimizer refurbish at the window edge that shifted charges past the horizon. The exact accounting described above removes all three, and tests verify embodied-carbon conservation at every refurbishment age and the pool balance.
+
+\section{Monte Carlo Validation and Additional Results}
+\label{app:results}
+
+\begin{algorithm}[h]
+\caption{Chance-constrained LC headroom with Monte Carlo in the loop}
+\label{alg:cc}
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} target $\varepsilon$, failure model (Poisson or negative binomial with dispersion $k$), tolerance $0.05\%$ of demand
+\STATE $R_{rt} \leftarrow 0$ for all regions $r$ and quarters $t$
+\REPEAT
+\STATE Solve the LP (Eqs.~\ref{eq:flow}--\ref{eq:reserve}) with the current reserves $R_{rt}$
+\FOR{each region-quarter $(r,t)$}
+\STATE Sample drained LC nodes from the M/G/$\infty$ occupancy distribution and compute instantaneous LC capacity
+\STATE $g_{rt} \leftarrow D_{rt} - q_{\varepsilon}(\text{capacity}_{rt})$, where $q_\varepsilon$ is the $\varepsilon$-quantile
+\STATE \textbf{if} $g_{rt} > 0$ \textbf{then} $R_{rt} \leftarrow R_{rt} + g_{rt}$
+\ENDFOR
+\UNTIL{$g_{rt} \le 0.0005\, D_{rt}$ for all $(r,t)$}
+\STATE Validate the final plan by an independent replay (50,000 samples) of the planned fleet
+\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[h]
+\caption{Monte Carlo replay of expected-value plans (headroom multiplier 3): LC capacity shortfall risk over 72 region-quarters.}
+\label{tab:ev_risk}
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrr}
+\toprule
+Plan & Failure correlation & Worst $P(\text{short})$ & Mean $P(\text{short})$ & Region-quarters $>1\%$ \\
+\midrule
+no reuse & independent & 0.0272 & 0.0020 & 5 \\
+no reuse & neg.\ binomial $k=2$ & 0.0508 & 0.0065 & 17 \\
+no reuse & neg.\ binomial $k=0.5$ & 0.0880 & 0.0257 & 48 \\
+reliability-aware reuse & independent & 0.1447 & 0.0040 & 4 \\
+reliability-aware reuse & neg.\ binomial $k=2$ & 0.1546 & 0.0077 & 14 \\
+reliability-aware reuse & neg.\ binomial $k=0.5$ & 0.1548 & 0.0242 & 44 \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+\end{table}
+
+\begin{table}[h]
+\caption{Composition of the SLO reserve (target 0.001, $k=0.5$, $m=1$): chance-constrained minus expected-value plan. Capacity in node-equivalent-quarters; carbon in tCO$_2$e. Reuse-based hosts hold 30\% of the reuse plan's fleet node-quarters but 21.7\% of its added reserve capacity; previous-generation hosts hold 2.4\%.}
+\label{tab:composition}
+\begin{center}
+\small
+\begin{tabular}{lrrrrrrr}
+\toprule
+ & \multicolumn{3}{c}{Added LC capacity on} & \multicolumn{4}{c}{Added carbon} \\
+Plan & new & reuse-based & prev.-gen. & Total & Operational & Embodied & Spares + log. \\
+\midrule
+no reuse & 1,320.3 & 0 & 0 & 4,020 & 3,356 & 575 & 89 \\
+reuse & 965.6 & 276.4 & 30.6 & 3,806 & 3,241 & 465 & 97 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[h]
+\caption{Refurbishment sweep on the reference fleet (all runs also allow in-place cascading).}
+\label{tab:refurb}
+\begin{center}
+\small
+\begin{tabular}{rrrrrr}
+\toprule
+New-DIMM AFR & $m$ & $Y$ w/o refurb.\ (\%) & Saving with refurb.\ (\%) & Extra (pp) & Refurbished hosts \\
+\midrule
+0.01 & 1 & 0.779 & 0.779 & 0.000 & 0 \\
+0.01 & 3 & 0.474 & 0.474 & 0.000 & 0 \\
+0.01 & 5 & 0.208 & 0.208 & 0.000 & 0 \\
+0.01 & 8 & 0.000 & 0.000 & 0.000 & 0 \\
+0.03 & 1 & 0.744 & 0.744 & 0.000 & 0 \\
+0.03 & 3 & 0.367 & 0.368 & 0.001 & 306 \\
+0.03 & 5 & 0.093 & 0.097 & 0.004 & 548 \\
+0.03 & 8 & 0.000 & $-0.000$ & 0.000 & 0 \\
+0.05 & 1 & 0.719 & 0.719 & 0.000 & 0 \\
+0.05 & 3 & 0.296 & 0.307 & 0.011 & 689 \\
+0.05 & 5 & 0.045 & 0.060 & 0.015 & 480 \\
+0.05 & 8 & 0.000 & $-0.000$ & 0.000 & 0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[h]
+\caption{Left: reference-fleet savings (\%) under embodied-carbon accounting conventions for reused parts. Right: fuzzy $\alpha$-cuts of $Y$ (failure rates $\times[0.5,1,3]$, embodied carbon $\times[0.5,1,2]$, CXL multiplier $[0.85,0.95,1.0]$); the upper bound is driven mostly by embodied-carbon uncertainty.}
+\label{tab:accounting}
+\begin{center}
+\small
+\begin{tabular}{llrrr}
+\toprule
+Reused-part charge & Amortization & $X$ & $Y_{\text{naive}}$ & $Y$ \\
+\midrule
+cut-off (zero) & amortized & 0.848 & 0.195 & 0.775 \\
+cut-off (zero) & upfront & 1.544 & 0.918 & 1.423 \\
+residual share & amortized & 0.667 & 0.029 & 0.601 \\
+residual share & upfront & 1.181 & 0.562 & 1.067 \\
+charged as new & amortized & 0.000 & $-0.557$ & 0.000 \\
+charged as new & upfront & 0.000 & $-0.506$ & 0.000 \\
+\bottomrule
+\end{tabular}
+\quad
+\begin{tabular}{rrr}
+\toprule
+$\alpha$ & $Y$ low & $Y$ high \\
+\midrule
+0 & 0.000 & 2.638 \\
+0.5 & 0.266 & 1.489 \\
+1 & 0.775 & 0.775 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[h]
+\caption{Node-level 6-year lifecycle carbon (kgCO$_2$e per node), mixed grid, LC tier, failures counted.}
+\label{tab:node}
+\begin{center}
+\small
+\begin{tabular}{lrrrrrr}
+\toprule
+SKU & Embodied & Operational & Spares & Logistics & Total & Failures per node \\
+\midrule
+\texttt{new\_gpu} & 8,312 & 96,662 & 1,263 & 28 & 106,265 & 10.62 \\
+\texttt{green\_gpu} & 2,860 & 95,511 & 1,542 & 33 & 99,945 & 15.18 \\
+\texttt{old\_gpu} & 0 & 62,344 & 1,844 & 52 & 64,240 & 18.42 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[h]
+\caption{Node-level saving of \texttt{green\_gpu} over \texttt{new\_gpu} per unit of work (\%), cut-off accounting; erosion is the difference in pp.}
+\label{tab:node_saving}
+\begin{center}
+\small
+\begin{tabular}{llrrr}
+\toprule
+Grid & Tier & Failures ignored & Failures counted & Erosion (pp) \\
+\midrule
+clean & LC & 18.23 & 16.04 & 2.19 \\
+clean & BATCH & 20.73 & 18.61 & 2.12 \\
+mixed & LC & 1.26 & 0.93 & 0.33 \\
+mixed & BATCH & 4.28 & 3.96 & 0.32 \\
+dirty & LC & $-2.04$ & $-2.15$ & 0.11 \\
+dirty & BATCH & 1.08 & 0.98 & 0.10 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[h]
+\caption{Reference-fleet lifecycle carbon by run (tCO$_2$e over 6 years).}
+\label{tab:ladder}
+\begin{center}
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+Run & Total & Embodied & Operational & Spares + log. & Leased \\
+\midrule
+E0 no reuse, failures ignored & 484,413 & 24,134 & 460,279 & 0 & 0 \\
+E0 no reuse, failures counted & 490,607 & 24,606 & 462,068 & 3,933 & 0 \\
+E1 reuse, failures ignored & 480,305 & 18,871 & 460,937 & 0 & 497 \\
+E2a failure-blind plan, replayed & 489,652 & 18,871 & 453,457 & 4,220 & 13,104 \\
+E2b reliability-aware reuse & 486,804 & 19,716 & 462,295 & 4,264 & 530 \\
+E3 E2b + in-place cascading & 486,780 & 19,715 & 462,574 & 4,301 & 191 \\
+E3g E2b + geographic cascading & 486,780 & 19,715 & 462,574 & 4,301 & 191 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[h]
+\caption{Reused-part failure-rate multiplier sweep, reference fleet (\%).}
+\label{tab:mult_app}
+\begin{center}
+\small
+\begin{tabular}{rrrrrrrrr}
+\toprule
+$m$ & 0.5 & 1 & 2 & 3 & 5 & 8 & 12 & 20 \\
+\midrule
+$X$ & 0.848 & 0.848 & 0.848 & 0.848 & 0.848 & 0.848 & 0.848 & 0.848 \\
+$Y_{\text{naive}}$ & 0.289 & 0.195 & 0.015 & $-0.154$ & $-0.467$ & $-0.888$ & $-1.386$ & $-2.251$ \\
+$Y$ & 0.863 & 0.775 & 0.621 & 0.475 & 0.209 & 0.000 & 0.000 & 0.000 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[h]
+\caption{Cascade sweep: old-GPU BATCH throughput, reference fleet.}
+\label{tab:cascade_app}
+\begin{center}
+\small
+\begin{tabular}{rrrr}
+\toprule
+Old BATCH throughput & Old/new BATCH work per joule & $Z$ (pp) & $Z_g$ (pp) \\
+\midrule
+0.30 & 0.467 & 0.000 & 0.000 \\
+0.45 & 0.701 & 0.005 & 0.005 \\
+0.60 & 0.935 & 0.027 & 0.029 \\
+0.75 & 1.168 & 0.109 & 0.184 \\
+0.90 & 1.402 & 0.189 & 0.321 \\
+1.05 & 1.635 & 0.268 & 0.432 \\
+1.20 & 1.869 & 0.346 & 0.521 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[h]
+\caption{Headroom and utilization sweep (reliability-aware reuse plan).}
+\label{tab:headroom_app}
+\begin{center}
+\small
+\begin{tabular}{rrrr}
+\toprule
+LC headroom multiplier & Utilization cap & Reuse-host share of node-quarters & $Y$ (\%) \\
+\midrule
+1 & 0.5 & 0.207 & 0.806 \\
+1 & 0.8 & 0.303 & 0.775 \\
+3 & 0.5 & 0.205 & 0.801 \\
+3 & 0.8 & 0.292 & 0.775 \\
+10 & 0.5 & 0.197 & 0.783 \\
+10 & 0.8 & 0.280 & 0.777 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[h]
+\caption{Total LC reserve of chance-constrained plans (node-equivalent-quarters, summed over region-quarters).}
+\label{tab:reserve_app}
+\begin{center}
+\small
+\begin{tabular}{llrrr}
+\toprule
+$m$ & Correlation & Target $P(\text{short})$ & Reserve, reuse plan & Reserve, no-reuse plan \\
+\midrule
+1 & independent & 0.01 & 370.6 & 372.9 \\
+1 & independent & 0.001 & 512.1 & 516.3 \\
+1 & $k=2$ & 0.01 & 487.7 & 491.2 \\
+1 & $k=2$ & 0.001 & 713.3 & 722.7 \\
+1 & $k=0.5$ & 0.01 & 779.5 & 795.6 \\
+1 & $k=0.5$ & 0.001 & 1,274.4 & 1,320.3 \\
+3 & independent & 0.01 & 380.2 & 372.9 \\
+3 & independent & 0.001 & 527.7 & 516.3 \\
+3 & $k=2$ & 0.01 & 498.1 & 491.2 \\
+3 & $k=2$ & 0.001 & 723.7 & 722.7 \\
+3 & $k=0.5$ & 0.01 & 798.0 & 795.6 \\
+3 & $k=0.5$ & 0.001 & 1,301.0 & 1,320.3 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[h]
+\caption{Chance-constrained SLO headroom at $m=1$ (expected-value baseline with LC headroom multiplier 1; independent replay with 50,000 samples). Price: SLO carbon price (\%). $P_{\max}$: validated worst region-quarter $P(\text{short})$.}
+\label{tab:cc}
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrrrrrr}
+\toprule
+Corr. & Target & $Y$ SLO & $Y$ EV & Price, reuse & Price, no reuse & $P_{\max}$ reuse & $P_{\max}$ no reuse & Iter. \\
+\midrule
+indep. & 0.01 & 0.786 & 0.775 & 0.217 & 0.229 & 0.0106 & 0.0105 & 4 \\
+indep. & 0.001 & 0.788 & 0.775 & 0.301 & 0.314 & 0.0011 & 0.0013 & 4 \\
+$k=2$ & 0.01 & 0.786 & 0.775 & 0.292 & 0.303 & 0.0096 & 0.0102 & 5 \\
+$k=2$ & 0.001 & 0.792 & 0.775 & 0.427 & 0.445 & 0.0010 & 0.0011 & 8 \\
+$k=0.5$ & 0.01 & 0.795 & 0.775 & 0.477 & 0.497 & 0.0105 & 0.0100 & 7 \\
+$k=0.5$ & 0.001 & 0.812 & 0.775 & 0.785 & 0.823 & 0.0012 & 0.0011 & 15 \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+\end{table}
+
+\begin{table}[h]
+\caption{Chance-constrained SLO headroom at reused-part multiplier $m=3$ (columns as in Table~\ref{tab:cc}).}
+\label{tab:cc_app}
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrrrrrr}
+\toprule
+Correlation & Target & $Y$ SLO (\%) & $Y$ EV (\%) & Price, reuse & Price, no reuse & $P_{\max}$ reuse & $P_{\max}$ no reuse & Iter. \\
+\midrule
+independent & 0.01 & 0.485 & 0.480 & 0.223 & 0.229 & 0.0100 & 0.0105 & 4 \\
+independent & 0.001 & 0.484 & 0.480 & 0.310 & 0.314 & 0.0012 & 0.0013 & 4 \\
+$k=2$ & 0.01 & 0.484 & 0.480 & 0.299 & 0.303 & 0.0107 & 0.0102 & 6 \\
+$k=2$ & 0.001 & 0.490 & 0.480 & 0.435 & 0.445 & 0.0010 & 0.0011 & 6 \\
+$k=0.5$ & 0.01 & 0.488 & 0.480 & 0.489 & 0.497 & 0.0100 & 0.0100 & 7 \\
+$k=0.5$ & 0.001 & 0.499 & 0.480 & 0.803 & 0.823 & 0.0011 & 0.0011 & 15 \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+\end{table}
+
+With 3$\times$ worse reused parts, the reuse plan needs slightly \emph{more} reserve than the no-reuse plan in every setting except $k=0.5$ at the 0.1\% target (e.g., 527.7 versus 516.3 at 0.1\%, independent; 1,301.0 versus 1,320.3 at 0.1\%, $k=0.5$), yet still pays a slightly lower SLO carbon price in every setting, so $Y$ under the SLO (0.484--0.499\%) remains above the expected-value $Y$ of 0.480\%.
+
+\begin{table}[h]
+\caption{SLO reserve decomposition across Monte Carlo seeds (target 0.001, $k=0.5$, $m=1$). Carbon in tCO$_2$e; capacity in node-equivalent-quarters.}
+\label{tab:seeds_app}
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{rrrrrrrrrr}
+\toprule
+Seed & $Y$ SLO (\%) & Added, no reuse & Added, reuse & Gap & Emb.\ gap & Op.\ gap & Cap.\ no reuse & Cap.\ reuse & Reuse-based share \\
+\midrule
+0 & 0.812 & 4,020 & 3,806 & 214 & 111 & 115 & 1,320.3 & 1,272.6 & 21.7\% \\
+101 & 0.814 & 4,047 & 3,823 & 224 & 109 & 130 & 1,326.0 & 1,282.2 & 21.5\% \\
+202 & 0.800 & 3,994 & 3,838 & 156 & 104 & 63 & 1,317.0 & 1,283.0 & 21.3\% \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+\end{table}
+
+\begin{table}[h]
+\caption{Node-level sensitivity: ten largest swings (mixed grid, LC, base 0.93\%).}
+\label{tab:tornado_app}
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrr}
+\toprule
+Parameter & Low & High & Saving at low (\%) & Saving at high (\%) & Swing (pp) \\
+\midrule
+CXL throughput multiplier (LC) & 0.85 & 1 & $-10.72$ & 5.88 & 16.61 \\
+reuse host peak-power delta (W) & $-400$ & 300 & 3.35 & $-2.30$ & 5.65 \\
+SSD embodied carbon (kgCO$_2$e) & 150 & 900 & $-2.49$ & 2.91 & 5.41 \\
+mixed-grid carbon intensity (g/kWh) & 150 & 350 & 3.80 & $-0.41$ & 4.20 \\
+reuse host idle-power delta (W) & $-300$ & 200 & 2.28 & $-0.41$ & 2.69 \\
+reuse host platform embodied (kgCO$_2$e) & 900 & 3200 & 1.63 & $-0.65$ & 2.28 \\
+new host platform embodied (kgCO$_2$e) & 800 & 3000 & 0.27 & 2.31 & 2.04 \\
+SSD Weibull shape & 0.9 & 2 & 1.17 & $-0.72$ & 1.89 \\
+new host peak power (W) & 8000 & 11000 & 2.19 & 0.57 & 1.61 \\
+PUE & 1.08 & 1.5 & 1.43 & 0.00 & 1.43 \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+\end{table}
+
+\begin{table}[h]
+\caption{Carbon-cost $\varepsilon$-constraint front, reference fleet.}
+\label{tab:pareto_app}
+\begin{center}
+\small
+\begin{tabular}{lrr}
+\toprule
+Point & 6-yr carbon (ktCO$_2$e) & 6-yr cost (billion USD) \\
+\midrule
+cost-minimal & 499.5 & 1.437 \\
+2 & 491.0 & 1.477 \\
+3 & 489.1 & 1.518 \\
+4 & 488.0 & 1.559 \\
+5 & 487.4 & 1.599 \\
+6 & 487.0 & 1.640 \\
+7 & 486.8 & 1.680 \\
+carbon-minimal & 486.8 & 1.719 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+\paragraph{Carbon-cost front in detail.} The front is strongly convex: the second point (491.0~ktCO$_2$e at USD 1.477 billion) already removes 8.5 of the 12.7~ktCO$_2$e gap between the cost-minimal and carbon-minimal plans, whereas the last 2.3~ktCO$_2$e (from 489.1~ktCO$_2$e at USD 1.518 billion to 486.8~ktCO$_2$e at USD 1.719 billion) cost a further USD 0.2 billion.
+
+\paragraph{LP relaxation and scale.} On the 36-node pilot, the mixed-integer formulation hit a 300~s time limit without proving optimality, whereas the LP relaxation solved in under 1~s and matched the integer $X$ and $Y$ within about 0.05~pp; $X$, $Y$ and $Z$ were identical at 1$\times$ and 50$\times$ fleet scale. Integrality matters at the margin: on the dirty grid the integer pilot filled its last, lightly used node with a reuse-based host, because at low utilization embodied carbon dominates.
+
+\paragraph{Cohort-rounding pitfall.} An earlier Monte Carlo replay rounded each age cohort to whole nodes, which dropped planned capacity and overstated violation probabilities by up to 5$\times$. Replaying the planned (fractional) fleet resolved the discrepancy; all reported validation results use this corrected replay.
+
+\section{Additional Figures}
+\label{app:figures}
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.56\linewidth]{figures/fig_node_sensitivity_tornado.png}
+\end{center}
+\caption{One-at-a-time sensitivity of the node-level reuse saving (mixed grid, LC tier). Bars start at the base saving (0.93\%, solid line) and show the saving with the parameter at the low (blue) and high (orange) end; the dashed line marks zero. The CXL throughput multiplier has by far the largest swing and alone determines the sign of the saving.}
+\label{fig:tornado}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.42\linewidth]{figures/fig_carbon_cost_pareto.png}
+\end{center}
+\caption{Carbon-cost $\varepsilon$-constraint front of the reference fleet over six years (leftmost: cost-minimal; rightmost: carbon-minimal plan). The vertical axis is labelled MtCO$_2$e in the plot, but its values (486.8--499.5) are thousands of tCO$_2$e (ktCO$_2$e), as in Table~\ref{tab:pareto_app}.}
+\label{fig:pareto}
+\end{figure}
+
+\section{Prepared Measurement Methodology}
+\label{app:measure}
+The following measurements have been prepared but \textbf{not executed}; no measured results are reported in this paper. (i) A \emph{serving benchmark} measures, per GPU generation, LC goodput at a time-to-first-token and time-per-output-token SLO and BATCH throughput, with board power sampled to obtain tokens per joule; it will replace the placeholder relative throughputs $\theta_{s\tau}$, the power parameters, and the old/new BATCH work-per-joule ratio that governs cascading. (ii) A \emph{KV-cache offload benchmark} measures decoding throughput with the KV cache in local versus remote-NUMA host memory as a proxy for CXL-attached reused DRAM; it will replace the placeholder CXL throughput multipliers (0.95 LC, 0.98 BATCH), the parameter with the largest sensitivity swing. Because emulated and real CXL memory can differ~\citep{Sun2023DemystifyingCxl}, this proxy will itself carry uncertainty. (iii) A \emph{KV-cache fault-injection study} flips bits in the KV cache at controlled bit-error rates under no protection, SECDED ECC, and block checksums with recomputation, to assess how errors in aged reused DRAM affect inference and which protection is needed.
+%%%%%%%%% Appendix %%%%%%%%%
+
+\end{document}

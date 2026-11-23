@@ -1,0 +1,51 @@
+{
+    "Summary": "The paper builds a reliability-aware, multi-period, cohort-by-age lifecycle-carbon linear program for LLM-inference fleets of 8-GPU hosts. It compares three host types: a new host; a 'green' host with energy-efficient CPUs plus reused DIMMs (attached over CXL) and reused SSDs that enter at age 5; and a cascaded previous-generation host. Component failures follow Weibull hazards, and reused parts are modelled as delayed renewal processes. Expected failures, drains, spares and logistics are precomputed per node-quarter so the program stays linear. The model also covers harvest pools, in-place and geographic cascading to a batch tier, refurbishment accounting through derived SKUs, regional declining grid intensities, and a Monte-Carlo-in-the-loop chance constraint on per-region-quarter shortfall with correlated (negative-binomial) drains. GPU throughput, GPU power and the CXL slowdown are placeholders because no measurements were run, so results are reported as break-even conditions. Reported results: node-level per-work savings of about 16-19% on a clean grid, with a mixed-grid break-even at a CXL multiplier of about 0.94. The fleet-level saving is below 1% (Y = 0.775%, alpha-cut range [0, 2.64]%), with operational energy making up roughly 94% of lifecycle carbon. Failure-blind planning loses most of the saving, while reliability-aware planning keeps reusing up to a failure multiplier of about 8. Cascading pays only near old/new energy parity. Expected-value headroom leaves single region-quarters with up to 15% shortfall probability, and an SLO guarantee does not make reuse more carbon-expensive.",
+    "Strengths": [
+        "The paper is candid about scope. Placeholder parameters are flagged throughout, a model resolution (0.05 pp) is stated, and point estimates are explicitly not claimed.",
+        "Results are presented as a break-even map (Table 1) of the thresholds at which each qualitative conclusion flips, so readers can re-read the conclusions once measurements exist.",
+        "The reported numbers are largely internally consistent: savings recompute from Table 11, and the mu-sensitivity, GPU-AFR, drained-hours and interpolation checks hold.",
+        "Refurbishment and harvest-pool accounting is careful. The paper documents three over-crediting artefacts, one of which doubled the clean-grid saving, and verifies embodied-carbon conservation with tests. This is a useful caution for lifecycle-carbon modelling.",
+        "The chance-constrained headroom loop has a precise shortfall definition, is validated by a 50,000-sample independent replay, and includes a seed study. It shows that expected-value derating can leave individual region-quarters at 10-15% shortfall probability.",
+        "Sensitivity coverage is broad: six embodied-carbon accounting conventions, fuzzy alpha-cuts, sweeps over failure multiplier, energy ratio, headroom and utilization, and a carbon-cost epsilon-constraint front."
+    ],
+    "Weaknesses": [
+        "The inputs that decide the sign of the result are unmeasured. GPU throughput, GPU power, the CXL slowdown and the old/new energy ratio are placeholders. The CXL multiplier alone decides the sign of the mixed-grid saving, and the energy ratio alone decides whether cascading pays. The measurements in Appendix E are described but not run, so the paper cannot answer its title question for a real fleet.",
+        "The fleet-level effect is negligible and within its own uncertainty: Y = 0.775% with an alpha = 0 range of [0, 2.64]%, and Y = 0 when reused parts are charged as new. This follows largely from the ~94% operational share. In effect it is a negative result, but the paper does not frame it as one.",
+        "Several 'structural' findings hold by construction or rely on a weak baseline. Y >= 0 holds by construction. The failure-blind baseline uses no derating and an unswept leasing multiplier (mu = 1.3), and Table 14 shows that standard derating recovers the reliability-aware saving.",
+        "The SLO conclusion is a null result: the effect (+0.004 to +0.04 pp) is below the stated 0.05 pp resolution, and the proposed mechanism is not isolated.",
+        "Break-even values are imprecise. The m of about 8 has no sweep points between m = 5 and m = 8; the zero lies in (5, 8], plausibly near 6.5. Other break-evens are two-point linear interpolations or first-order fixed-plan derivations, and no joint CXL x energy-ratio map was computed.",
+        "Modelling choices favour reuse. Reused parts carry zero embodied carbon by default (cut-off accounting). CXL is modelled with a throughput penalty but no memory-capacity benefit, and the expander and controller embodied carbon is reduced to a +100 kgCO2e platform delta. The GPU failure rate comes from a training-run interruption report and is applied to inference with a 72 h drain.",
+        "The uncertainty model is limited. Demand is deterministic, leasing is unlimited at a fixed carbon multiplier, the chance constraint covers per-region-quarter marginals only, and the fleet-scale LP relaxation is justified by a 36-node pilot in which the MIP did not reach optimality.",
+        "There are minor numerical inconsistencies across Tables 6, 15 and 18 (the reserve value, a component sum, and the embodied-plus-operational gap). The entry-age robustness claim has no supporting table, and an acknowledged Figure 7 axis-label error is left unfixed.",
+        "Originality is moderate. The paper integrates standard operations-research tools and gives no quantitative comparison with the closest prior planning model (Sharma et al., 2025).",
+        "Fit with the venue is weak. There is no learning component, the ML relevance rests only on the workload being LLM inference, and no code release is promised."
+    ],
+    "Originality": 2,
+    "Quality": 2,
+    "Clarity": 3,
+    "Significance": 1,
+    "Questions": [
+        "Can you run at least the KV-cache-offload proxy and the per-generation tokens-per-joule measurements from Appendix E? Without them, which conclusion in Table 1 should a practitioner act on?",
+        "Please add sweep points for m = 6 and m = 7 and report the actual zero crossing of Y. Should 'about 8' be restated as a bracket?",
+        "Can you re-optimize the plans over a range of mu (e.g., 1.0-2.0), and compare against a failure-blind planner with standard derating, which is the realistic operator baseline?",
+        "Why does the reliability-aware reuse plan have a worst-case P(short) of 14.5%, against 2.7% for the no-reuse plan (Table 5), when the means are similar? Which region-quarter and cohort cause this?",
+        "How would modelling CXL's memory-capacity benefit (e.g., a larger KV cache or batch size) and the embodied carbon of CXL controllers change the node-level break-even?",
+        "Is it justified to treat all GPU-related training-run interruptions as hardware failures with a 72 h drain in an inference fleet? How do the results change if a substantial share are transient?",
+        "Please reconcile the discrepancies between Tables 6, 15 and 18.",
+        "Will the model code and configurations be released?"
+    ],
+    "Limitations": [
+        "All quantitative conclusions are model outputs whose sign depends on unmeasured placeholder parameters (the CXL slowdown and the old/new GPU energy ratio).",
+        "Cut-off accounting assigns zero embodied carbon to reused parts and favours reuse. Quoting the savings without this caveat risks greenwashing, a risk the authors partly acknowledge.",
+        "The model omits demand uncertainty, supply limits on leased capacity, network and data-locality costs of cross-region batch placement, joint SLO guarantees, and integrality effects below 0.05 pp.",
+        "The GPU reliability data comes from a training-run report and may not represent inference-fleet failures. The correlation dispersions are illustrative, not fitted.",
+        "There are no negative societal impacts beyond the risk of overstated carbon claims, which the authors discuss."
+    ],
+    "Ethical Concerns": false,
+    "Soundness": 2,
+    "Presentation": 3,
+    "Contribution": 2,
+    "Overall": 3,
+    "Confidence": 4,
+    "Decision": "Reject"
+}
