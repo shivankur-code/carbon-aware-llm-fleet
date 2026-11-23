@@ -274,7 +274,7 @@ def cmd_pareto(args) -> None:
     fig, ax = plt.subplots(figsize=(5.5, 3.8))
     ax.plot(front.cost_usd / 1e9, front.carbon_kg / 1e6, "o-", color=COLORS["blue"])
     ax.set_xlabel("6-yr cost (billion USD)")
-    ax.set_ylabel("6-yr lifecycle carbon (MtCO2e)")
+    ax.set_ylabel("6-yr lifecycle carbon (ktCO2e)")
     ax.set_title("Carbon-cost Pareto front (epsilon-constraint)", fontsize=9)
     fig.tight_layout()
     fig.savefig(FIG / "p3_pareto.png", dpi=150)
