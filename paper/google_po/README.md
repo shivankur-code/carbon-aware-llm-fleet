@@ -47,3 +47,26 @@ PO_BACKEND=bridge PO_BRIDGE_DIR=/path/to/bridge bash paper/google_po/run.sh   # 
 It uses the official ICLR 2025 template and a literature cutoff of 2026-10. **Estimated cost:** about USD 10–20, based on roughly 60–70 calls at Gemini 3.1 Pro prices (USD 2 / 12 per million input / output tokens) plus web searches.
 
 Requirements: Python 3.10+, `pdflatex` and `bibtex`, and texlive-science (`algorithm.sty`).
+
+## Result of the published run
+- **Paper:** [`output/final_paper.pdf`](output/final_paper.pdf), 22 pages, main text 10 pages, ICLR 2025 template. The LaTeX source is in `output/content_refinement_workdir/final_refined_paper.tex`.
+- **Pipeline steps:**
+  1. outline;
+  2. literature agent: 41 search calls, 21 verified papers;
+  3. section writing;
+  4. AgentReview, then 3 rounds of refinement by "rebuttal via revision";
+  5. a format check and a format fix.
+- **Review scores (v0 → v3):** overall 3, 3, 3, 4 (1–10 scale), decision Reject throughout; the reviews are in `output/content_refinement_workdir/peer_reviews/`. The reviewers' main objection was the same each time: GPU throughput, power and the CXL slowdown are placeholders. The GPU measurements in `gpu/` have not been run.
+- **Phase 6 came from the reviews.** The v2 and v3 reviews spotted that the reuse host combines a part that saves carbon (reused SSDs) with one that costs it (reused DRAM over CXL). That led to Phase 6 (`paper/notes/P6_FINDINGS.md`): reusing SSDs alone doubles the fleet saving. Phase 6 came after this paper run, so the paper only states it as a hypothesis.
+- **Run records:**
+  - `output/bridge_archive/bridge_requests_responses.tar.gz`: every prompt and answer (page renders left out);
+  - `output/run*.log`: pipeline logs.
+
+The run was restarted three times: twice before the restart below, then once after a container reboot. Replay rules:
+- **Identical prompt:** answers were reused automatically by the replay cache.
+- **Only the list order changed:** answers were reused by hand (Python set ordering differed between restarts). Each such reuse is logged in `manual_replay.log` inside the archive.
+
+**Known issues in the PDF:**
+- Figure 7's axis was labelled MtCO2e; the values are ktCO2e. The figure has been regenerated in `raw_materials/figures/`, but the published PDF still has the old image plus a caption note.
+- One Unicode ∞ in a bib title causes a non-fatal LaTeX error.
+- The ICLR anonymous mode prints "Anonymous authors".
