@@ -1,0 +1,214 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{Masanet2020RecalibratingGlobal}
+\citation{Patel2023SplitwiseEfficient}
+\citation{Niu2026TokenpowerbenchBenchmarking}
+\citation{Acun2023CarbonDependencies}
+\citation{Wang2023PeelingBack}
+\citation{Sun2023DemystifyingCxl,Sharma2024IntroductionCompute}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\newlabel{sec:intro}{{1}{1}{Introduction}{section.1}{}}
+\citation{Wiesner2021LetsWait}
+\citation{Schroeder2009DramErrors,Sridharan2015MemoryErrors}
+\citation{Meza2015LargescaleFlash}
+\citation{Hu2024CharacterizationLarge}
+\citation{Huang2025CaseAccurate}
+\citation{Sharma2025TowardOptimal}
+\citation{Weibull1951StatisticalDistribution}
+\citation{Eick1993PhysicsMtg}
+\citation{Cohen2017OvercommitmentCloud}
+\citation{Niu2026TokenpowerbenchBenchmarking}
+\@writefile{toc}{\contentsline {paragraph}{Scope and what the evidence supports.}{2}{section*.1}\protected@file@percent }
+\citation{Acun2023CarbonDependencies}
+\citation{Wang2023PeelingBack}
+\citation{Sharma2024IntroductionCompute}
+\citation{Sun2023DemystifyingCxl}
+\citation{Huang2025CaseAccurate}
+\citation{Sharma2025TowardOptimal}
+\citation{Patel2023SplitwiseEfficient}
+\citation{Shi2024GreenllmDisaggregating}
+\citation{Nguyen2024TowardsSustainable}
+\citation{Li2024SproutGreen}
+\citation{Wiesner2021LetsWait}
+\citation{Lechowicz2025LearningaugmentedCompetitive}
+\citation{Niu2026TokenpowerbenchBenchmarking}
+\citation{Sharma2025TowardOptimal}
+\citation{Schroeder2009DramErrors}
+\citation{Sridharan2015MemoryErrors}
+\citation{Meza2015LargescaleFlash}
+\citation{Hu2024CharacterizationLarge}
+\citation{Weibull1951StatisticalDistribution}
+\citation{Cohen2017OvercommitmentCloud}
+\citation{Eick1993PhysicsMtg}
+\citation{Sharma2024IntroductionCompute}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{3}{section.2}\protected@file@percent }
+\newlabel{sec:related_work}{{2}{3}{Related Work}{section.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Carbon-aware server design and component reuse.}{3}{section*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Carbon-aware LLM inference and older-GPU reuse.}{3}{section*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Fleet planning, reliability and SLO-guaranteed provisioning.}{3}{section*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Methodology}{3}{section.3}\protected@file@percent }
+\newlabel{sec:method}{{3}{3}{Methodology}{section.3}{}}
+\citation{Weibull1951StatisticalDistribution}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Overview of the reliability-aware lifecycle model. SKUs, component reliability (Weibull hazards, delayed renewal), regional grids and demand, and reused-part pools feed a multi-period LP over cohorts that each quarter decides to buy, keep, retire, cascade LC$\rightarrow $BATCH (in place or to a clean-grid region) or lease. An outer Monte Carlo loop models drained nodes as M/G/$\infty $ occupancy and adds reserve until $P(\text  {short})\le \varepsilon $ in every region-quarter.}}{4}{figure.1}\protected@file@percent }
+\newlabel{fig:overview}{{1}{4}{Overview of the reliability-aware lifecycle model. SKUs, component reliability (Weibull hazards, delayed renewal), regional grids and demand, and reused-part pools feed a multi-period LP over cohorts that each quarter decides to buy, keep, retire, cascade LC$\rightarrow $BATCH (in place or to a clean-grid region) or lease. An outer Monte Carlo loop models drained nodes as M/G/$\infty $ occupancy and adds reserve until $P(\text {short})\le \varepsilon $ in every region-quarter}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Fleet State, Flow Conservation and Refurbishment}{4}{subsection.3.1}\protected@file@percent }
+\newlabel{sec:method_state}{{3.1}{4}{Fleet State, Flow Conservation and Refurbishment}{subsection.3.1}{}}
+\newlabel{sec:method_flow}{{3.1}{4}{Fleet State, Flow Conservation and Refurbishment}{subsection.3.1}{}}
+\newlabel{eq:flow}{{1}{4}{Fleet State, Flow Conservation and Refurbishment}{equation.3.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Age-Dependent Reliability as Precomputed Parameters}{4}{subsection.3.2}\protected@file@percent }
+\newlabel{sec:method_rel}{{3.2}{4}{Age-Dependent Reliability as Precomputed Parameters}{subsection.3.2}{}}
+\newlabel{eq:weibull}{{2}{4}{Age-Dependent Reliability as Precomputed Parameters}{equation.3.2}{}}
+\citation{Wiesner2021LetsWait,Lechowicz2025LearningaugmentedCompetitive}
+\citation{Eick1993PhysicsMtg}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Capacity, Reused-Part Pools and Objective}{5}{subsection.3.3}\protected@file@percent }
+\newlabel{sec:method_cap}{{3.3}{5}{Capacity, Reused-Part Pools and Objective}{subsection.3.3}{}}
+\newlabel{sec:method_obj}{{3.3}{5}{Capacity, Reused-Part Pools and Objective}{subsection.3.3}{}}
+\newlabel{eq:capacity}{{3}{5}{Capacity, Reused-Part Pools and Objective}{equation.3.3}{}}
+\newlabel{eq:objective}{{4}{5}{Capacity, Reused-Part Pools and Objective}{equation.3.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Experiment Ladder and Saving Metrics}{5}{subsection.3.4}\protected@file@percent }
+\newlabel{sec:method_ladder}{{3.4}{5}{Experiment Ladder and Saving Metrics}{subsection.3.4}{}}
+\newlabel{sec:method_uq}{{3.4}{5}{Experiment Ladder and Saving Metrics}{subsection.3.4}{}}
+\newlabel{eq:savings}{{5}{5}{Experiment Ladder and Saving Metrics}{equation.3.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Chance-Constrained SLO Headroom}{5}{subsection.3.5}\protected@file@percent }
+\newlabel{sec:method_cc}{{3.5}{5}{Chance-Constrained SLO Headroom}{subsection.3.5}{}}
+\newlabel{eq:reserve}{{6}{6}{Chance-Constrained SLO Headroom}{equation.3.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experiments}{6}{section.4}\protected@file@percent }
+\newlabel{sec:experiments}{{4}{6}{Experiments}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Experimental Setup}{6}{subsection.4.1}\protected@file@percent }
+\newlabel{sec:setup}{{4.1}{6}{Experimental Setup}{subsection.4.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Scenarios and parameters.}{6}{section*.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Baselines and implementation.}{6}{section*.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Node-Level Lifecycle Carbon and Grid Dependence}{6}{subsection.4.2}\protected@file@percent }
+\newlabel{sec:node}{{4.2}{6}{Node-Level Lifecycle Carbon and Grid Dependence}{subsection.4.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Break-even map: the parameter that controls each conclusion, its baseline value, and the value at which the conclusion flips. Values marked $^\ast $ are linear interpolations or readings between swept points, $^\dagger $ first-order derivations holding the replayed plan fixed (Section~\ref {sec:fleet}), $^\S  $ a back-of-envelope derivation, not a model run (Section~\ref {sec:node}); $^\ddagger $ a bracket between swept points ($Y=0.209\%$ at $m=5$, $0$ at $m=8$; no runs in between), so 8 is an upper bound. Placeholder parameters are marked (P). The failure-blind rows mainly measure the cost of ignoring drains ($Y_{\text  {naive}}=-0.557\%$ even when reuse saves nothing; Section~\ref {sec:fleet}).}}{7}{table.1}\protected@file@percent }
+\newlabel{tab:breakeven}{{1}{7}{Break-even map: the parameter that controls each conclusion, its baseline value, and the value at which the conclusion flips. Values marked $^\ast $ are linear interpolations or readings between swept points, $^\dagger $ first-order derivations holding the replayed plan fixed (Section~\ref {sec:fleet}), $^\S $ a back-of-envelope derivation, not a model run (Section~\ref {sec:node}); $^\ddagger $ a bracket between swept points ($Y=0.209\%$ at $m=5$, $0$ at $m=8$; no runs in between), so 8 is an upper bound. Placeholder parameters are marked (P). The failure-blind rows mainly measure the cost of ignoring drains ($Y_{\text {naive}}=-0.557\%$ even when reuse saves nothing; Section~\ref {sec:fleet})}{table.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{The reuse SKU bundles SSD reuse and DRAM-over-CXL reuse.}{7}{section*.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}What the Conclusions Depend On: Break-Even Map}{7}{subsection.4.3}\protected@file@percent }
+\newlabel{sec:breakeven}{{4.3}{7}{What the Conclusions Depend On: Break-Even Map}{subsection.4.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Fleet-Level Savings: Failure-Blind vs.\ Reliability-Aware Planning}{7}{subsection.4.4}\protected@file@percent }
+\newlabel{sec:fleet}{{4.4}{7}{Fleet-Level Savings: Failure-Blind vs.\ Reliability-Aware Planning}{subsection.4.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Fleet savings relative to the no-reuse fleet (\%; $Z$ in pp), LP relaxation.}}{8}{table.2}\protected@file@percent }
+\newlabel{tab:fleet_savings}{{2}{8}{Fleet savings relative to the no-reuse fleet (\%; $Z$ in pp), LP relaxation}{table.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Why failure-blind planning loses, and what its break-evens measure.}{8}{section*.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Break-even reliability of reused parts.}{8}{section*.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}When Does Cascading Pay?}{8}{subsection.4.5}\protected@file@percent }
+\newlabel{sec:cascade}{{4.5}{8}{When Does Cascading Pay?}{subsection.4.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Left: reuse saving under a guaranteed LC SLO (per-region-quarter shortfall probability at most 1\% or 0.1\%) for independent, correlated ($k=2$) and strongly correlated ($k=0.5$) failures, with $m=1$ or $m=3$. Right: SLO carbon price of the reuse plan relative to its expected-value plan. Differences in the left panel are below the model's 0.05~pp resolution, i.e., no detectable carbon penalty.}}{9}{figure.2}\protected@file@percent }
+\newlabel{fig:slo}{{2}{9}{Left: reuse saving under a guaranteed LC SLO (per-region-quarter shortfall probability at most 1\% or 0.1\%) for independent, correlated ($k=2$) and strongly correlated ($k=0.5$) failures, with $m=1$ or $m=3$. Right: SLO carbon price of the reuse plan relative to its expected-value plan. Differences in the left panel are below the model's 0.05~pp resolution, i.e., no detectable carbon penalty}{figure.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Guaranteeing LC SLOs Under Correlated Failures}{9}{subsection.4.6}\protected@file@percent }
+\newlabel{sec:slo}{{4.6}{9}{Guaranteeing LC SLOs Under Correlated Failures}{subsection.4.6}{}}
+\@writefile{toc}{\contentsline {paragraph}{Expected-value headroom is not enough.}{9}{section*.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Chance-constrained plans.}{9}{section*.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{What drives the lower price.}{9}{section*.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7}Refurbishment and Carbon-Cost Trade-off}{10}{subsection.4.7}\protected@file@percent }
+\newlabel{sec:refurb}{{4.7}{10}{Refurbishment and Carbon-Cost Trade-off}{subsection.4.7}{}}
+\newlabel{sec:robustness}{{4.7}{10}{Refurbishment and Carbon-Cost Trade-off}{subsection.4.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion}{10}{section.5}\protected@file@percent }
+\newlabel{sec:conclusion}{{5}{10}{Conclusion}{section.5}{}}
+\@writefile{toc}{\contentsline {paragraph}{Limitations.}{10}{section*.13}\protected@file@percent }
+\bibdata{references}
+\bibcite{Acun2023CarbonDependencies}{{1}{2023}{{Acun et~al.}}{{Acun, Lee, Kazhamiaka, Sundarrajan, Maeng, Chakkaravarthy, Brooks, and Wu}}}
+\bibcite{Cohen2017OvercommitmentCloud}{{2}{2017}{{Cohen et~al.}}{{Cohen, Keller, Mirrokni, and Zadimoghadddam}}}
+\bibcite{Eick1993PhysicsMtg}{{3}{1993}{{Eick et~al.}}{{Eick, Massey, and Whitt}}}
+\bibcite{Hu2024CharacterizationLarge}{{4}{2024}{{Hu et~al.}}{{Hu, Ye, Wang, Wang, Zhang, Chen, Sun, Lin, Wang, Luo, Wen, and Zhang}}}
+\bibcite{Huang2025CaseAccurate}{{5}{2025}{{Huang et~al.}}{{Huang, Zhu, and Gandhi}}}
+\bibcite{Lechowicz2025LearningaugmentedCompetitive}{{6}{2025}{{Lechowicz et~al.}}{{Lechowicz, Christianson, Sun, Bashir, Hajiesmaili, Wierman, and Shenoy}}}
+\bibcite{Li2024SproutGreen}{{7}{2024}{{Li et~al.}}{{Li, Jiang, Gadepally, and Tiwari}}}
+\bibcite{Masanet2020RecalibratingGlobal}{{8}{2020}{{Masanet et~al.}}{{Masanet, Shehabi, Lei, Smith, and Koomey}}}
+\bibcite{Meza2015LargescaleFlash}{{9}{2015}{{Meza et~al.}}{{Meza, Wu, Kumar, and Mutlu}}}
+\bibcite{Nguyen2024TowardsSustainable}{{10}{2024}{{Nguyen et~al.}}{{Nguyen, Zhou, Ding, and Liu}}}
+\bibcite{Niu2026TokenpowerbenchBenchmarking}{{11}{2026}{{Niu et~al.}}{{Niu, Zhang, Li, Zhao, Wang, Wang, and Chen}}}
+\bibcite{Patel2023SplitwiseEfficient}{{12}{2023}{{Patel et~al.}}{{Patel, Choukse, Zhang, Shah, Íñigo Goiri, Maleki, and Bianchini}}}
+\bibcite{Schroeder2009DramErrors}{{13}{2009}{{Schroeder et~al.}}{{Schroeder, Pinheiro, and Weber}}}
+\bibcite{Sharma2025TowardOptimal}{{14}{2025}{{Sharma et~al.}}{{Sharma, Tamhane, and Gandhi}}}
+\bibcite{Sharma2024IntroductionCompute}{{15}{2024}{{Sharma et~al.}}{{Sharma, Blankenship, and Berger}}}
+\bibcite{Shi2024GreenllmDisaggregating}{{16}{2024}{{Shi et~al.}}{{Shi, Wu, Liu, and Ding}}}
+\bibcite{Sridharan2015MemoryErrors}{{17}{2015}{{Sridharan et~al.}}{{Sridharan, DeBardeleben, Blanchard, Ferreira, Stearley, Shalf, and Gurumurthi}}}
+\bibcite{Sun2023DemystifyingCxl}{{18}{2023}{{Sun et~al.}}{{Sun, Yuan, Yu, Kuper, Song, Huang, Ji, Agarwal, Lou, Jeong, Ren, Ahn, Xu, and Kim}}}
+\bibcite{Wang2023PeelingBack}{{19}{2023}{{Wang et~al.}}{{Wang, Gupta, and Sriraman}}}
+\bibcite{Weibull1951StatisticalDistribution}{{20}{1951}{{Weibull}}{{}}}
+\bibcite{Wiesner2021LetsWait}{{21}{2021}{{Wiesner et~al.}}{{Wiesner, Behnke, Scheinert, Gontarska, and Thamsen}}}
+\bibstyle{iclr2025_conference}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Full Parameter Tables and Provenance}{13}{appendix.A}\protected@file@percent }
+\newlabel{app:params}{{A}{13}{Full Parameter Tables and Provenance}{appendix.A}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Cost and logistics parameters (engineering assumptions).}}{13}{table.3}\protected@file@percent }
+\newlabel{tab:costs}{{3}{13}{Cost and logistics parameters (engineering assumptions)}{table.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{Scenarios in full.}{13}{section*.16}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Further implementation details.}{13}{section*.17}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{GPU AFR.}{13}{section*.18}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Ages.}{13}{section*.19}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {B}Reliability Precomputation and Refurbishment Accounting}{13}{appendix.B}\protected@file@percent }
+\newlabel{app:rel}{{B}{13}{Reliability Precomputation and Refurbishment Accounting}{appendix.B}{}}
+\@writefile{toc}{\contentsline {paragraph}{Expected failures.}{13}{section*.20}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces SKU and component parameters. Power, throughput and CXL multipliers are placeholders; the GPU AFR is derived from published data; all other values are engineering assumptions.}}{14}{table.4}\protected@file@percent }
+\newlabel{tab:params}{{4}{14}{SKU and component parameters. Power, throughput and CXL multipliers are placeholders; the GPU AFR is derived from published data; all other values are engineering assumptions}{table.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Reused-part pools.}{14}{section*.21}\protected@file@percent }
+\newlabel{eq:pool}{{7}{14}{Reused-part pools}{equation.B.7}{}}
+\@writefile{toc}{\contentsline {paragraph}{Refurbishment accounting.}{14}{section*.22}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Refurbishment paths.}{14}{section*.23}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Over-crediting mechanisms in detail.}{14}{section*.24}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {C}Monte Carlo Validation and Additional Results}{15}{appendix.C}\protected@file@percent }
+\newlabel{app:results}{{C}{15}{Monte Carlo Validation and Additional Results}{appendix.C}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Chance-constrained LC headroom with Monte Carlo in the loop}}{15}{algorithm.1}\protected@file@percent }
+\newlabel{alg:cc}{{1}{15}{Monte Carlo Validation and Additional Results}{algorithm.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Monte Carlo replay of expected-value plans (headroom multiplier 3): LC capacity shortfall risk over 72 region-quarters.}}{15}{table.5}\protected@file@percent }
+\newlabel{tab:ev_risk}{{5}{15}{Monte Carlo replay of expected-value plans (headroom multiplier 3): LC capacity shortfall risk over 72 region-quarters}{table.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Composition of the SLO reserve (target 0.001, $k=0.5$, $m=1$, seed 0): chance-constrained minus expected-value plan. Added installed capacity in node-equivalent-quarters; carbon in tCO$_2$e, each entry rounded independently (the reuse components sum to 3,803 against a logged total of 3,806). Reuse-based hosts hold 30\% of the reuse plan's fleet node-quarters but 21.7\% of its added reserve capacity; previous-generation hosts hold 2.4\%.}}{15}{table.6}\protected@file@percent }
+\newlabel{tab:composition}{{6}{15}{Composition of the SLO reserve (target 0.001, $k=0.5$, $m=1$, seed 0): chance-constrained minus expected-value plan. Added installed capacity in node-equivalent-quarters; carbon in tCO$_2$e, each entry rounded independently (the reuse components sum to 3,803 against a logged total of 3,806). Reuse-based hosts hold 30\% of the reuse plan's fleet node-quarters but 21.7\% of its added reserve capacity; previous-generation hosts hold 2.4\%}{table.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.1}Reconciling Reserve and Carbon Figures}{15}{subsection.C.1}\protected@file@percent }
+\newlabel{app:reconcile}{{C.1}{15}{Reconciling Reserve and Carbon Figures}{subsection.C.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Reserve versus added capacity.}{15}{section*.25}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Refurbishment sweep on the reference fleet. All runs also allow in-place cascading, so the two saving columns (\%, versus no reuse) are without and with refurbishment, both with cascading. Where it is up to 0.001~pp \emph  {below} the no-cascade $Y$ of Table~\ref {tab:mult_app} (0.474 versus 0.475 at $m=3$; 0.208 versus 0.209 at $m=5$), although cascading only enlarges the feasible set, the values come from separate solver runs and the difference is solver tolerance, far below the 0.05~pp resolution.}}{16}{table.7}\protected@file@percent }
+\newlabel{tab:refurb}{{7}{16}{Refurbishment sweep on the reference fleet. All runs also allow in-place cascading, so the two saving columns (\%, versus no reuse) are without and with refurbishment, both with cascading. Where it is up to 0.001~pp \emph {below} the no-cascade $Y$ of Table~\ref {tab:mult_app} (0.474 versus 0.475 at $m=3$; 0.208 versus 0.209 at $m=5$), although cascading only enlarges the feasible set, the values come from separate solver runs and the difference is solver tolerance, far below the 0.05~pp resolution}{table.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces Left: reference-fleet savings (\%) under embodied-carbon accounting conventions for reused parts. Right: fuzzy $\alpha $-cuts of $Y$ (failure rates $\times [0.5,1,3]$, embodied carbon $\times [0.5,1,2]$, CXL multiplier $[0.85,0.95,1.0]$); the upper bound is driven mostly by embodied-carbon uncertainty.}}{16}{table.8}\protected@file@percent }
+\newlabel{tab:accounting}{{8}{16}{Left: reference-fleet savings (\%) under embodied-carbon accounting conventions for reused parts. Right: fuzzy $\alpha $-cuts of $Y$ (failure rates $\times [0.5,1,3]$, embodied carbon $\times [0.5,1,2]$, CXL multiplier $[0.85,0.95,1.0]$); the upper bound is driven mostly by embodied-carbon uncertainty}{table.8}{}}
+\@writefile{toc}{\contentsline {paragraph}{Carbon components.}{16}{section*.26}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Carbon-cost front in detail.}{16}{section*.27}\protected@file@percent }
+\citation{Sun2023DemystifyingCxl}
+\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces Node-level 6-year lifecycle carbon (kgCO$_2$e per node), mixed grid, LC tier, failures counted.}}{17}{table.9}\protected@file@percent }
+\newlabel{tab:node}{{9}{17}{Node-level 6-year lifecycle carbon (kgCO$_2$e per node), mixed grid, LC tier, failures counted}{table.9}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces Node-level saving of \texttt  {green\_gpu} over \texttt  {new\_gpu} per unit of work (\%), cut-off accounting; erosion is the difference in pp.}}{17}{table.10}\protected@file@percent }
+\newlabel{tab:node_saving}{{10}{17}{Node-level saving of \texttt {green\_gpu} over \texttt {new\_gpu} per unit of work (\%), cut-off accounting; erosion is the difference in pp}{table.10}{}}
+\@writefile{toc}{\contentsline {paragraph}{Leased-capacity carbon multiplier (derivation).}{17}{section*.28}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Mixed-grid break-even values (derivation).}{17}{section*.29}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{LP relaxation and scale.}{17}{section*.30}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Cohort-rounding pitfall.}{17}{section*.31}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {D}Additional Figures}{17}{appendix.D}\protected@file@percent }
+\newlabel{app:figures}{{D}{17}{Additional Figures}{appendix.D}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {E}Prepared Measurement Methodology}{17}{appendix.E}\protected@file@percent }
+\newlabel{app:measure}{{E}{17}{Prepared Measurement Methodology}{appendix.E}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {11}{\ignorespaces Reference-fleet lifecycle carbon by run (tCO$_2$e over 6 years).}}{18}{table.11}\protected@file@percent }
+\newlabel{tab:ladder}{{11}{18}{Reference-fleet lifecycle carbon by run (tCO$_2$e over 6 years)}{table.11}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {12}{\ignorespaces Reused-part failure-rate multiplier sweep, reference fleet (\%).}}{18}{table.12}\protected@file@percent }
+\newlabel{tab:mult_app}{{12}{18}{Reused-part failure-rate multiplier sweep, reference fleet (\%)}{table.12}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {13}{\ignorespaces Reused-part entry-age sweep (reused DIMMs and SSDs of \texttt  {green\_gpu}), reference fleet (\%).}}{19}{table.13}\protected@file@percent }
+\newlabel{tab:entry_app}{{13}{19}{Reused-part entry-age sweep (reused DIMMs and SSDs of \texttt {green\_gpu}), reference fleet (\%)}{table.13}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {14}{\ignorespaces Cascade sweep: old-GPU BATCH throughput, reference fleet.}}{19}{table.14}\protected@file@percent }
+\newlabel{tab:cascade_app}{{14}{19}{Cascade sweep: old-GPU BATCH throughput, reference fleet}{table.14}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {15}{\ignorespaces Headroom and utilization sweep (reliability-aware reuse plan).}}{19}{table.15}\protected@file@percent }
+\newlabel{tab:headroom_app}{{15}{19}{Headroom and utilization sweep (reliability-aware reuse plan)}{table.15}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {16}{\ignorespaces Total LC reserve $\DOTSB \sum@ \slimits@ _{r,t} R_{rt}$ of chance-constrained plans (node-equivalent-quarters, summed over region-quarters). This is the reserve requirement of Eq.~\ref {eq:reserve}, not the added installed capacity of Tables~\ref {tab:composition} and~\ref {tab:seeds_app} (see Appendix~\ref {app:reconcile}).}}{19}{table.16}\protected@file@percent }
+\newlabel{tab:reserve_app}{{16}{19}{Total LC reserve $\sum _{r,t} R_{rt}$ of chance-constrained plans (node-equivalent-quarters, summed over region-quarters). This is the reserve requirement of Eq.~\ref {eq:reserve}, not the added installed capacity of Tables~\ref {tab:composition} and~\ref {tab:seeds_app} (see Appendix~\ref {app:reconcile})}{table.16}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {17}{\ignorespaces Chance-constrained SLO headroom at $m=1$ (expected-value baseline with LC headroom multiplier 1; independent replay with 50,000 samples). Price: SLO carbon price (\%). $P_{\max }$: validated worst region-quarter $P(\text  {short})$.}}{20}{table.17}\protected@file@percent }
+\newlabel{tab:cc}{{17}{20}{Chance-constrained SLO headroom at $m=1$ (expected-value baseline with LC headroom multiplier 1; independent replay with 50,000 samples). Price: SLO carbon price (\%). $P_{\max }$: validated worst region-quarter $P(\text {short})$}{table.17}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {18}{\ignorespaces Chance-constrained SLO headroom at reused-part multiplier $m=3$ (columns as in Table~\ref {tab:cc}).}}{20}{table.18}\protected@file@percent }
+\newlabel{tab:cc_app}{{18}{20}{Chance-constrained SLO headroom at reused-part multiplier $m=3$ (columns as in Table~\ref {tab:cc})}{table.18}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {19}{\ignorespaces SLO reserve decomposition across Monte Carlo seeds (target 0.001, $k=0.5$, $m=1$). Carbon in tCO$_2$e; capacity (added installed LC capacity, chance-constrained minus expected-value plan) in node-equivalent-quarters. Gap = embodied gap + operational gap + spares-and-logistics gap (not logged per seed; $-8$~tCO$_2$e for seed 0 from Table~\ref {tab:composition}), up to rounding; see Appendix~\ref {app:reconcile}.}}{20}{table.19}\protected@file@percent }
+\newlabel{tab:seeds_app}{{19}{20}{SLO reserve decomposition across Monte Carlo seeds (target 0.001, $k=0.5$, $m=1$). Carbon in tCO$_2$e; capacity (added installed LC capacity, chance-constrained minus expected-value plan) in node-equivalent-quarters. Gap = embodied gap + operational gap + spares-and-logistics gap (not logged per seed; $-8$~tCO$_2$e for seed 0 from Table~\ref {tab:composition}), up to rounding; see Appendix~\ref {app:reconcile}}{table.19}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {20}{\ignorespaces Node-level sensitivity: ten largest swings (mixed grid, LC, base 0.93\%).}}{20}{table.20}\protected@file@percent }
+\newlabel{tab:tornado_app}{{20}{20}{Node-level sensitivity: ten largest swings (mixed grid, LC, base 0.93\%)}{table.20}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {21}{\ignorespaces Carbon-cost $\varepsilon $-constraint front, reference fleet. The logged endpoint (last row) has the same printed carbon as point 7 at higher cost and is dominated at printed precision; the text treats point 7 as the carbon-minimal plan.}}{21}{table.21}\protected@file@percent }
+\newlabel{tab:pareto_app}{{21}{21}{Carbon-cost $\varepsilon $-constraint front, reference fleet. The logged endpoint (last row) has the same printed carbon as point 7 at higher cost and is dominated at printed precision; the text treats point 7 as the carbon-minimal plan}{table.21}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Left: change in 6-year lifecycle carbon of the reference fleet relative to the no-reuse fleet (failures counted), by component, for the failure-blind plan, the reliability-aware plan, and the latter with in-place or geographic cascading; dots mark the net change. Right: $X$, failure-blind and reliability-aware savings for single-grid fleets. GPU throughput, power and CXL slowdown are placeholders.}}{21}{figure.3}\protected@file@percent }
+\newlabel{fig:ladder}{{3}{21}{Left: change in 6-year lifecycle carbon of the reference fleet relative to the no-reuse fleet (failures counted), by component, for the failure-blind plan, the reliability-aware plan, and the latter with in-place or geographic cascading; dots mark the net change. Right: $X$, failure-blind and reliability-aware savings for single-grid fleets. GPU throughput, power and CXL slowdown are placeholders}{figure.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Reference-fleet saving versus a multiplier $m$ on reused-part failure rates beyond the age effect (log scale). $X$ is flat; the reliability-aware plan still reuses at $m=5$ and has stopped by $m=8$ (no sweep points in between, so the crossover lies in $(5,8]$; it cannot do worse than no reuse by construction); the failure-blind plan crosses zero near $m \approx 2.1$ (interpolated), a value that mostly reflects the cost of ignoring drains (Section~\ref {sec:fleet}).}}{21}{figure.4}\protected@file@percent }
+\newlabel{fig:breakeven}{{4}{21}{Reference-fleet saving versus a multiplier $m$ on reused-part failure rates beyond the age effect (log scale). $X$ is flat; the reliability-aware plan still reuses at $m=5$ and has stopped by $m=8$ (no sweep points in between, so the crossover lies in $(5,8]$; it cannot do worse than no reuse by construction); the failure-blind plan crosses zero near $m \approx 2.1$ (interpolated), a value that mostly reflects the cost of ignoring drains (Section~\ref {sec:fleet})}{figure.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Additional saving (pp) from cascading previous-generation GPU hosts to the batch tier versus their batch work per joule relative to current-generation hosts (dotted line: energy parity). $Z$: in-place; $Z_g$: geographic cascading to the clean-grid region. Cascading pays only near energy parity; geographic cascading adds further savings once cascading pays.}}{22}{figure.5}\protected@file@percent }
+\newlabel{fig:cascade}{{5}{22}{Additional saving (pp) from cascading previous-generation GPU hosts to the batch tier versus their batch work per joule relative to current-generation hosts (dotted line: energy parity). $Z$: in-place; $Z_g$: geographic cascading to the clean-grid region. Cascading pays only near energy parity; geographic cascading adds further savings once cascading pays}{figure.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces One-at-a-time sensitivity of the node-level reuse saving (mixed grid, LC tier). Bars start at the base saving (0.93\%, solid line) and show the saving with the parameter at the low (blue) and high (orange) end; the dashed line marks zero. The CXL throughput multiplier has by far the largest swing and is the dominant factor in the sign of the saving, but grid intensity and the reuse host's peak-power delta can also flip it within their ranges (Table~\ref {tab:breakeven}).}}{22}{figure.6}\protected@file@percent }
+\newlabel{fig:tornado}{{6}{22}{One-at-a-time sensitivity of the node-level reuse saving (mixed grid, LC tier). Bars start at the base saving (0.93\%, solid line) and show the saving with the parameter at the low (blue) and high (orange) end; the dashed line marks zero. The CXL throughput multiplier has by far the largest swing and is the dominant factor in the sign of the saving, but grid intensity and the reuse host's peak-power delta can also flip it within their ranges (Table~\ref {tab:breakeven})}{figure.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Carbon-cost $\varepsilon $-constraint front of the reference fleet over six years (leftmost: cost-minimal plan; the logged rightmost endpoint has the same printed carbon as point 7 at higher cost, so point 7 is the carbon-minimal plan at printed precision).}}{22}{figure.7}\protected@file@percent }
+\newlabel{fig:pareto}{{7}{22}{Carbon-cost $\varepsilon $-constraint front of the reference fleet over six years (leftmost: cost-minimal plan; the logged rightmost endpoint has the same printed carbon as point 7 at higher cost, so point 7 is the carbon-minimal plan at printed precision)}{figure.7}{}}
+\gdef \@abspage@last{22}
